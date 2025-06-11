@@ -29,7 +29,7 @@ namespace Tetris
         public Form1()
         {
             InitializeComponent();
-        }
+        }//
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
