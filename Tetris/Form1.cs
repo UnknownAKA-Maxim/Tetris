@@ -21,6 +21,12 @@ namespace Tetris
 
         static int movement = 0;
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+             
+
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -59,7 +65,7 @@ namespace Tetris
                 case 5: return Color.Yellow;
                 case 6: return Color.Chartreuse;
                 default:
-                    return Color.Plum;
+                    return Color.FromArgb(233, 116, 81);
             }
         }
     }
