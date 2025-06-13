@@ -15,17 +15,45 @@ namespace Tetris
     {
         const int WIDTH = 11, HEIGHT = 20, STARTINGPOSITION = 5;
 
-        static int[,] Board = new int[WIDTH, HEIGHT];
+        int[,] Board = new int[WIDTH, HEIGHT];
 
-        static int PositionY = 0, PositionX = STARTINGPOSITION;
+        int PositionY = 0, PositionX = STARTINGPOSITION;
 
-        static int movement = 0;
+        int movement = 0;
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-             
+            PositionX += movement;
+            movement = 0;
+            Board[PositionX, PositionY] = 1;
+            if (PositionY == 19)
+            {
+                PositionX = STARTINGPOSITION;
+                PositionY = 1;
+            }
+            ProcessBoard(sender,e);
         }
+        private void ProcessBoard(object sender, EventArgs e)
+        {
+            if (PositionY < 19)//drops ontop of another block
+            {
 
+                if (Board[PositionX + 1, PositionY] != 1)
+                {
+                    Board[PositionX, PositionY] = 0;
+                    PositionY++;
+
+                }
+
+                else
+                {
+                    PositionY = 1;
+                    PositionX = STARTINGPOSITION;
+                }
+            }
+            this.Invalidate();
+            this.Update();
+        }
         public Form1()
         {
             InitializeComponent();
@@ -44,9 +72,17 @@ namespace Tetris
                 for (int j = 0; j < WIDTH; j++)
                 {
                     Brush b = new SolidBrush(GetCol(Board[j, i]));
+                    Brush SquareColour = new SolidBrush(Color.Plum);
                     boardPositionX += SPACEBETWEENSQUARES + SQUARESIZE;
                     square[j, i] = new Rectangle(boardPositionX, boardPositionY, SQUARESIZE, SQUARESIZE);
-                    e.Graphics.FillRectangle(b, square[j, i]);
+                    if (Board[j, i] == 1)
+                    {
+                        e.Graphics.FillRectangle(SquareColour, square[j, i]);
+                    }
+                    else
+                    {
+                        e.Graphics.FillRectangle(b, square[j, i]);
+                    }
                 }
                 boardPositionY += SPACEBETWEENSQUARES + SQUARESIZE;
                 boardPositionX = OFFSETX;
