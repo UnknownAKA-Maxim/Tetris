@@ -61,6 +61,7 @@ namespace Tetris
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            DoubleBuffered = true;
             const int SPACEBETWEENSQUARES = 2;
             const int SQUARESIZE = 8;
             const int OFFSETX = 5, OFFSETY = 5;
