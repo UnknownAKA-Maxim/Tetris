@@ -90,7 +90,7 @@ namespace Tetris
             }
         }
 
-        private static Color GetCol(int colNum)
+        private static Color GetCol(int colNum)//Each colour is represented as different number
         {
             switch (colNum)
             {

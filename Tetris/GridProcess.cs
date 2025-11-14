@@ -9,9 +9,9 @@ namespace Tetris
     internal class GridProcess
     {
         private int[,] grid;
-        private int positionY,positionX;
-        private const int HEIGHT = 22,WIDTH = 10; 
-        public GridProcess(int PositionY,int PositionX, int[,] Grid) 
+        private int positionY, positionX;
+        private const int HEIGHT = 22, WIDTH = 10;
+        public GridProcess(int PositionY, int PositionX, int[,] Grid)
         {
             positionX = PositionX;
             positionY = PositionY;
@@ -19,10 +19,10 @@ namespace Tetris
         }
         public bool LineComplete(int y)//If a row is full
         {
-            int numberOfBlocksFilled=0;
+            int numberOfBlocksFilled = 0;
             for (int i = 0; i > WIDTH; i++)
             {
-                if (grid[i,y] == 1)
+                if (grid[i, y] == 1)
                 {
                     numberOfBlocksFilled++;
                 }
@@ -33,7 +33,7 @@ namespace Tetris
             }
             else return false;
         }
-        public bool InsideArray(int x,int y)//Still inside the grid
+        public bool InsideArray(int x, int y)//Still inside the grid
         {
             if (x >= 0 && x <= WIDTH - 1 && y >= 0 && y <= HEIGHT - 1)
             {
@@ -41,9 +41,9 @@ namespace Tetris
             }
             else return false;
         }
-        public bool IsEmpty(int x,int y)
+        public bool IsEmpty(int x, int y)
         {
-            if (InsideArray(x, y) && grid[x,y] == 0) 
+            if (InsideArray(x, y) && grid[x, y] == 0)
             {
                 return true;
             }
@@ -60,6 +60,26 @@ namespace Tetris
             }
             return true;
         }
-        
+        public int[,] MoveBoardDown(int NumberOfTimes)//checks for blocks floating after a line is completed and pulls down
+        {
+            int[,] tempGrid = new int[WIDTH, HEIGHT];
+            for (int n = 0; n < NumberOfTimes - 1; n++)
+            {
+                for (int i = HEIGHT - 1; i > 0; i--)
+                {
+                    if (!RowIsEmpty(i))
+                    {
+                        for (int j = 0; j < WIDTH - 1; j++)
+                        {
+                            if (grid[j, i] != 0)//If a block is found
+                            {
+                                tempGrid[j, i - 1] = grid[j, i];
+                            }
+                        }
+                    }
+                }
+            }
+            return grid;
+        }
     }
 }
