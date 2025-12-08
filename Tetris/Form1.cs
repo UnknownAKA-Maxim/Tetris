@@ -14,11 +14,8 @@ namespace Tetris
     public partial class Form1 : Form
     {
         const int WIDTH = 11, HEIGHT = 20, STARTINGPOSITION = 5;
-
         int[,] Board = new int[WIDTH, HEIGHT];
-
         int PositionY = 0, PositionX = STARTINGPOSITION;
-
         int movement = 0;
 
         private void timer1_Tick(object sender, EventArgs e)
