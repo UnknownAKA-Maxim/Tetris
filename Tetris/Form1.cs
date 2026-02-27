@@ -15,9 +15,8 @@ namespace Tetris
     {
         const int WIDTH = 10, HEIGHT = 23, STARTINGPOSITION = 5;
         int[,] Board = new int[WIDTH, HEIGHT];
-        int PositionY = 0, PositionX = STARTINGPOSITION;
-        int movement = 0; 
         static Controller PlayerOne = new Controller();
+        static Queue<string> KeyPressesQueue = new Queue<string> ();//stack created to avoid cutting out parts of the program mid way through
         private void timer1_Tick(object sender, EventArgs e)
         {
             ProcessBoard(sender,e);
@@ -26,6 +25,25 @@ namespace Tetris
         {
             Board = PlayerOne.Drawer();
             PlayerOne.SoftDrop();
+            if (KeyPressesQueue.Count != 0)
+            {
+                string currentKeyPress = KeyPressesQueue.Dequeue();
+                switch (currentKeyPress)
+                {
+                    case "U":
+                        PlayerOne.TurnShape();
+                        break;
+                    case "D":
+                        PlayerOne.SoftDrop();
+                        break;
+                    case "L":
+                        PlayerOne.IncrementLeft();
+                        break;
+                    case "R":
+                        PlayerOne.IncrementRight();
+                        break;
+                }
+            }
             this.Invalidate();
             this.Update();
         }
@@ -34,22 +52,22 @@ namespace Tetris
         {
             if (e.KeyCode == Keys.Up)
             {
-                PlayerOne.TurnShape();
+                KeyPressesQueue.Enqueue("U");
             }
 
             if (e.KeyCode == Keys.Down)
             {
-                PlayerOne.SoftDrop();
+                KeyPressesQueue.Enqueue("D");
             }
 
             if (e.KeyCode == Keys.Left)
             {
-                PlayerOne.IncrementLeft();
+                KeyPressesQueue.Enqueue("L");
             }
 
             if (e.KeyCode == Keys.Right)
             {
-                PlayerOne.IncrementRight();
+                KeyPressesQueue.Enqueue("R");
             }
         }
 
@@ -74,8 +92,8 @@ namespace Tetris
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             DoubleBuffered = true;
-            const int SPACEBETWEENSQUARES = 2;
-            const int SQUARESIZE = 8;
+            const int SPACEBETWEENSQUARES = 4;
+            const int SQUARESIZE = 16;
             const int OFFSETX = 5, OFFSETY = 5;
             int boardPositionX = OFFSETX;
             int boardPositionY = OFFSETY;

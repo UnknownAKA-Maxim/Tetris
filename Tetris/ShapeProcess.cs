@@ -158,7 +158,7 @@ namespace Tetris
             }
             int[,] shape = new int[4, 4];
             int currentShapeNumber = CurrentBag.Pop();
-            switch (currentShapeNumber)
+            switch (1)
             {
                 case 1:
                     //I PIECE
@@ -256,6 +256,10 @@ namespace Tetris
                 }
             }
             //Initialise a new shape here
+            for (int i = 0; i < 4; i++)
+            {
+                grid.FillInGaps();
+            }
             CreateNewShape();
         }
         private void InitialiseGridsShapeToZero()

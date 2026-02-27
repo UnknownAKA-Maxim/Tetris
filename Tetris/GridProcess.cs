@@ -82,7 +82,7 @@ namespace Tetris
         {
             for (int i = 0; i < HEIGHT - 1; i++)
             {
-                if (LineIsComplete(i) || LineIsEmpty(i))
+                if (LineIsComplete(i))
                 {
                     ShiftAboveLineDown(i);
                     SetLineToNull(i + 1);
@@ -92,7 +92,6 @@ namespace Tetris
 
         public string DrawGrid()
         {
-            Console.Clear();
             string output = "";
             for (int i = HEIGHT - 1; i >= 0; i--)
             {
