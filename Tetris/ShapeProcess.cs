@@ -16,7 +16,7 @@ namespace Tetris
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
         private int posOffsetX = 5, posOffsetY = 19;
-        private int Colour = 2;
+        private int Colour = 1;
         private Stack<int> currentBag = new Stack<int>();
         public ShapeProcess(GridProcess Grid)
         {

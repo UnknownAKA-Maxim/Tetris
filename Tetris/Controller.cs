@@ -44,9 +44,9 @@ namespace Tetris
         {
 
         }
-        public void Drawer()
+        public int[,] Drawer()
         {
-            gridOne.DrawGrid();
+            return gridOne.Grid;
         }
 
     }

@@ -11,7 +11,7 @@ namespace Tetris
     internal class GridProcess
     {
         private readonly int[,] grid = new int[WIDTH, HEIGHT];
-        public const int HEIGHT = 23, WIDTH = 10;
+        private const int HEIGHT = 23, WIDTH = 10;
         public int[,] Grid
         {
             get { return grid; }
@@ -90,7 +90,7 @@ namespace Tetris
             }
         }
 
-        public void DrawGrid()
+        public string DrawGrid()
         {
             Console.Clear();
             string output = "";
@@ -105,7 +105,7 @@ namespace Tetris
                 }
                 output += "\n";
             }
-            Console.WriteLine(output);
+            return output;
         }
     }
 }
