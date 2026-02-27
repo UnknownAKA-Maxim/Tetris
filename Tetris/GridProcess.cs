@@ -1,28 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tetris
 {
     internal class GridProcess
     {
-        private int[,] grid;
-        private int positionY, positionX;
-        private const int HEIGHT = 22, WIDTH = 10;
-        public GridProcess(int PositionY, int PositionX, int[,] Grid)
+        private readonly int[,] grid = new int[WIDTH, HEIGHT];
+        public const int HEIGHT = 23, WIDTH = 10;
+        public int[,] Grid
         {
-            positionX = PositionX;
-            positionY = PositionY;
-            grid = Grid;
+            get { return grid; }
+
+            set { Grid = value; }
         }
-        public bool LineComplete(int y)//If a row is full
+        public bool LineIsComplete(int y)//If a Line is full
         {
+
             int numberOfBlocksFilled = 0;
-            for (int i = 0; i > WIDTH; i++)
+            for (int i = 0; i < WIDTH; i++)
             {
-                if (grid[i, y] == 1)
+                if (grid[i, y] != 0)
                 {
                     numberOfBlocksFilled++;
                 }
@@ -41,15 +43,16 @@ namespace Tetris
             }
             else return false;
         }
-        public bool IsEmpty(int x, int y)
+        public bool BlockIsClear(int x, int y)
         {
             if (InsideArray(x, y) && grid[x, y] == 0)
             {
                 return true;
+
             }
             return false;
         }
-        public bool RowIsEmpty(int y)
+        public bool LineIsEmpty(int y)//If every block in a line is equal to 0
         {
             for (int i = 0; i < WIDTH; i++)
             {
@@ -60,26 +63,49 @@ namespace Tetris
             }
             return true;
         }
-        public int[,] MoveBoardDown(int NumberOfTimes)//checks for blocks floating after a line is completed and pulls down
+        public void SetLineToNull(int LineCompleted)//Setting the entire line to 0 or null
         {
-            int[,] tempGrid = new int[WIDTH, HEIGHT];
-            for (int n = 0; n < NumberOfTimes - 1; n++)
+            for (int i = 0; i < WIDTH; i++)
             {
-                for (int i = HEIGHT - 1; i > 0; i--)
+                grid[i, LineCompleted] = 0;
+            }
+        }
+        public void ShiftAboveLineDown(int Y)//removes gaps in the board
+        {
+            int yIndex = Y;
+            for (int i = 0; i < WIDTH; i++)
+            {
+                Grid[i, yIndex] = Grid[i, yIndex + 1];
+            }
+        }
+        public void FillInGaps()//When Line completed pulls down lines above
+        {
+            for (int i = 0; i < HEIGHT - 1; i++)
+            {
+                if (LineIsComplete(i) || LineIsEmpty(i))
                 {
-                    if (!RowIsEmpty(i))
-                    {
-                        for (int j = 0; j < WIDTH - 1; j++)
-                        {
-                            if (grid[j, i] != 0)//If a block is found
-                            {
-                                tempGrid[j, i - 1] = grid[j, i];
-                            }
-                        }
-                    }
+                    ShiftAboveLineDown(i);
+                    SetLineToNull(i + 1);
                 }
             }
-            return grid;
+        }
+
+        public void DrawGrid()
+        {
+            Console.Clear();
+            string output = "";
+            for (int i = HEIGHT - 1; i >= 0; i--)
+            {
+                for (int j = WIDTH - 1; j >= 0; j--)
+                {
+                    if (Grid[j, i] == 1)
+                        output += Grid[j, i];
+                    else
+                        output += Grid[j, i];
+                }
+                output += "\n";
+            }
+            Console.WriteLine(output);
         }
     }
 }
