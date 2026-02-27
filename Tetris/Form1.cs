@@ -29,6 +29,42 @@ namespace Tetris
             this.Invalidate();
             this.Update();
         }
+
+        private void KeyDownEvent(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Up)
+            {
+                PlayerOne.TurnShape();
+            }
+
+            if (e.KeyCode == Keys.Down)
+            {
+                PlayerOne.SoftDrop();
+            }
+
+            if (e.KeyCode == Keys.Left)
+            {
+                PlayerOne.IncrementLeft();
+            }
+
+            if (e.KeyCode == Keys.Right)
+            {
+                PlayerOne.IncrementRight();
+            }
+        }
+
+        private void KeyUpEvent(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                case Keys.Up:
+                case Keys.Left:
+                case Keys.Right:
+                    break;
+            }
+        }
+
         public Form1()
         {
             PlayerOne.Run();
