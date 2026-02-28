@@ -56,7 +56,7 @@ namespace Tetris
         {
             for (int i = 0; i < WIDTH; i++)
             {
-                if (grid[i, y] == 1)
+                if (grid[i, y] != 0)
                 {
                     return false;
                 }
@@ -70,7 +70,7 @@ namespace Tetris
                 grid[i, LineCompleted] = 0;
             }
         }
-        public void ShiftAboveLineDown(int Y)//removes gaps in the board
+        private void ShiftAboveLineDown(int Y)//Moves above line down
         {
             int yIndex = Y;
             for (int i = 0; i < WIDTH; i++)
@@ -78,16 +78,27 @@ namespace Tetris
                 Grid[i, yIndex] = Grid[i, yIndex + 1];
             }
         }
+        private void ShiftLinesUp(int AmountShiftedupBy)
+        {
+            for (int i = 0;i <= 4;i++) 
+            {
+                
+            }
+        }
         public void FillInGaps()//When Line completed pulls down lines above
         {
-            for (int i = 0; i < HEIGHT - 1; i++)
+            for (int i = HEIGHT-2; i >= 0; i--)
             {
-                if (LineIsComplete(i))
+                if (LineIsComplete(i) || LineIsEmpty(i))
                 {
                     ShiftAboveLineDown(i);
                     SetLineToNull(i + 1);
                 }
             }
+        }
+        public void AddGarbage(int numberOfGarbageSent)
+        {
+            ShiftLinesUp(numberOfGarbageSent);
         }
 
         public string DrawGrid()

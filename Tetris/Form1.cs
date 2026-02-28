@@ -25,49 +25,31 @@ namespace Tetris
         {
             Board = PlayerOne.Drawer();
             PlayerOne.SoftDrop();
-            if (KeyPressesQueue.Count != 0)
-            {
-                string currentKeyPress = KeyPressesQueue.Dequeue();
-                switch (currentKeyPress)
-                {
-                    case "U":
-                        PlayerOne.TurnShape();
-                        break;
-                    case "D":
-                        PlayerOne.SoftDrop();
-                        break;
-                    case "L":
-                        PlayerOne.IncrementLeft();
-                        break;
-                    case "R":
-                        PlayerOne.IncrementRight();
-                        break;
-                }
-            }
             this.Invalidate();
             this.Update();
         }
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
         {
+            
             if (e.KeyCode == Keys.Up)
             {
-                KeyPressesQueue.Enqueue("U");
+                PlayerOne.TurnShape();
             }
 
             if (e.KeyCode == Keys.Down)
             {
-                KeyPressesQueue.Enqueue("D");
+                PlayerOne.SoftDrop();
             }
 
             if (e.KeyCode == Keys.Left)
             {
-                KeyPressesQueue.Enqueue("L");
+                PlayerOne.IncrementLeft();
             }
 
             if (e.KeyCode == Keys.Right)
             {
-                KeyPressesQueue.Enqueue("R");
+                PlayerOne.IncrementRight();
             }
         }
 
@@ -92,8 +74,8 @@ namespace Tetris
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             DoubleBuffered = true;
-            const int SPACEBETWEENSQUARES = 4;
-            const int SQUARESIZE = 16;
+            const int SPACEBETWEENSQUARES = 8;
+            const int SQUARESIZE = 32;
             const int OFFSETX = 5, OFFSETY = 5;
             int boardPositionX = OFFSETX;
             int boardPositionY = OFFSETY;
@@ -124,22 +106,22 @@ namespace Tetris
         {
             switch (colNum)
             {
-                case 1: return Color.Black;
-                case 2: return Color.Red;
-                case 3: return Color.Green;
-                case 4: return Color.Blue;
-                case 5: return Color.Yellow;
+                case 1: return Color.FromArgb(255, 145, 180);
+                case 2: return Color.FromArgb(255, 217, 118);
+                case 3: return Color.FromArgb(150, 144, 255);
+                case 4: return Color.LightBlue;
+                case 5: return Color.FromArgb(150, 211, 236);
                 case 6: return Color.Chartreuse;
                 case 7: return Color.White;
-                case 8: return Color.Black;
-                case 9: return Color.Red;
-                case 10: return Color.Green;
-                case 11: return Color.Blue;
-                case 12: return Color.Yellow;
+                case 8: return Color.FromArgb(255, 145, 180);
+                case 9: return Color.FromArgb(255, 217, 118);
+                case 10: return Color.FromArgb(150, 144, 255);
+                case 11: return Color.LightBlue;
+                case 12: return Color.FromArgb(150, 211, 236);
                 case 13: return Color.Chartreuse;
                 case 14: return Color.White;
                 default:
-                    return Color.FromArgb(233, 116, 81);
+                    return Color.Black;
             }
         }
     }

@@ -15,14 +15,19 @@ namespace Tetris
         private int[,] currentShape = new int[4, 4];
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
-        private int posOffsetX = 5, posOffsetY = 19;
-        private int Colour = 1;
+        private int posOffsetX = 3, posOffsetY = 19;
+        private int colour = 1;
         private Stack<int> currentBag = new Stack<int>();
         public ShapeProcess(GridProcess Grid)
         {
             currentShape = CurrentShape;
             grid = Grid;
             MapShapeToArray();
+        }
+        public int Colour
+        {
+            get { return colour; }
+            set { colour = value; }
         }
         public int PosOffsetX
         {
@@ -50,7 +55,7 @@ namespace Tetris
         {
             foreach (int x in array)
             {
-                if (x == Colour)
+                if (x == colour)
                     return false;
             }
             return true;
@@ -111,9 +116,9 @@ namespace Tetris
                     }
                     if (grid.InsideArray(PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]) && (grid.InsideArray(PosOffsetX + pWidth, PosOffsetY + pHeight)))//if inside the grid
                     {
-                        if (grid.Grid[PosOffsetX + pWidth, PosOffsetY + pHeight] == Colour)//if 
+                        if (grid.Grid[PosOffsetX + pWidth, PosOffsetY + pHeight] == colour)//if 
                         {
-                            if (grid.Grid[PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]] != 0 && grid.Grid[PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]] != Colour)
+                            if (grid.Grid[PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]] != 0 && grid.Grid[PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]] != colour)
                             {
                                 overLaps = true;
                             }
@@ -145,7 +150,7 @@ namespace Tetris
                 CurrentShape = placeHolderVAL;
                 if (currentRotation >= 3) { currentRotation = 0; }
                 else { currentRotation += 1; }
-                InitialiseGridsShapeToZero();
+                InitialiseGridsShapeToZero(0);
             }
             grid = MapShapeToArray();
 
@@ -158,35 +163,35 @@ namespace Tetris
             }
             int[,] shape = new int[4, 4];
             int currentShapeNumber = CurrentBag.Pop();
-            switch (1)
+            switch (currentShapeNumber)
             {
                 case 1:
                     //I PIECE
-                    shape[2, 0] = Colour; shape[2, 1] = Colour; shape[2, 2] = Colour; shape[2, 3] = Colour;
+                    shape[2, 0] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
                     break;
                 case 2:
                     //O PIECE
-                    shape[1, 1] = Colour; shape[2, 1] = Colour; shape[1, 2] = Colour; shape[2, 2] = Colour;
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[2, 2] = colour;
                     break;
                 case 3:
                     //S PIECE
-                    shape[1, 0] = Colour; shape[1, 1] = Colour; shape[2, 1] = Colour; shape[2, 2] = Colour;
+                    shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour;
                     break;
                 case 4:
                     //Z PIECE
-                    shape[2, 0] = Colour; shape[1, 1] = Colour; shape[2, 1] = Colour; shape[1, 2] = Colour;
+                    shape[2, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
                     break;
                 case 5:
                     //L PIECE
-                    shape[1, 1] = Colour; shape[2, 1] = Colour; shape[2, 2] = Colour; shape[2, 3] = Colour;
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
                     break;
                 case 6:
                     //J PIECE
-                    shape[1, 1] = Colour; shape[2, 1] = Colour; shape[1, 2] = Colour; shape[1, 3] = Colour;
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[1, 3] = colour;
                     break;
                 case 7:
                     //T PIECE
-                    shape[1, 0] = Colour; shape[1, 1] = Colour; shape[2, 1] = Colour; shape[1, 2] = Colour;
+                    shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
                     break;
             }
             return shape;
@@ -212,7 +217,7 @@ namespace Tetris
                 {
                     if (grid.InsideArray(j + posOffsetX, i + posOffsetY - 1))
                     {
-                        if ((grid.Grid[j + posOffsetX, i + posOffsetY] == Colour) && ((grid.Grid[j + PosOffsetX, i + posOffsetY - 1] == 0) || (grid.Grid[j + PosOffsetX, i + posOffsetY - 1] == Colour)))//Drop is valid if each block is above a zero or itself
+                        if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX, i + posOffsetY - 1] == 0) || (grid.Grid[j + PosOffsetX, i + posOffsetY - 1] == colour)))//Drop is valid if each block is above a zero or itself
                         {
                             numb++;
                         }
@@ -229,7 +234,7 @@ namespace Tetris
         {
             if (ValidDrop())
             {
-                InitialiseGridsShapeToZero();
+                InitialiseGridsShapeToZero(0);
                 PosOffsetY--;
                 MapShapeToArray();
             }
@@ -248,7 +253,7 @@ namespace Tetris
                 {
                     if ((PosOffsetY + i) >= 0 && (PosOffsetX + j) >= 0 && (PosOffsetX + j) <= 9)
                     {
-                        if (grid.Grid[PosOffsetX + j, PosOffsetY + i] == Colour)
+                        if (grid.Grid[PosOffsetX + j, PosOffsetY + i] == colour)
                         {
                             grid.Grid[PosOffsetX + j, PosOffsetY + i] += 7;//This is for placed values just incase other parts of the program are affected
                         }
@@ -256,23 +261,23 @@ namespace Tetris
                 }
             }
             //Initialise a new shape here
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i <= 12; i++)
             {
                 grid.FillInGaps();
             }
             CreateNewShape();
         }
-        private void InitialiseGridsShapeToZero()
+        private void InitialiseGridsShapeToZero(int HorizontalMovement)
         {
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    if ((PosOffsetY + i) >= 0 && (PosOffsetX + j) >= 0 && (PosOffsetX + j) <= 9)
+                    if ((PosOffsetY + i) >= 0 && (PosOffsetX + j + HorizontalMovement) >= 0 && (PosOffsetX + j + HorizontalMovement) <= 9)
                     {
-                        if (grid.Grid[PosOffsetX + j, PosOffsetY + i] == Colour)
+                        if (grid.Grid[PosOffsetX + j + HorizontalMovement, PosOffsetY + i] == colour)
                         {
-                            grid.Grid[PosOffsetX + j, PosOffsetY + i] = 0;
+                            grid.Grid[PosOffsetX + j+ HorizontalMovement, PosOffsetY + i] = 0;
                         }
                     }
                 }
@@ -280,11 +285,14 @@ namespace Tetris
         }
         private void CreateNewShape()
         {
-            PosOffsetX = 5;
+            Random rng = new Random();
+            PosOffsetX = 3;
             PosOffsetY = 19;
             CurrentRotation = 0;
+            Colour = rng.Next(1, 8);
             CurrentShape = ShapeChoose();
             MapShapeToArray();
+            
         }
         private GridProcess MapShapeToArray()
         {
@@ -292,7 +300,7 @@ namespace Tetris
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    if (CurrentShape[j, i] == Colour)
+                    if (CurrentShape[j, i] == colour)
                     {
                         grid.Grid[PosOffsetX + j, PosOffsetY + i] = CurrentShape[j, i];
                     }
@@ -311,7 +319,7 @@ namespace Tetris
                     {
                         if (grid.InsideArray(j + posOffsetX - 1, i + posOffsetY) && grid.InsideArray(j + posOffsetX, i + posOffsetY))
                         {
-                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == Colour) && ((grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == Colour)))//Drop is valid if each block is above a zero or itself
+                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == colour)))//Drop is valid if each block is above a zero or itself
                             {
                                 count++;
                             }
@@ -329,7 +337,7 @@ namespace Tetris
                     {
                         if (grid.InsideArray(j + posOffsetX + 1, i + posOffsetY) && grid.InsideArray(j + posOffsetX, i + posOffsetY))
                         {
-                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == Colour) && ((grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == Colour)))//Drop is valid if each block is above a zero or itself
+                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == colour)))//Drop is valid if each block is above a zero or itself
                             {
                                 count++;
                             }
@@ -346,17 +354,21 @@ namespace Tetris
             if (direction == "L" && ValidHorizontalMovement(direction))
             {
                 PosOffsetX++;
+                InitialiseGridsShapeToZero(-1);
             }
             if (direction == "R" && ValidHorizontalMovement(direction))
             {
                 PosOffsetX--;
+                InitialiseGridsShapeToZero(1);
             }
-            InitialiseGridsShapeToZero();
             MapShapeToArray();
         }
         public void HardDrop()
         {
+            for(int i = 0; i < 23-PosOffsetY; i++)
+            {
 
+            }
         }
     }
 }
