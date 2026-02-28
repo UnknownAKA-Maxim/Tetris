@@ -18,6 +18,10 @@ namespace Tetris
         private int posOffsetX = 3, posOffsetY = 19;
         private int colour = 1;
         private Stack<int> currentBag = new Stack<int>();
+        private int currentShapeNumber = 0//the Shapes assigned number in shapeChooser
+            ,HeldValue;//The Shapes number assigned to the held value
+        private bool HoldIsPossible = true, ShapeIsHeld = false;
+
         public ShapeProcess(GridProcess Grid)
         {
             currentShape = CurrentShape;
@@ -162,7 +166,7 @@ namespace Tetris
                 NewBag();
             }
             int[,] shape = new int[4, 4];
-            int currentShapeNumber = CurrentBag.Pop();
+            currentShapeNumber = CurrentBag.Pop();
             switch (currentShapeNumber)
             {
                 case 1:
@@ -265,6 +269,7 @@ namespace Tetris
             {
                 grid.FillInGaps();
             }
+            HoldIsPossible = true;
             CreateNewShape();
         }
         private void InitialiseGridsShapeToZero(int HorizontalMovement)
@@ -292,7 +297,7 @@ namespace Tetris
             Colour = rng.Next(1, 8);
             CurrentShape = ShapeChoose();
             MapShapeToArray();
-            
+
         }
         private GridProcess MapShapeToArray()
         {
@@ -365,9 +370,30 @@ namespace Tetris
         }
         public void HardDrop()
         {
-            for(int i = 0; i < 23-PosOffsetY; i++)
+            do
             {
-
+                Drop();
+            } while (ValidDrop()==true);
+        }
+        public void Hold()
+        {
+            if (HoldIsPossible)
+            {
+                if (ShapeIsHeld)
+                {
+                    InitialiseGridsShapeToZero(0);
+                    currentBag.Push(HeldValue);
+                    CreateNewShape();
+                    ShapeIsHeld = false;
+                }
+                else
+                {
+                    HeldValue = currentShapeNumber;
+                    InitialiseGridsShapeToZero(0);
+                    CreateNewShape();
+                    ShapeIsHeld = true;
+                }
+                HoldIsPossible = false;
             }
         }
     }

@@ -16,15 +16,14 @@ namespace Tetris
         const int WIDTH = 10, HEIGHT = 23, STARTINGPOSITION = 5;
         int[,] Board = new int[WIDTH, HEIGHT];
         static Controller PlayerOne = new Controller();
-        static Queue<string> KeyPressesQueue = new Queue<string> ();//stack created to avoid cutting out parts of the program mid way through
         private void timer1_Tick(object sender, EventArgs e)
         {
+            PlayerOne.SoftDrop();
             ProcessBoard(sender,e);
         }
         private void ProcessBoard(object sender, EventArgs e)
         {
             Board = PlayerOne.Drawer();
-            PlayerOne.SoftDrop();
             this.Invalidate();
             this.Update();
         }
@@ -51,6 +50,16 @@ namespace Tetris
             {
                 PlayerOne.IncrementRight();
             }
+            if(e.KeyCode == Keys.Space) 
+            {
+                PlayerOne.HardDrop();
+            }
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                PlayerOne.Hold();
+            }
+            ProcessBoard(sender,e);
+
         }
 
         private void KeyUpEvent(object sender, KeyEventArgs e)

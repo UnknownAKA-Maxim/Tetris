@@ -38,16 +38,15 @@ namespace Tetris
         }
         public void HardDrop()
         {
-
+            shapeOne.HardDrop();
         }
         public void Hold()
         {
-
+           shapeOne.Hold();
         }
         public int[,] Drawer()
         {
             return gridOne.Grid;
         }
-
     }
 }
