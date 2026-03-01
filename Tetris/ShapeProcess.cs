@@ -22,7 +22,6 @@ namespace Tetris
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
 
-
         public ShapeProcess(GridProcess Grid)
         {
             currentShape = CurrentShape;

@@ -14,20 +14,27 @@ namespace Tetris
     public partial class Form1 : Form
     {
         const int WIDTH = 10, HEIGHT = 23;
-        int[,] Board2 = new int[WIDTH, HEIGHT];
-        int[,] Board1 = new int[WIDTH, HEIGHT];
-        int[,] HeldValue1 = new int[4, 4];
-        int[,] HeldValue2 = new int[4, 4];
+        private int[,] Board2 = new int[WIDTH, HEIGHT];
+        private int[,] Board1 = new int[WIDTH, HEIGHT];
+        private int[,] HeldValue1 = new int[4, 4];
+        private int[,] HeldValue2 = new int[4, 4];
         static Controller PlayerOne = new Controller();
         static Controller PlayerTwo = new Controller();
+        private int GarbageSent1 = 0,GarbageSent2 = 0;
+        private bool ButtonHeld = false;
         private void Timer1_Tick(object sender, EventArgs e)
         {
+            GarbageSent2 = PlayerOne.NumberOfGarbageSent();
+            GarbageSent1 = PlayerTwo.NumberOfGarbageSent();
+            PlayerOne.AddGarbageToBoard(GarbageSent1);
+            PlayerTwo.AddGarbageToBoard(GarbageSent2);
             PlayerOne.SoftDrop();
             PlayerTwo.SoftDrop();
             ProcessBoard(sender,e);
         }
         private void ProcessBoard(object sender, EventArgs e)
         {
+
             Board1 = PlayerOne.GridDrawer();
             HeldValue1 = PlayerOne.DrawHeldShape();
             Board2 = PlayerTwo.GridDrawer();
@@ -38,6 +45,7 @@ namespace Tetris
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
         {
+            
             
             if (e.KeyCode == Keys.Up)
             {
@@ -60,12 +68,18 @@ namespace Tetris
             }
             if(e.KeyCode == Keys.Space) 
             {
-                PlayerOne.HardDrop();
+                if (!ButtonHeld)
+                {
+                    PlayerOne.HardDrop();
+                    ButtonHeld = true;
+                }
             }
             if (e.KeyCode == Keys.ShiftKey)
             {
-                PlayerOne.Hold();                
+                PlayerOne.Hold();
             }
+            
+
             ProcessBoard(sender,e);
         }
 
@@ -76,7 +90,10 @@ namespace Tetris
                 case Keys.Down:
                 case Keys.Up:
                 case Keys.Left:
-                case Keys.Right:
+                case Keys.Right:                    
+                    break;
+                case Keys.Space:
+                    ButtonHeld = false;
                     break;
             }
         }
