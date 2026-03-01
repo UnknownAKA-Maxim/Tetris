@@ -13,17 +13,25 @@ namespace Tetris
 {
     public partial class Form1 : Form
     {
-        const int WIDTH = 10, HEIGHT = 23, STARTINGPOSITION = 5;
-        int[,] Board = new int[WIDTH, HEIGHT];
+        const int WIDTH = 10, HEIGHT = 23;
+        int[,] Board2 = new int[WIDTH, HEIGHT];
+        int[,] Board1 = new int[WIDTH, HEIGHT];
+        int[,] HeldValue1 = new int[4, 4];
+        int[,] HeldValue2 = new int[4, 4];
         static Controller PlayerOne = new Controller();
-        private void timer1_Tick(object sender, EventArgs e)
+        static Controller PlayerTwo = new Controller();
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             PlayerOne.SoftDrop();
+            PlayerTwo.SoftDrop();
             ProcessBoard(sender,e);
         }
         private void ProcessBoard(object sender, EventArgs e)
         {
-            Board = PlayerOne.Drawer();
+            Board1 = PlayerOne.GridDrawer();
+            HeldValue1 = PlayerOne.DrawHeldShape();
+            Board2 = PlayerTwo.GridDrawer();
+            HeldValue2 = PlayerTwo.DrawHeldShape();
             this.Invalidate();
             this.Update();
         }
@@ -56,10 +64,9 @@ namespace Tetris
             }
             if (e.KeyCode == Keys.ShiftKey)
             {
-                PlayerOne.Hold();
+                PlayerOne.Hold();                
             }
             ProcessBoard(sender,e);
-
         }
 
         private void KeyUpEvent(object sender, KeyEventArgs e)
@@ -77,6 +84,7 @@ namespace Tetris
         public Form1()
         {
             PlayerOne.Run();
+            PlayerTwo.Run();
             InitializeComponent();
         }//
 
@@ -85,29 +93,62 @@ namespace Tetris
             DoubleBuffered = true;
             const int SPACEBETWEENSQUARES = 8;
             const int SQUARESIZE = 32;
-            const int OFFSETX = 5, OFFSETY = 5;
-            int boardPositionX = OFFSETX;
-            int boardPositionY = OFFSETY;
+            const int BOARDOFFSET1X = 128, BOARDOFFSET1Y = 5,HELD1OFFSETX = -32, HELD1OFFSETY = 5;
+            const int BOARDOFFSET2X = 720   , BOARDOFFSET2Y = 5, HELD2OFFSETX = 560, HELD2OFFSETY = 5;
+            //BoardOne Stuff
+            int board1PositionX = BOARDOFFSET1X;
+            int board1PositionY = BOARDOFFSET1Y;
+            int held1PositionX = HELD1OFFSETX;
+            int held1PositionY = HELD1OFFSETY;
+            //BoardTwo Stuff
+            int board2PositionX = BOARDOFFSET2X;
+            int board2PositionY = BOARDOFFSET2Y;
+            int held2PositionX = HELD2OFFSETX;
+            int held2PositionY = HELD2OFFSETY;
             Rectangle[,] square = new Rectangle[WIDTH, HEIGHT];
+            Rectangle[,] heldSquare = new Rectangle[4, 4];
             for (int i = HEIGHT-1; i >= 0; i--)
             {
                 for (int j = WIDTH-1; j >= 0; j--)
                 {
-                    Brush b = new SolidBrush(GetCol(Board[j, i]));
-                    Brush SquareColour = new SolidBrush(GetCol(Board[j, i]));
-                    boardPositionX += SPACEBETWEENSQUARES + SQUARESIZE;
-                    square[j, i] = new Rectangle(boardPositionX, boardPositionY, SQUARESIZE, SQUARESIZE);
-                    if (Board[j, i] == 1)
-                    {
-                        e.Graphics.FillRectangle(SquareColour, square[j, i]);
-                    }
-                    else
-                    {
-                        e.Graphics.FillRectangle(b, square[j, i]);
-                    }
+                    //BoardOne
+                    Brush b = new SolidBrush(GetCol(Board1[j, i]));
+                    board1PositionX += SPACEBETWEENSQUARES + SQUARESIZE;
+                    square[j, i] = new Rectangle(board1PositionX, board1PositionY, SQUARESIZE, SQUARESIZE);
+                    e.Graphics.FillRectangle(b, square[j, i]);
+
+                    //BoardTwo
+                    Brush c = new SolidBrush(GetCol(Board2[j, i]));
+                    board2PositionX += SPACEBETWEENSQUARES + SQUARESIZE;
+                    square[j, i] = new Rectangle(board2PositionX, board2PositionY, SQUARESIZE, SQUARESIZE);
+                    e.Graphics.FillRectangle(c, square[j, i]);
                 }
-                boardPositionY += SPACEBETWEENSQUARES + SQUARESIZE;
-                boardPositionX = OFFSETX;
+                //BoardOne
+                board1PositionY += SPACEBETWEENSQUARES + SQUARESIZE;
+                board1PositionX = BOARDOFFSET1X;
+                //BoardTwo
+                board2PositionY += SPACEBETWEENSQUARES + SQUARESIZE;
+                board2PositionX = BOARDOFFSET2X;
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    //
+                    Brush b = new SolidBrush(GetCol(HeldValue1[j,i]));
+                    held1PositionX += SQUARESIZE+SPACEBETWEENSQUARES;
+                    heldSquare[j, i] = new Rectangle(held1PositionX, held1PositionY, SQUARESIZE, SQUARESIZE);
+                    e.Graphics.FillRectangle(b, heldSquare[j,i]);
+                    //
+                    Brush c = new SolidBrush(GetCol(HeldValue2[j, i]));
+                    held2PositionX += SQUARESIZE + SPACEBETWEENSQUARES;
+                    heldSquare[j, i] = new Rectangle(held2PositionX, held2PositionY, SQUARESIZE, SQUARESIZE);
+                    e.Graphics.FillRectangle(c, heldSquare[j, i]);
+                }
+                held1PositionY += SPACEBETWEENSQUARES + SQUARESIZE;
+                held1PositionX = HELD1OFFSETX;
+                held2PositionY += SPACEBETWEENSQUARES + SQUARESIZE;
+                held2PositionX = HELD2OFFSETX;
             }
         }
 

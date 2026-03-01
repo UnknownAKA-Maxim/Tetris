@@ -16,11 +16,12 @@ namespace Tetris
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
         private int posOffsetX = 3, posOffsetY = 19;
-        private int colour = 1;
+        private int colour = 1,HeldColour = 1;
         private Stack<int> currentBag = new Stack<int>();
-        private int currentShapeNumber = 0//the Shapes assigned number in shapeChooser
-            ,HeldValue;//The Shapes number assigned to the held value
+        private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
+        private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
+
 
         public ShapeProcess(GridProcess Grid)
         {
@@ -171,46 +172,84 @@ namespace Tetris
             {
                 case 1:
                     //I PIECE
+                    Colour = 1;
                     shape[2, 0] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
                     break;
                 case 2:
                     //O PIECE
+                    Colour = 2;
                     shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[2, 2] = colour;
                     break;
                 case 3:
                     //S PIECE
+                    Colour = 3;
                     shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour;
                     break;
                 case 4:
                     //Z PIECE
+                    Colour = 4;
                     shape[2, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
                     break;
                 case 5:
                     //L PIECE
+                    Colour = 5;
                     shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
                     break;
                 case 6:
                     //J PIECE
+                    Colour = 6;
                     shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[1, 3] = colour;
                     break;
                 case 7:
                     //T PIECE
+                    Colour = 7;
                     shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
                     break;
             }
             return shape;
         }
-        public void PrintShape()
+        public int[,] PrintHeldShape()
         {
-            for (int i = 0; i < 4; i++)
+            int[,] HeldshapeMatch = new int[4, 4];
+            switch (HeldValue)
             {
-                for (int j = 0; j < 4; j++)
-                {
-                    Console.Write(CurrentShape[j, i]);
-                }
-                Console.WriteLine();
+                case 1:
+                    //I PIECE
+                    HeldColour = 1;
+                    HeldshapeMatch[2, 0] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[2, 2] = HeldColour; HeldshapeMatch[2, 3] = HeldColour;
+                    break;
+                case 2:
+                    //O PIECE
+                    HeldColour = 2;
+                    HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[1, 2] = HeldColour; HeldshapeMatch[2, 2] = HeldColour;
+                    break;
+                case 3:
+                    //S PIECE
+                    HeldColour = 3;
+                    HeldshapeMatch[1, 0] = HeldColour; HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[2, 2] = HeldColour;
+                    break;
+                case 4:
+                    //Z PIECE
+                    HeldColour = 4;
+                    HeldshapeMatch[2, 0] = HeldColour; HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[1, 2] = HeldColour;
+                    break;
+                case 5:
+                    //L PIECE
+                    HeldColour = 5;
+                    HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[2, 2] = HeldColour; HeldshapeMatch[2, 3] = HeldColour;
+                    break;
+                case 6:
+                    //J PIECE
+                    HeldColour = 6;
+                    HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[1, 2] = HeldColour; HeldshapeMatch[1, 3] = HeldColour;
+                    break;
+                case 7:
+                    //T PIECE
+                    HeldColour = 7;
+                    HeldshapeMatch[1, 0] = HeldColour; HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[1, 2] = HeldColour;
+                    break;
             }
-            Console.WriteLine();
+            return HeldshapeMatch;
         }
         private bool ValidDrop()//if the drop is valid or not
         {
@@ -294,7 +333,6 @@ namespace Tetris
             PosOffsetX = 3;
             PosOffsetY = 19;
             CurrentRotation = 0;
-            Colour = rng.Next(1, 8);
             CurrentShape = ShapeChoose();
             MapShapeToArray();
 
@@ -379,14 +417,14 @@ namespace Tetris
         {
             if (HoldIsPossible)
             {
-                if (ShapeIsHeld)
+                if (ShapeIsHeld)//Pushing current value held onto the bag stack
                 {
                     InitialiseGridsShapeToZero(0);
                     currentBag.Push(HeldValue);
+                    HeldValue = currentShapeNumber;
                     CreateNewShape();
-                    ShapeIsHeld = false;
                 }
-                else
+                else//Pushing current Shape onto held value
                 {
                     HeldValue = currentShapeNumber;
                     InitialiseGridsShapeToZero(0);
@@ -394,7 +432,7 @@ namespace Tetris
                     ShapeIsHeld = true;
                 }
                 HoldIsPossible = false;
-            }
+            }            
         }
     }
 }

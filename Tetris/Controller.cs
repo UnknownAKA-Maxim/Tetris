@@ -9,44 +9,48 @@ namespace Tetris
 {
     internal class Controller
     {
-        private GridProcess gridOne;
-        private ShapeProcess shapeOne;
+        private GridProcess grid;
+        private ShapeProcess shape;
         public Controller()
         {
 
         }
         public void Run()
         {
-            gridOne = new GridProcess();
-            shapeOne = new ShapeProcess(gridOne);
+            grid = new GridProcess();
+            shape = new ShapeProcess(grid);
         }
         public void IncrementLeft()
         {
-            shapeOne.HorizontalMovement("L");
+            shape.HorizontalMovement("L");
         }
         public void IncrementRight()
         {
-            shapeOne.HorizontalMovement("R");
+            shape.HorizontalMovement("R");
         }
         public void TurnShape()
         {
-            shapeOne.TurnShape();
+            shape.TurnShape();
         }
         public void SoftDrop()
         {
-            shapeOne.Drop();
+            shape.Drop();
         }
         public void HardDrop()
         {
-            shapeOne.HardDrop();
+            shape.HardDrop();
         }
         public void Hold()
         {
-           shapeOne.Hold();
+           shape.Hold();
         }
-        public int[,] Drawer()
+        public int[,] GridDrawer()
         {
-            return gridOne.Grid;
+            return grid.Grid;
+        }
+        public int[,] DrawHeldShape() 
+        {
+            return shape.PrintHeldShape();
         }
     }
 }
