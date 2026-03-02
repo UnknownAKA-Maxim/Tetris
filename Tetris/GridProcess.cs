@@ -12,17 +12,11 @@ namespace Tetris
     {
         private readonly int[,] grid = new int[WIDTH, HEIGHT];
         private const int HEIGHT = 23, WIDTH = 10;
-        private int numberOfBlocksSent = 0;
         public int[,] Grid
         {
             get { return grid; }
 
             set { Grid = value; }
-        }
-        public int NumberOfBlocksSent
-        {
-            get { return numberOfBlocksSent; }
-            set { if (value >= 0 && value <= 4) numberOfBlocksSent = value; else if (value > 4) numberOfBlocksSent = 4; else numberOfBlocksSent = 0; }//making sure value wont cant be less than 0 or greater that 4(error checking)
         }
         public bool LineIsComplete(int y)//If a Line is full
         {
@@ -37,7 +31,6 @@ namespace Tetris
             }
             if (numberOfBlocksFilled == 10)
             {
-                numberOfBlocksFilled++;
                 return true;
             }
             else return false;
@@ -85,17 +78,11 @@ namespace Tetris
                 Grid[i, yIndex] = Grid[i, yIndex + 1];
             }
         }
-        private void ShiftLineUp()
+        private void ShiftLinesUp(int AmountShiftedupBy)
         {
-            for (int i = HEIGHT-1; i > 0; i--)
+            for (int i = 0;i <= 4;i++) 
             {
-                for (int j = 0; j < WIDTH; j++)
-                {
-                    if ((Grid[j, i] > 7 || Grid[j, i] == 0)&& (Grid[j,i-1]>7 || Grid[j, i - 1] == 0))
-                    {
-                        Grid[j, i] = Grid[j, i - 1];
-                    }
-                }
+                
             }
         }
         public void FillInGaps()//When Line completed pulls down lines above
@@ -109,30 +96,11 @@ namespace Tetris
                 }
             }
         }
-        private void AddALineToTheBoard(int yIndex)
-        {
-            for(int i = 0;i < WIDTH; i++)
-            {
-                Grid[i,yIndex] = 9;
-            }
-        }
         public void AddGarbage(int numberOfGarbageSent)
         {
-            Random rngHoleInGarbage = new Random();
-            if (numberOfBlocksSent > 0)
-            {
-                try
-                {
-                    ShiftLineUp();
-                    for (int i = 0; i < numberOfGarbageSent; i++)
-                    {
-                        AddALineToTheBoard(i);
-                        Grid[rngHoleInGarbage.Next(0, 10), i] = 0;
-                    }
-                }
-                catch { }
-            }
+            ShiftLinesUp(numberOfGarbageSent);
         }
+
         public string DrawGrid()
         {
             string output = "";
