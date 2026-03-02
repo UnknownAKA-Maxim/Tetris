@@ -59,7 +59,14 @@ namespace Tetris
         public int NumberOfGarbageSent()
         {
             int placeHolderVal = grid.NumberOfBlocksSent;
-            grid.NumberOfBlocksSent = 0;
+            if (placeHolderVal > 0) 
+            { 
+                grid.NumberOfBlocksSent = 0;
+                if (placeHolderVal == 1) placeHolderVal = 0 ;
+                if (placeHolderVal == 2) placeHolderVal = 1;
+                if (placeHolderVal == 3) placeHolderVal = 2;
+                if (placeHolderVal == 4) placeHolderVal = 4;//
+            }
             return placeHolderVal;
         }
     }

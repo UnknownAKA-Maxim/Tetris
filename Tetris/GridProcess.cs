@@ -22,7 +22,8 @@ namespace Tetris
         public int NumberOfBlocksSent
         {
             get { return numberOfBlocksSent; }
-            set { if (value >= 0 && value <= 4) numberOfBlocksSent = value; else if (value > 4) numberOfBlocksSent = 4; else numberOfBlocksSent = 0; }//making sure value wont cant be less than 0 or greater that 4(error checking)
+            set { numberOfBlocksSent = value; }
+            //set { if (value >= 0 && value <= 4) numberOfBlocksSent = value; else if (value > 4) numberOfBlocksSent = 4; else numberOfBlocksSent = 0; }//making sure value wont cant be less than 0 or greater that 4(error checking)
         }
         public bool LineIsComplete(int y)//If a Line is full
         {
@@ -37,7 +38,8 @@ namespace Tetris
             }
             if (numberOfBlocksFilled == 10)
             {
-                numberOfBlocksFilled++;
+                NumberOfBlocksSent++;
+
                 return true;
             }
             else return false;
@@ -119,7 +121,7 @@ namespace Tetris
         public void AddGarbage(int numberOfGarbageSent)
         {
             Random rngHoleInGarbage = new Random();
-            if (numberOfBlocksSent > 0)
+            if (numberOfGarbageSent > 0)
             {
                 try
                 {

@@ -179,16 +179,16 @@ namespace Tetris
                 case 4: return Color.LightBlue;
                 case 5: return Color.FromArgb(150, 211, 236);
                 case 6: return Color.Chartreuse;
-                case 7: return Color.White;
+                case 7: return Color.DarkOrchid;
                 case 8: return Color.FromArgb(255, 145, 180);
                 case 9: return Color.FromArgb(255, 217, 118);
                 case 10: return Color.FromArgb(150, 144, 255);
                 case 11: return Color.LightBlue;
                 case 12: return Color.FromArgb(150, 211, 236);
                 case 13: return Color.Chartreuse;
-                case 14: return Color.White;
+                case 14: return Color.DarkOrchid;
                 default:
-                    return Color.Black;
+                    return Color.White;
             }
         }
     }
