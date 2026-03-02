@@ -91,8 +91,8 @@ namespace Tetris
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             DoubleBuffered = true;
-            const int SPACEBETWEENSQUARES = 8;
-            const int SQUARESIZE = 32;
+            const int SPACEBETWEENSQUARES = 6;
+            const int SQUARESIZE = 20;
             const int BOARDOFFSET1X = 128, BOARDOFFSET1Y = 5,HELD1OFFSETX = -32, HELD1OFFSETY = 5;
             const int BOARDOFFSET2X = 720   , BOARDOFFSET2Y = 5, HELD2OFFSETX = 560, HELD2OFFSETY = 5;
             //BoardOne Stuff
