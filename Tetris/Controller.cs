@@ -42,15 +42,25 @@ namespace Tetris
         }
         public void Hold()
         {
-           shape.Hold();
+            shape.Hold();
         }
         public int[,] GridDrawer()
         {
             return grid.Grid;
         }
-        public int[,] DrawHeldShape() 
+        public int[,] DrawHeldShape()
         {
             return shape.PrintHeldShape();
+        }
+        public void AddGarbageToBoard(int numberOfLinesSent)
+        {
+            grid.AddGarbage(numberOfLinesSent);
+        }
+        public int NumberOfGarbageSent()
+        {
+            int placeHolderVal = grid.NumberOfBlocksSent;
+            grid.NumberOfBlocksSent = 0;
+            return placeHolderVal;
         }
     }
 }

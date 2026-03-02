@@ -14,20 +14,27 @@ namespace Tetris
     public partial class Form1 : Form
     {
         const int WIDTH = 10, HEIGHT = 23;
-        int[,] Board2 = new int[WIDTH, HEIGHT];
-        int[,] Board1 = new int[WIDTH, HEIGHT];
-        int[,] HeldValue1 = new int[4, 4];
-        int[,] HeldValue2 = new int[4, 4];
+        private int[,] Board2 = new int[WIDTH, HEIGHT];
+        private int[,] Board1 = new int[WIDTH, HEIGHT];
+        private int[,] HeldValue1 = new int[4, 4];
+        private int[,] HeldValue2 = new int[4, 4];
         static Controller PlayerOne = new Controller();
         static Controller PlayerTwo = new Controller();
+        private int GarbageSent1 = 0, GarbageSent2 = 0;
+        private bool ButtonHeld = false;
         private void Timer1_Tick(object sender, EventArgs e)
         {
+            GarbageSent2 = PlayerOne.NumberOfGarbageSent();
+            GarbageSent1 = PlayerTwo.NumberOfGarbageSent();
+            PlayerOne.AddGarbageToBoard(GarbageSent1);
+            PlayerTwo.AddGarbageToBoard(GarbageSent2);
             PlayerOne.SoftDrop();
             PlayerTwo.SoftDrop();
-            ProcessBoard(sender,e);
+            ProcessBoard(sender, e);
         }
         private void ProcessBoard(object sender, EventArgs e)
         {
+
             Board1 = PlayerOne.GridDrawer();
             HeldValue1 = PlayerOne.DrawHeldShape();
             Board2 = PlayerTwo.GridDrawer();
@@ -38,7 +45,8 @@ namespace Tetris
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
         {
-            
+
+
             if (e.KeyCode == Keys.Up)
             {
                 PlayerOne.TurnShape();
@@ -58,15 +66,21 @@ namespace Tetris
             {
                 PlayerOne.IncrementRight();
             }
-            if(e.KeyCode == Keys.Space) 
+            if (e.KeyCode == Keys.Space)
             {
-                PlayerOne.HardDrop();
+                if (!ButtonHeld)
+                {
+                    PlayerOne.HardDrop();
+                    ButtonHeld = true;
+                }
             }
             if (e.KeyCode == Keys.ShiftKey)
             {
-                PlayerOne.Hold();                
+                PlayerOne.Hold();
             }
-            ProcessBoard(sender,e);
+
+
+            ProcessBoard(sender, e);
         }
 
         private void KeyUpEvent(object sender, KeyEventArgs e)
@@ -77,6 +91,9 @@ namespace Tetris
                 case Keys.Up:
                 case Keys.Left:
                 case Keys.Right:
+                    break;
+                case Keys.Space:
+                    ButtonHeld = false;
                     break;
             }
         }
@@ -91,10 +108,10 @@ namespace Tetris
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             DoubleBuffered = true;
-            const int SPACEBETWEENSQUARES = 6;
-            const int SQUARESIZE = 20;
-            const int BOARDOFFSET1X = 128, BOARDOFFSET1Y = 5,HELD1OFFSETX = -32, HELD1OFFSETY = 5;
-            const int BOARDOFFSET2X = 720   , BOARDOFFSET2Y = 5, HELD2OFFSETX = 560, HELD2OFFSETY = 5;
+            const int SPACEBETWEENSQUARES = 8;
+            const int SQUARESIZE = 32;
+            const int BOARDOFFSET1X = 128, BOARDOFFSET1Y = 5, HELD1OFFSETX = -32, HELD1OFFSETY = 5;
+            const int BOARDOFFSET2X = 720, BOARDOFFSET2Y = 5, HELD2OFFSETX = 560, HELD2OFFSETY = 5;
             //BoardOne Stuff
             int board1PositionX = BOARDOFFSET1X;
             int board1PositionY = BOARDOFFSET1Y;
@@ -107,9 +124,9 @@ namespace Tetris
             int held2PositionY = HELD2OFFSETY;
             Rectangle[,] square = new Rectangle[WIDTH, HEIGHT];
             Rectangle[,] heldSquare = new Rectangle[4, 4];
-            for (int i = HEIGHT-1; i >= 0; i--)
+            for (int i = HEIGHT - 1; i >= 0; i--)
             {
-                for (int j = WIDTH-1; j >= 0; j--)
+                for (int j = WIDTH - 1; j >= 0; j--)
                 {
                     //BoardOne
                     Brush b = new SolidBrush(GetCol(Board1[j, i]));
@@ -135,10 +152,10 @@ namespace Tetris
                 for (int j = 0; j < 4; j++)
                 {
                     //
-                    Brush b = new SolidBrush(GetCol(HeldValue1[j,i]));
-                    held1PositionX += SQUARESIZE+SPACEBETWEENSQUARES;
+                    Brush b = new SolidBrush(GetCol(HeldValue1[j, i]));
+                    held1PositionX += SQUARESIZE + SPACEBETWEENSQUARES;
                     heldSquare[j, i] = new Rectangle(held1PositionX, held1PositionY, SQUARESIZE, SQUARESIZE);
-                    e.Graphics.FillRectangle(b, heldSquare[j,i]);
+                    e.Graphics.FillRectangle(b, heldSquare[j, i]);
                     //
                     Brush c = new SolidBrush(GetCol(HeldValue2[j, i]));
                     held2PositionX += SQUARESIZE + SPACEBETWEENSQUARES;

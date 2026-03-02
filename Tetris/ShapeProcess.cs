@@ -16,12 +16,11 @@ namespace Tetris
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
         private int posOffsetX = 3, posOffsetY = 19;
-        private int colour = 1,HeldColour = 1;
+        private int colour = 1, HeldColour = 1;
         private Stack<int> currentBag = new Stack<int>();
         private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
-
 
         public ShapeProcess(GridProcess Grid)
         {
@@ -321,7 +320,7 @@ namespace Tetris
                     {
                         if (grid.Grid[PosOffsetX + j + HorizontalMovement, PosOffsetY + i] == colour)
                         {
-                            grid.Grid[PosOffsetX + j+ HorizontalMovement, PosOffsetY + i] = 0;
+                            grid.Grid[PosOffsetX + j + HorizontalMovement, PosOffsetY + i] = 0;
                         }
                     }
                 }
@@ -411,7 +410,7 @@ namespace Tetris
             do
             {
                 Drop();
-            } while (ValidDrop()==true);
+            } while (ValidDrop() == true);
         }
         public void Hold()
         {
@@ -432,7 +431,7 @@ namespace Tetris
                     ShapeIsHeld = true;
                 }
                 HoldIsPossible = false;
-            }            
+            }
         }
     }
 }
