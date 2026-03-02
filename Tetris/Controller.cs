@@ -39,6 +39,7 @@ namespace Tetris
         public void HardDrop()
         {
             shape.HardDrop();
+            shape.Drop();
         }
         public void Hold()
         {
@@ -68,6 +69,10 @@ namespace Tetris
                 if (placeHolderVal == 4) placeHolderVal = 4;//
             }
             return placeHolderVal;
+        }
+        public void DisplayPieceShadow()
+        {
+
         }
     }
 }

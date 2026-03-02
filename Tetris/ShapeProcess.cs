@@ -114,10 +114,6 @@ namespace Tetris
                 for (int pWidth = 0; pWidth <= 3; pWidth++)
                 {
                     int[] XYCoords = NinetyDegreeSpin(pWidth, pHeight, CurrentRotation);
-                    if (PosOffsetY == -1)
-                    {
-
-                    }
                     if (grid.InsideArray(PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]) && (grid.InsideArray(PosOffsetX + pWidth, PosOffsetY + pHeight)))//if inside the grid
                     {
                         if (grid.Grid[PosOffsetX + pWidth, PosOffsetY + pHeight] == colour)//if 
@@ -157,7 +153,6 @@ namespace Tetris
                 InitialiseGridsShapeToZero(0);
             }
             grid = MapShapeToArray();
-
         }
         public int[,] ShapeChoose()//Implemented using the bag system
         {
@@ -328,7 +323,6 @@ namespace Tetris
         }
         private void CreateNewShape()
         {
-            Random rng = new Random();
             PosOffsetX = 3;
             PosOffsetY = 19;
             CurrentRotation = 0;
@@ -411,6 +405,7 @@ namespace Tetris
             {
                 Drop();
             } while (ValidDrop() == true);
+            
         }
         public void Hold()
         {

@@ -100,6 +100,7 @@ namespace Tetris
 
         public Form1()
         {
+            this.BackColor = System.Drawing.Color.Black;
             PlayerOne.Run();
             PlayerTwo.Run();
             InitializeComponent();
@@ -187,6 +188,7 @@ namespace Tetris
                 case 12: return Color.FromArgb(150, 211, 236);
                 case 13: return Color.Chartreuse;
                 case 14: return Color.DarkOrchid;
+                case 15: return Color.Gray;
                 default:
                     return Color.White;
             }
