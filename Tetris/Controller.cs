@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Tetris;
@@ -11,6 +13,11 @@ namespace Tetris
     {
         private GridProcess grid;
         private ShapeProcess shape;
+        private const int PIECESHADOW = -1;
+        private int[,] ShadowedShape = new int[4,4];
+        private int posOffsetX,posOffsetY;
+        private const int HEIGHT = 23, WIDTH = 10, EMPTYSPACE = 0;
+        
         public Controller()
         {
 
@@ -66,13 +73,92 @@ namespace Tetris
                 if (placeHolderVal == 1) placeHolderVal = 0 ;
                 if (placeHolderVal == 2) placeHolderVal = 1;
                 if (placeHolderVal == 3) placeHolderVal = 2;
-                if (placeHolderVal == 4) placeHolderVal = 4;//
+                if (placeHolderVal == 4) placeHolderVal = 4;
             }
             return placeHolderVal;
         }
+        private bool ValidDropForShadow()//if the drop is valid or not
+        {
+            int numb = 0;
+            for (int i = 0; i <= 3; i++)
+            {
+                for (int j = 0; j <= 3; j++)
+                {
+                    if (grid.InsideArray(j + posOffsetX, i + posOffsetY - 1))
+                    {
+                        if ((grid.Grid[j + posOffsetX, i + posOffsetY] == PIECESHADOW || grid.Grid[j + posOffsetX, i + posOffsetY] == shape.Colour) && (grid.Grid[j + posOffsetX, i + posOffsetY - 1] == EMPTYSPACE || grid.Grid[j + posOffsetX, i + posOffsetY - 1] == EMPTYSPACE || grid.Grid[j + posOffsetX, i + posOffsetY - 1] == shape.Colour))//Drop is valid if each block is above a zero or itself
+                        {
+                            numb++;
+                        }
+                    }
+                }
+            }
+            if (numb > 3)
+            {
+                return true;
+            }
+            return false;
+        }
+        private void InitialiseShadowToZero(int HorizontalMovement)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if ((posOffsetY + i) >= 0 && (posOffsetX + j + HorizontalMovement) >= 0 && (posOffsetX + j + HorizontalMovement) <= 9)
+                    {
+                        if (grid.Grid[posOffsetX + j + HorizontalMovement, posOffsetY + i] == PIECESHADOW)
+                        {
+                            grid.Grid[posOffsetX + j + HorizontalMovement, posOffsetY + i] = EMPTYSPACE;
+                        }
+                    }
+                }
+            }
+        }
+        private void MapShadowToArray()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (ShadowedShape[j, i] == PIECESHADOW && grid.Grid[posOffsetX + j, posOffsetY + i] != shape.Colour)
+                    {
+                        grid.Grid[posOffsetX + j, posOffsetY + i] = ShadowedShape[j, i];
+                    }
+                }
+            }
+        }
+        public void Drop()
+        {
+            if (ValidDropForShadow())
+            {
+                InitialiseShadowToZero(0);
+                posOffsetY--;
+                MapShadowToArray();
+            }
+        }
         public void DisplayPieceShadow()
         {
-
+            posOffsetX = shape.PosOffsetX; 
+            posOffsetY = shape.PosOffsetY;
+            ShadowedShape = shape.CurrentShape;
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if(ShadowedShape[j, i] == shape.Colour)
+                    {
+                        ShadowedShape[i, j] = PIECESHADOW;
+                    }
+                }
+            }
+            while (ValidDropForShadow())
+            {
+                InitialiseShadowToZero(0);
+                posOffsetY--;
+                MapShadowToArray();
+            }
+            
         }
     }
 }

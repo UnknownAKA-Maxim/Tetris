@@ -11,7 +11,7 @@ namespace Tetris
     internal class GridProcess
     {
         private readonly int[,] grid = new int[WIDTH, HEIGHT];
-        private const int HEIGHT = 23, WIDTH = 10;
+        private const int HEIGHT = 23, WIDTH = 10,EMPTYSPACE = 0,PIECESHADOW = -1;
         private int numberOfBlocksSent = 0;
         public int[,] Grid
         {
@@ -22,8 +22,7 @@ namespace Tetris
         public int NumberOfBlocksSent
         {
             get { return numberOfBlocksSent; }
-            set { numberOfBlocksSent = value; }
-            //set { if (value >= 0 && value <= 4) numberOfBlocksSent = value; else if (value > 4) numberOfBlocksSent = 4; else numberOfBlocksSent = 0; }//making sure value wont cant be less than 0 or greater that 4(error checking)
+            set { if (value >= 0 && value <= 4) numberOfBlocksSent = value; else if (value > 4) numberOfBlocksSent = 4; else numberOfBlocksSent = 0; }//making sure value wont cant be less than 0 or greater that 4(error checking)
         }
         public bool LineIsComplete(int y)//If a Line is full
         {
@@ -31,7 +30,7 @@ namespace Tetris
             int numberOfBlocksFilled = 0;
             for (int i = 0; i < WIDTH; i++)
             {
-                if (grid[i, y] != 0)
+                if (!BlockIsClear(i, y))
                 {
                     numberOfBlocksFilled++;
                 }
@@ -39,7 +38,6 @@ namespace Tetris
             if (numberOfBlocksFilled == 10)
             {
                 NumberOfBlocksSent++;
-
                 return true;
             }
             else return false;
@@ -54,7 +52,7 @@ namespace Tetris
         }
         public bool BlockIsClear(int x, int y)
         {
-            if (InsideArray(x, y) && grid[x, y] == 0)
+            if (InsideArray(x, y) && (grid[x, y] == EMPTYSPACE || grid[x, y] == PIECESHADOW) )
             {
                 return true;
 
@@ -65,7 +63,7 @@ namespace Tetris
         {
             for (int i = 0; i < WIDTH; i++)
             {
-                if (grid[i, y] != 0)
+                if (!BlockIsClear(i, y))
                 {
                     return false;
                 }
@@ -93,7 +91,7 @@ namespace Tetris
             {
                 for (int j = 0; j < WIDTH; j++)
                 {
-                    if ((Grid[j, i] > 7 || Grid[j, i] == 0) && (Grid[j, i - 1] > 7 || Grid[j, i - 1] == 0))
+                    if ((Grid[j, i] > 7 || BlockIsClear(j, i)) && (Grid[j, i - 1] > 7 || BlockIsClear(j, i - 1)))
                     {
                         Grid[j, i] = Grid[j, i - 1];
                     }
@@ -129,7 +127,7 @@ namespace Tetris
                     for (int i = 0; i < numberOfGarbageSent; i++)
                     {
                         AddALineToTheBoard(i);
-                        Grid[rngHoleInGarbage.Next(0, 10), i] = 0;
+                        Grid[rngHoleInGarbage.Next(0, 10), i] = EMPTYSPACE;
                     }
                 }
                 catch { }

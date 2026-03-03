@@ -34,7 +34,6 @@ namespace Tetris
         }
         private void ProcessBoard(object sender, EventArgs e)
         {
-
             Board1 = PlayerOne.GridDrawer();
             HeldValue1 = PlayerOne.DrawHeldShape();
             Board2 = PlayerTwo.GridDrawer();
@@ -45,8 +44,6 @@ namespace Tetris
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
         {
-
-
             if (e.KeyCode == Keys.Up)
             {
                 PlayerOne.TurnShape();
@@ -78,8 +75,7 @@ namespace Tetris
             {
                 PlayerOne.Hold();
             }
-
-
+            PlayerOne.DisplayPieceShadow();
             ProcessBoard(sender, e);
         }
 
@@ -100,7 +96,7 @@ namespace Tetris
 
         public Form1()
         {
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.Color.White;
             PlayerOne.Run();
             PlayerTwo.Run();
             InitializeComponent();
@@ -181,6 +177,7 @@ namespace Tetris
                 case 5: return Color.FromArgb(150, 211, 236);
                 case 6: return Color.Chartreuse;
                 case 7: return Color.DarkOrchid;
+                    //placed Value Colours
                 case 8: return Color.FromArgb(255, 145, 180);
                 case 9: return Color.FromArgb(255, 217, 118);
                 case 10: return Color.FromArgb(150, 144, 255);
@@ -188,9 +185,10 @@ namespace Tetris
                 case 12: return Color.FromArgb(150, 211, 236);
                 case 13: return Color.Chartreuse;
                 case 14: return Color.DarkOrchid;
-                case 15: return Color.Gray;
+                case -1: return Color.Gray;
+                    //Emptyspace
                 default:
-                    return Color.White;
+                    return Color.Black;
             }
         }
     }

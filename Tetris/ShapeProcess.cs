@@ -12,11 +12,12 @@ namespace Tetris
 {
     internal class ShapeProcess : Block
     {
+        private const int EMPTYSPACE = 0, PIECESHADOW = -1;
         private int[,] currentShape = new int[4, 4];
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
         private int posOffsetX = 3, posOffsetY = 19;
-        private int colour = 1, HeldColour = 1;
+        private int colour = 1, HeldColour = 1;//both set to one just to initialise
         private Stack<int> currentBag = new Stack<int>();
         private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
         private int HeldValue = 0;//The Shapes number assigned to the held value
@@ -28,6 +29,7 @@ namespace Tetris
             grid = Grid;
             MapShapeToArray();
         }
+
         public int Colour
         {
             get { return colour; }
@@ -46,7 +48,6 @@ namespace Tetris
         public int PosOffsetY
         {
             get { return posOffsetY; }
-
             set { posOffsetY = value; }
         }
         public int CurrentRotation
@@ -73,7 +74,7 @@ namespace Tetris
             }
             return true;
         }
-        private int[,] CurrentShape
+        public int[,] CurrentShape
         {
             get { if (!IsEmptyOrNull(currentShape)) return currentShape; return ShapeChoose(); }
             set { currentShape = value; }
@@ -116,9 +117,9 @@ namespace Tetris
                     int[] XYCoords = NinetyDegreeSpin(pWidth, pHeight, CurrentRotation);
                     if (grid.InsideArray(PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]) && (grid.InsideArray(PosOffsetX + pWidth, PosOffsetY + pHeight)))//if inside the grid
                     {
-                        if (grid.Grid[PosOffsetX + pWidth, PosOffsetY + pHeight] == colour)//if 
+                        if (grid.Grid[PosOffsetX + pWidth, PosOffsetY + pHeight] == colour)//if the original
                         {
-                            if (grid.Grid[PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]] != 0 && grid.Grid[PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]] != colour)
+                            if (!grid.BlockIsClear(PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]) && grid.Grid[PosOffsetX + XYCoords[0], PosOffsetY + XYCoords[1]] != colour)
                             {
                                 overLaps = true;
                             }
@@ -137,7 +138,6 @@ namespace Tetris
         {
             if (ValidTurn())
             {
-                //if (CurrentRotation == 3) ;
                 int[,] placeHolderVAL = new int[4, 4];
                 for (int pHeight = 0; pHeight <= 3; pHeight++)
                 {
@@ -162,7 +162,7 @@ namespace Tetris
             }
             int[,] shape = new int[4, 4];
             currentShapeNumber = CurrentBag.Pop();
-            switch (currentShapeNumber)
+            switch (1)
             {
                 case 1:
                     //I PIECE
@@ -254,7 +254,7 @@ namespace Tetris
                 {
                     if (grid.InsideArray(j + posOffsetX, i + posOffsetY - 1))
                     {
-                        if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX, i + posOffsetY - 1] == 0) || (grid.Grid[j + PosOffsetX, i + posOffsetY - 1] == colour)))//Drop is valid if each block is above a zero or itself
+                        if ((grid.Grid[j + PosOffsetX, i + PosOffsetY] == colour) && (grid.BlockIsClear(j + PosOffsetX, i + PosOffsetY - 1) || (grid.Grid[j + PosOffsetX, i + PosOffsetY - 1] == colour)))//Drop is valid if each block is above a zero or itself
                         {
                             numb++;
                         }
@@ -280,7 +280,6 @@ namespace Tetris
                 //Call the method that turns all values to placed block values                
                 BlockIsPlaced();
             }
-
         }
         private void BlockIsPlaced()
         {
@@ -328,7 +327,6 @@ namespace Tetris
             CurrentRotation = 0;
             CurrentShape = ShapeChoose();
             MapShapeToArray();
-
         }
         private GridProcess MapShapeToArray()
         {
@@ -404,8 +402,7 @@ namespace Tetris
             do
             {
                 Drop();
-            } while (ValidDrop() == true);
-            
+            } while (ValidDrop() == true);            
         }
         public void Hold()
         {
@@ -428,5 +425,6 @@ namespace Tetris
                 HoldIsPossible = false;
             }
         }
+
     }
 }
