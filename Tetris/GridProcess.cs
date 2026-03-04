@@ -11,7 +11,7 @@ namespace Tetris
     internal class GridProcess
     {
         private readonly int[,] grid = new int[WIDTH, HEIGHT];
-        private const int HEIGHT = 23, WIDTH = 10,EMPTYSPACE = 0,PIECESHADOW = -1;
+        private const int HEIGHT = 23, WIDTH = 10,EMPTYSPACE = 0,SHADOWPIECE = -1;
         private int numberOfBlocksSent = 0;
         public int[,] Grid
         {
@@ -52,7 +52,7 @@ namespace Tetris
         }
         public bool BlockIsClear(int x, int y)
         {
-            if (InsideArray(x, y) && (grid[x, y] == EMPTYSPACE || grid[x, y] == PIECESHADOW) )
+            if (InsideArray(x, y) && (grid[x, y] == EMPTYSPACE || grid[x, y] == SHADOWPIECE) )
             {
                 return true;
 

@@ -148,7 +148,7 @@ namespace Tetris
                 {
                     if(ShadowedShape[j, i] == shape.Colour)
                     {
-                        ShadowedShape[i, j] = PIECESHADOW;
+                        ShadowedShape[j, i] = PIECESHADOW;
                     }
                 }
             }
@@ -157,8 +157,7 @@ namespace Tetris
                 InitialiseShadowToZero(0);
                 posOffsetY--;
                 MapShadowToArray();
-            }
-            
+            }            
         }
     }
 }

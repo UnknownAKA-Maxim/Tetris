@@ -38,6 +38,7 @@ namespace Tetris
             HeldValue1 = PlayerOne.DrawHeldShape();
             Board2 = PlayerTwo.GridDrawer();
             HeldValue2 = PlayerTwo.DrawHeldShape();
+            PlayerOne.DisplayPieceShadow();
             this.Invalidate();
             this.Update();
         }
@@ -75,7 +76,6 @@ namespace Tetris
             {
                 PlayerOne.Hold();
             }
-            PlayerOne.DisplayPieceShadow();
             ProcessBoard(sender, e);
         }
 
