@@ -34,11 +34,11 @@ namespace Tetris
         }
         private void ProcessBoard(object sender, EventArgs e)
         {
+            //PlayerOne.DisplayPieceShadow();
             Board1 = PlayerOne.GridDrawer();
             HeldValue1 = PlayerOne.DrawHeldShape();
             Board2 = PlayerTwo.GridDrawer();
             HeldValue2 = PlayerTwo.DrawHeldShape();
-            PlayerOne.DisplayPieceShadow();
             this.Invalidate();
             this.Update();
         }
@@ -47,7 +47,7 @@ namespace Tetris
         {
             if (e.KeyCode == Keys.Up)
             {
-                PlayerOne.TurnShape();
+                PlayerOne.SpinShape();
             }
 
             if (e.KeyCode == Keys.Down)

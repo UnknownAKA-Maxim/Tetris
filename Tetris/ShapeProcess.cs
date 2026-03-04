@@ -125,7 +125,7 @@ namespace Tetris
                             }
                         }
                     }
-                    else overLaps = true;
+                    
                 }
             }
             if (overLaps)
@@ -144,12 +144,12 @@ namespace Tetris
                     for (int pWidth = 0; pWidth <= 3; pWidth++)
                     {
                         int[] XYCoords = NinetyDegreeSpin(pWidth, pHeight, CurrentRotation);
-                        placeHolderVAL[XYCoords[0/*X*/], XYCoords[1/*Y*/]] = currentShape[pWidth, pHeight];
+                        placeHolderVAL[XYCoords[0/*X*/], XYCoords[1/*Y*/]] = CurrentShape[pWidth, pHeight];
                     }
                 }
                 CurrentShape = placeHolderVAL;
-                if (currentRotation >= 3) { currentRotation = 0; }
-                else { currentRotation += 1; }
+                if (CurrentRotation >= 3) { CurrentRotation = 0; }
+                else { CurrentRotation += 1; }
                 InitialiseGridsShapeToZero(0);
             }
             grid = MapShapeToArray();
@@ -162,7 +162,7 @@ namespace Tetris
             }
             int[,] shape = new int[4, 4];
             currentShapeNumber = CurrentBag.Pop();
-            switch (1)
+            switch (3)
             {
                 case 1:
                     //I PIECE
@@ -269,6 +269,10 @@ namespace Tetris
         }
         public void Drop()
         {
+            if (!ValidDrop())
+            {
+
+            }
             if (ValidDrop())
             {
                 InitialiseGridsShapeToZero(0);
@@ -287,7 +291,7 @@ namespace Tetris
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    if ((PosOffsetY + i) >= 0 && (PosOffsetX + j) >= 0 && (PosOffsetX + j) <= 9)
+                    if (((PosOffsetY + i) >= 0 && (PosOffsetX + j) >= EMPTYSPACE|| (PosOffsetY + i) >= 0 && (PosOffsetX + j) >= PIECESHADOW) && (PosOffsetX + j) <= 9)
                     {
                         if (grid.Grid[PosOffsetX + j, PosOffsetY + i] == colour)
                         {
