@@ -26,6 +26,10 @@ namespace Tetris
         { 
             get { return shape; }
         }
+        public GridProcess Grid
+        {
+            get { return grid; }
+        }
         public void Run()
         {
             grid = new GridProcess();

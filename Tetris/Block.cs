@@ -48,8 +48,8 @@ namespace Tetris
                         {
                             if (ShapeMappingDictionary90[j, i] == FutureBlockPosition)
                             {
-                                XYPOS[0] = i;//column
-                                XYPOS[1] = j;//row
+                                XYPOS[0] = i;//column X
+                                XYPOS[1] = j;//row    Y
                                 return XYPOS;
                             }
                         }

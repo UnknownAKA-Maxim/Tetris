@@ -125,6 +125,7 @@ namespace Tetris
                             }
                         }
                     }
+                    else { overLaps = true; }
                     
                 }
             }
@@ -136,6 +137,10 @@ namespace Tetris
         }
         public void TurnShape() //spins the shape
         {
+            if (!ValidTurn())
+            {
+                
+            }
             if (ValidTurn())
             {
                 int[,] placeHolderVAL = new int[4, 4];
