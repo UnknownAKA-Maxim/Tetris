@@ -162,7 +162,7 @@ namespace Tetris
             }
             int[,] shape = new int[4, 4];
             currentShapeNumber = CurrentBag.Pop();
-            switch (3)
+            switch (currentShapeNumber)
             {
                 case 1:
                     //I PIECE
@@ -291,7 +291,7 @@ namespace Tetris
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    if (((PosOffsetY + i) >= 0 && (PosOffsetX + j) >= EMPTYSPACE|| (PosOffsetY + i) >= 0 && (PosOffsetX + j) >= PIECESHADOW) && (PosOffsetX + j) <= 9)
+                    if ((PosOffsetY + i) >= 0 && (PosOffsetX + j) >= EMPTYSPACE && (PosOffsetX + j) <= 9)
                     {
                         if (grid.Grid[PosOffsetX + j, PosOffsetY + i] == colour)
                         {
