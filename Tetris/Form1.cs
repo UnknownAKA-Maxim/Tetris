@@ -20,6 +20,7 @@ namespace Tetris
         private int[,] HeldValue2 = new int[4, 4];
         static Controller PlayerOne = new Controller();
         static Controller PlayerTwo = new Controller();
+        static TetrisAIProcess AIPlayer = new TetrisAIProcess(PlayerTwo);
         private int GarbageSent1 = 0, GarbageSent2 = 0;
         private bool ButtonHeld = false;
         private void Timer1_Tick(object sender, EventArgs e)
@@ -30,6 +31,7 @@ namespace Tetris
             PlayerTwo.AddGarbageToBoard(GarbageSent2);
             PlayerOne.SoftDrop();
             PlayerTwo.SoftDrop();
+            AIPlayer.UpdateControllerClass(PlayerTwo);
             ProcessBoard(sender, e);
         }
         private void ProcessBoard(object sender, EventArgs e)
@@ -45,6 +47,26 @@ namespace Tetris
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
         {
+            String aIDecision = AIPlayer.DecisionMade();
+            for (int i = 0; i < aIDecision.Length; i++)
+            {
+                if (aIDecision[i] == 'H')
+                {
+                    PlayerTwo.HardDrop();
+                }
+                if (aIDecision[i] == 'W')
+                {
+                    PlayerTwo.SpinShape();
+                }
+                if (aIDecision[i] == 'L')
+                {
+                    PlayerTwo.IncrementLeft();
+                }
+                if (aIDecision[i] == 'R')
+                {
+                    PlayerTwo.IncrementRight();
+                }
+            }
             if (e.KeyCode == Keys.Up)
             {
                 PlayerOne.SpinShape();
@@ -98,7 +120,8 @@ namespace Tetris
         {
             this.BackColor = System.Drawing.Color.White;
             PlayerOne.Run();
-            PlayerTwo.Run();
+            PlayerTwo.Run();//AI
+            
             InitializeComponent();
         }//
 

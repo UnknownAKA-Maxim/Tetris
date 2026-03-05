@@ -14,7 +14,7 @@ namespace Tetris
         private Controller AIPlayerControls;
         private ShapeProcess CurrentShapeManaged;
         private GridProcess CurrentGrid;
-        private List<List<int>> AllEndPositions = new List<List<int>>();
+        private List<int[]> AllEndPositions = new List<int[]>();
         private const int STARTINGPOSITIONX = 3,MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY =19,EMPTYSPACE = 0;
         private int PointsAllocated = 0;
         public TetrisAIProcess(Controller PlayerTwo) 
@@ -22,24 +22,50 @@ namespace Tetris
             AIPlayerControls = PlayerTwo;
             CurrentShapeManaged = AIPlayerControls.Shape;
         }
-        public void UpdateGrid(Controller UpdatedGrid)
+        public void UpdateControllerClass(Controller UpdatedGrid)
         {
             AIPlayerControls = UpdatedGrid;
             CurrentGrid = AIPlayerControls.Grid;
+            CurrentShapeManaged = AIPlayerControls.Shape;
+            AllEndPositions = new List<int[]>();
+            FindAllPossiblePositions();
         }
-        private int[] PositonChosen()
+        private int[] PositionChosen()
         {
-            int [] bestpositionDecidedCoords = new int[2];
-            int count = 0;
+            int[] placeHolderValue = AllEndPositions[0];
+            int[] bestPositionDecidedCoords = { placeHolderValue[0], placeHolderValue[1]};
+            int count = 0,pointsForBestValue = placeHolderValue[3];
             do
             {
-                bestpositionDecidedCoords = AllEndPositions[0,0,0,count];
+                placeHolderValue = AllEndPositions[count];
+                
+                if (placeHolderValue[3] > pointsForBestValue)
+                {
+                    bestPositionDecidedCoords[0] = placeHolderValue[0];
+                    bestPositionDecidedCoords[1] = placeHolderValue[1];
+                    pointsForBestValue = placeHolderValue[3];
+                }
             } while (AllEndPositions.Count > 0);
-            return null;
+            return bestPositionDecidedCoords;
         }
         public string DecisionMade()
         {
-            string patternToReachBestPosition = "";
+            string patternToReachBestPosition = "";//H=hardDrop L=left R=Right W=Spin
+            int[] coords = PositionChosen();
+            while (coords[0] != STARTINGPOSITIONX)
+            {
+                if (coords[0] > STARTINGPOSITIONX)
+                {
+                    coords[0]--;
+                    patternToReachBestPosition += "R";
+                }
+                else 
+                {
+                    coords[0]++;
+                    patternToReachBestPosition += "L";
+                }
+            }
+            patternToReachBestPosition += "H";
             return patternToReachBestPosition;
         }
         private int HolesCreated(int OffsetX ,int OffsetY)
@@ -63,26 +89,33 @@ namespace Tetris
             }
             return numberOfHolesCreated;
         }
-        private int[] PositonIsPossible(int OffsetX,int OffsetY)
+
+        private int[] PositionIsPossible(int OffsetX,int OffsetY)
         {
             PointsAllocated += HolesCreated(OffsetX,OffsetY);
             PointsAllocated += OffsetY;
-            int[] PositonXY = {CurrentShapeManaged.PosOffsetX, CurrentShapeManaged.PosOffsetY,PointsAllocated};
-            
-            return PositonXY;
+            int[] PositionXY = {CurrentShapeManaged.PosOffsetX, CurrentShapeManaged.PosOffsetY,PointsAllocated};
+            //PositionXY[0] PositionXY[1] PositionXY[3]
+            return PositionXY;
         }
         private void FindAllPossiblePositions()
         {
-            int posXOffset = STARTINGPOSITIONX,posYOffset = STARTINGPOSITIONY;
-            for (int i = 0; i < WIDTH - 1; i++)
+            for (int NumberOfspins = 0; NumberOfspins <= 4; NumberOfspins++)
             {
-                AIPlayerControls.IncrementLeft();
-            }
-            for (int i = 0; i < WIDTH - 1; i++)
-            {
-                AIPlayerControls.HardDrop();
-                AllEndPositions.Add(PositonIsPossible(posXOffset,posYOffset));
-                AIPlayerControls.IncrementRight();
+                AIPlayerControls.SpinShape();
+                int posXOffset = STARTINGPOSITIONX, posYOffset = STARTINGPOSITIONY;
+                for (int i = 0; i < WIDTH - 1; i++)
+                {
+                    AIPlayerControls.IncrementLeft();
+                }
+                for (int i = 0; i < WIDTH - 1; i++)
+                {
+                    AIPlayerControls.HardDrop();
+                    AllEndPositions.Add(PositionIsPossible(posXOffset, posYOffset));
+                    //AllEndPositions(int[0,1,2])
+                    AIPlayerControls.IncrementRight();
+                }
+                
             }
         }
 
