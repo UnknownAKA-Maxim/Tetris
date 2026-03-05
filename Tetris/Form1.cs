@@ -46,8 +46,9 @@ namespace Tetris
         }
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
-        {
-            String aIDecision = AIPlayer.DecisionMade();
+        { 
+            
+            String aIDecision = AIPlayer.PathToDecision();
             for (int i = 0; i < aIDecision.Length; i++)
             {
                 if (aIDecision[i] == 'H')
@@ -67,6 +68,7 @@ namespace Tetris
                     PlayerTwo.IncrementRight();
                 }
             }
+            AIPlayer.UpdateControllerClass(PlayerTwo);
             if (e.KeyCode == Keys.Up)
             {
                 PlayerOne.SpinShape();

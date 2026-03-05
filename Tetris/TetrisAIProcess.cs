@@ -34,21 +34,22 @@ namespace Tetris
         {
             int[] placeHolderValue = AllEndPositions[0];
             int[] bestPositionDecidedCoords = { placeHolderValue[0], placeHolderValue[1]};
-            int count = 0,pointsForBestValue = placeHolderValue[3];
+            int count = 0,pointsForBestValue = placeHolderValue[2];
             do
             {
                 placeHolderValue = AllEndPositions[count];
                 
-                if (placeHolderValue[3] > pointsForBestValue)
+                if (placeHolderValue[2] < pointsForBestValue)
                 {
                     bestPositionDecidedCoords[0] = placeHolderValue[0];
                     bestPositionDecidedCoords[1] = placeHolderValue[1];
-                    pointsForBestValue = placeHolderValue[3];
+                    pointsForBestValue = placeHolderValue[2];
                 }
+                AllEndPositions.Remove(placeHolderValue);
             } while (AllEndPositions.Count > 0);
             return bestPositionDecidedCoords;
         }
-        public string DecisionMade()
+        public string PathToDecision()
         {
             string patternToReachBestPosition = "";//H=hardDrop L=left R=Right W=Spin
             int[] coords = PositionChosen();
@@ -100,20 +101,23 @@ namespace Tetris
         }
         private void FindAllPossiblePositions()
         {
-            for (int NumberOfspins = 0; NumberOfspins <= 4; NumberOfspins++)
+            for (int NumberOfspins = 0; NumberOfspins <=4; NumberOfspins++)
             {
                 AIPlayerControls.SpinShape();
                 int posXOffset = STARTINGPOSITIONX, posYOffset = STARTINGPOSITIONY;
                 for (int i = 0; i < WIDTH - 1; i++)
                 {
-                    AIPlayerControls.IncrementLeft();
+                    CurrentShapeManaged.HorizontalMovement("R");
                 }
                 for (int i = 0; i < WIDTH - 1; i++)
                 {
-                    AIPlayerControls.HardDrop();
+                    CurrentShapeManaged.HardDrop();
+                    
                     AllEndPositions.Add(PositionIsPossible(posXOffset, posYOffset));
                     //AllEndPositions(int[0,1,2])
                     AIPlayerControls.IncrementRight();
+                    posXOffset++;
+                    PointsAllocated = 0;
                 }
                 
             }
