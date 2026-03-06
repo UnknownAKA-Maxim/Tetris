@@ -105,7 +105,7 @@ namespace Tetris
         {
             for (int NumberOfspins = 0; NumberOfspins <=4; NumberOfspins++)
             {
-                //AIPlayerControls.SpinShape();
+                AIPlayerControls.SpinShape();
                 int posXOffset = 0, posYOffset = STARTINGPOSITIONY;
                 for (int i = 0; i < WIDTH - 1; i++)
                 {
@@ -124,7 +124,8 @@ namespace Tetris
                     
                 }
                 
-            }CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONX;
+            }
+            CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONX;
             CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONY;
         }
 
