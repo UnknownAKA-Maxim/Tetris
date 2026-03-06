@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Tetris
 {
-    internal class TetrisAIProcess
+    internal class TetrisAIProcess 
     {
         private readonly int HEIGHT = 23, WIDTH = 10;
         private Controller AIPlayerControls;
@@ -105,7 +105,7 @@ namespace Tetris
             for (int NumberOfspins = 0; NumberOfspins <=4; NumberOfspins++)
             {
                 AIPlayerControls.SpinShape();
-                int posXOffset = STARTINGPOSITIONX, posYOffset = STARTINGPOSITIONY;
+                int posXOffset = 0, posYOffset = STARTINGPOSITIONY;
                 for (int i = 0; i < WIDTH - 1; i++)
                 {
                     CurrentShapeManaged.HorizontalMovement("L");
@@ -119,6 +119,7 @@ namespace Tetris
                     AIPlayerControls.IncrementRight();
                     posXOffset++;
                     PointsAllocated = 0;
+                    CurrentShapeManaged.InitialiseGridsShapeToZero(0);
                 }
                 
             }

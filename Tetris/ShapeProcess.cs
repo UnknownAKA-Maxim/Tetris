@@ -313,7 +313,7 @@ namespace Tetris
             HoldIsPossible = true;
             CreateNewShape();
         }
-        private void InitialiseGridsShapeToZero(int HorizontalMovement)
+        public void InitialiseGridsShapeToZero(int HorizontalMovement)
         {
             for (int i = 0; i < 4; i++)
             {
