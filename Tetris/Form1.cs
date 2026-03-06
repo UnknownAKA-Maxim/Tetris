@@ -49,7 +49,7 @@ namespace Tetris
         { 
             
             String aIDecision = AIPlayer.PathToDecision();
-            for (int i = 0; i < aIDecision.Length; i++)
+            /*for (int i = 0; i < aIDecision.Length; i++)
             {
                 if (aIDecision[i] == 'H')
                 {
@@ -67,7 +67,7 @@ namespace Tetris
                 {
                     PlayerTwo.IncrementRight();
                 }
-            }
+            }*/
             AIPlayer.UpdateControllerClass(PlayerTwo);
             if (e.KeyCode == Keys.Up)
             {

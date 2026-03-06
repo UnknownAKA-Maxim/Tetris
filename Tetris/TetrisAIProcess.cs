@@ -17,6 +17,7 @@ namespace Tetris
         private List<int[]> AllEndPositions = new List<int[]>();
         private const int STARTINGPOSITIONX = 3,MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY =19,EMPTYSPACE = 0;
         private int PointsAllocated = 0;
+        private string patternToReachBestPosition;
         public TetrisAIProcess(Controller PlayerTwo) 
         {
             AIPlayerControls = PlayerTwo;
@@ -107,7 +108,7 @@ namespace Tetris
                 int posXOffset = STARTINGPOSITIONX, posYOffset = STARTINGPOSITIONY;
                 for (int i = 0; i < WIDTH - 1; i++)
                 {
-                    CurrentShapeManaged.HorizontalMovement("R");
+                    CurrentShapeManaged.HorizontalMovement("L");
                 }
                 for (int i = 0; i < WIDTH - 1; i++)
                 {
