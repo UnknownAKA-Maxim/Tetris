@@ -167,7 +167,7 @@ namespace Tetris
             }
             int[,] shape = new int[4, 4];
             currentShapeNumber = CurrentBag.Pop();
-            switch (1)
+            switch (currentShapeNumber)
             {
                 case 1:
                     //I PIECE

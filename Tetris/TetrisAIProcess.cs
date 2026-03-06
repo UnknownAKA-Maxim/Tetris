@@ -10,7 +10,7 @@ namespace Tetris
 {
     internal class TetrisAIProcess 
     {
-        private readonly int HEIGHT = 23, WIDTH = 10;
+        private readonly int WIDTH = 10;
         private Controller AIPlayerControls;
         private ShapeProcess CurrentShapeManaged;
         private GridProcess CurrentGrid;
@@ -25,6 +25,7 @@ namespace Tetris
         }
         public void UpdateControllerClass(Controller UpdatedGrid)
         {
+            patternToReachBestPosition = "";
             AIPlayerControls = UpdatedGrid;
             CurrentGrid = AIPlayerControls.Grid;
             CurrentShapeManaged = AIPlayerControls.Shape;
@@ -52,7 +53,7 @@ namespace Tetris
         }
         public string PathToDecision()
         {
-            string patternToReachBestPosition = "";//H=hardDrop L=left R=Right W=Spin
+            patternToReachBestPosition = "";//H=hardDrop L=left R=Right W=Spin
             int[] coords = PositionChosen();
             while (coords[0] != STARTINGPOSITIONX)
             {
@@ -104,7 +105,7 @@ namespace Tetris
         {
             for (int NumberOfspins = 0; NumberOfspins <=4; NumberOfspins++)
             {
-                AIPlayerControls.SpinShape();
+                //AIPlayerControls.SpinShape();
                 int posXOffset = 0, posYOffset = STARTINGPOSITIONY;
                 for (int i = 0; i < WIDTH - 1; i++)
                 {
@@ -116,13 +117,15 @@ namespace Tetris
                     
                     AllEndPositions.Add(PositionIsPossible(posXOffset, posYOffset));
                     //AllEndPositions(int[0,1,2])
-                    AIPlayerControls.IncrementRight();
+                    CurrentShapeManaged.HorizontalMovement("R");
                     posXOffset++;
                     PointsAllocated = 0;
-                    CurrentShapeManaged.InitialiseGridsShapeToZero(0);
+                    CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONY;
+                    
                 }
                 
-            }
+            }CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONX;
+            CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONY;
         }
 
     }
