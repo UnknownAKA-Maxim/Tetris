@@ -41,13 +41,6 @@ namespace Tetris
             HeldValue1 = PlayerOne.DrawHeldShape();
             Board2 = PlayerTwo.GridDrawer();
             HeldValue2 = PlayerTwo.DrawHeldShape();
-            this.Invalidate();
-            this.Update();
-        }
-
-        private void KeyDownEvent(object sender, KeyEventArgs e)
-        { 
-            
             String aIDecision = AIPlayer.PathToDecision();
             for (int i = 0; i < aIDecision.Length; i++)
             {
@@ -68,6 +61,12 @@ namespace Tetris
                     PlayerTwo.IncrementRight();
                 }
             }
+            this.Invalidate();
+            this.Update();
+        }
+
+        private void KeyDownEvent(object sender, KeyEventArgs e)
+        { 
             AIPlayer.UpdateControllerClass(PlayerTwo);
             if (e.KeyCode == Keys.Up)
             {

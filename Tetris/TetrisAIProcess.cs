@@ -15,8 +15,7 @@ namespace Tetris
         private ShapeProcess CurrentShapeManaged;
         private GridProcess CurrentGrid;
         private List<int[]> AllEndPositions = new List<int[]>();
-        private const int STARTINGPOSITIONX = 3,MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY =19,EMPTYSPACE = 0;
-        private int PointsAllocated = 0;
+        private const int STARTINGPOSITIONX = 3,MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY = 19,EMPTYSPACE = 0;
         private string patternToReachBestPosition;
         public TetrisAIProcess(Controller PlayerTwo) 
         {
@@ -55,9 +54,9 @@ namespace Tetris
         {
             patternToReachBestPosition = "";//H=hardDrop L=left R=Right W=Spin
             int[] coords = PositionChosen();
-            while (coords[0] != STARTINGPOSITIONX)
+            while (coords[0] != STARTINGPOSITIONX+1)
             {
-                if (coords[0] > STARTINGPOSITIONX)
+                if (coords[0] > STARTINGPOSITIONX+1)
                 {
                     coords[0]--;
                     patternToReachBestPosition += "R";
@@ -78,9 +77,9 @@ namespace Tetris
             {
                 for (int j = 0; j < WIDTH-1; j++)
                 {
-                    if (CurrentGrid.Grid[j , i] == EMPTYSPACE && CurrentGrid.Grid[j,i+1] == CurrentShapeManaged.Colour)
+                    if (CurrentGrid.Grid[j , i] == EMPTYSPACE && CurrentGrid.Grid[j,i+1] != 0)
                     {
-                        PointsAllocated++;
+                        numberOfHolesCreated++;
                     }
                 }
             }
@@ -89,9 +88,10 @@ namespace Tetris
 
         private int[] AllocatePointsToPosition(int OffsetX,int OffsetY)
         {
+            int PointsAllocated = 0;
             PointsAllocated += HolesCreated(OffsetX,OffsetY);
             //PointsAllocated += OffsetY;
-            int[] PositionXY = {OffsetX,CurrentShapeManaged.PosOffsetY,PointsAllocated};
+            int[] PositionXY = {OffsetX,OffsetY,PointsAllocated};
             //PositionXY[0] PositionXY[1] PositionXY[3]
             return PositionXY;
         }
@@ -100,20 +100,16 @@ namespace Tetris
             //for (int NumberOfspins = 0; NumberOfspins <=4; NumberOfspins++)
             {
                 //AIPlayerControls.SpinShape();
-                int posXOffset = 0, posYOffset = STARTINGPOSITIONY;
                 for (int i = 0; i < WIDTH - 1; i++)
                 {
                     CurrentShapeManaged.HorizontalMovement("L");
                 }
-                for (int i = 0; i < WIDTH - 1; i++)
+                for (int PositionX = 0; PositionX < WIDTH - 1; PositionX++)
                 {
-                    CurrentShapeManaged.HardDrop();
-                    
-                    AllEndPositions.Add(AllocatePointsToPosition(posXOffset, posYOffset));
+                    CurrentShapeManaged.HardDrop();                    
+                    AllEndPositions.Add(AllocatePointsToPosition(PositionX, CurrentShapeManaged.PosOffsetY));
                     //AllEndPositions(int[0,1,2])
                     CurrentShapeManaged.HorizontalMovement("R");
-                    posXOffset++;
-                    PointsAllocated = 0;
                     CurrentShapeManaged.InitialiseGridsShapeToZero(0);
                     CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONY;                    
                 }                
