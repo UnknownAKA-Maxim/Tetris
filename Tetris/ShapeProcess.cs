@@ -268,19 +268,16 @@ namespace Tetris
             }
             return false;
         }
-        public void Drop()
+        public void Drop(bool PhantomMove)
         {
-            if (!ValidDrop())
-            {
-
-            }
             if (ValidDrop())
             {
                 InitialiseGridsShapeToZero(0);
                 PosOffsetY--;
                 MapShapeToArray();
             }
-            else
+            else 
+            if(PhantomMove == false)
             {
                 //Call the method that turns all values to placed block values                
                 BlockIsPlaced();
@@ -333,7 +330,7 @@ namespace Tetris
             CurrentShape = ShapeChoose();
             MapShapeToArray();
         }
-        private GridProcess MapShapeToArray()
+        public GridProcess MapShapeToArray()
         {
             for (int i = 0; i < 4; i++)
             {
@@ -402,11 +399,11 @@ namespace Tetris
             }
             MapShapeToArray();
         }
-        public void HardDrop()
+        public void HardDrop(bool PhantomMove)
         {
             do
             {
-                Drop();
+                Drop(PhantomMove);
             } while (ValidDrop() == true);            
         }
         public void Hold()

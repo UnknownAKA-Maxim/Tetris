@@ -20,7 +20,6 @@ namespace Tetris
         
         public Controller()
         {
-
         }
         public ShapeProcess Shape 
         { 
@@ -49,12 +48,12 @@ namespace Tetris
         }
         public void SoftDrop()
         {
-            shape.Drop();
+            shape.Drop(false);
         }
         public void HardDrop()
         {
-            shape.HardDrop();
-            shape.Drop();
+            shape.HardDrop(false);
+            shape.Drop(false);
         }
         public void Hold()
         {

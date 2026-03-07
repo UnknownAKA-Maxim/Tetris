@@ -15,7 +15,7 @@ namespace Tetris
         private ShapeProcess CurrentShapeManaged;
         private GridProcess CurrentGrid;
         private List<int[]> AllEndPositions = new List<int[]>();
-        private const int STARTINGPOSITIONX = 3,MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY = 19,EMPTYSPACE = 0;
+        private const int STARTINGPOSITIONX = 2,MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY = 19,EMPTYSPACE = 0;
         private string patternToReachBestPosition;
         public TetrisAIProcess(Controller PlayerTwo) 
         {
@@ -36,9 +36,13 @@ namespace Tetris
             int[] placeHolderValue = AllEndPositions[0];
             int[] bestPositionDecidedCoords = { placeHolderValue[0], placeHolderValue[1]};
             int count = 0,pointsForBestValue = placeHolderValue[2];
+            for (int i = 0; i <= placeHolderValue[3]; i++)
+            {
+                patternToReachBestPosition += "w";
+            }
             do
             {
-                placeHolderValue = AllEndPositions[count];
+                placeHolderValue = AllEndPositions[0];
                 
                 if (placeHolderValue[2] < pointsForBestValue)
                 {
@@ -70,53 +74,68 @@ namespace Tetris
             patternToReachBestPosition += "H";
             return patternToReachBestPosition;
         }
-        private int HolesCreated(int OffsetX ,int OffsetY)
+        private int HolesCreated()
         {
-            int numberOfHolesCreated=0;
+            int numberOfHoles=0;
             for (int i = 0; i < HEIGHT - 1; i++)
             {
-                for (int j = 0; j < WIDTH-1; j++)
+                for (int j = 0; j < WIDTH; j++)
                 {
                     if (CurrentGrid.Grid[j , i] == EMPTYSPACE && CurrentGrid.Grid[j,i+1] != 0)
                     {
-                        numberOfHolesCreated++;
+                        numberOfHoles++;
                     }
                 }
             }
-            return numberOfHolesCreated;
+            return numberOfHoles;
         }
-
-        private int[] AllocatePointsToPosition(int OffsetX,int OffsetY)
+        private int PointsAllocatedForHeight(int OffsetX, int OffsetY)
+        {
+            for (int i = HEIGHT-1; i >= 0; i--)
+            {
+                for (int j = WIDTH-1; j >= 0; j--)
+                {
+                    if (CurrentGrid.Grid[j,i] == CurrentShapeManaged.Colour)
+                    {
+                        return i+1;
+                    }
+                }
+            }
+            return 0;//This needs to be here but wont ever be called
+        }
+        private int[] AllocatePointsToPosition(int OffsetX,int OffsetY,int AmountOfTimesTurned)
         {
             int PointsAllocated = 0;
-            PointsAllocated += HolesCreated(OffsetX,OffsetY);
-            //PointsAllocated += OffsetY;
-            int[] PositionXY = {OffsetX,OffsetY,PointsAllocated};
-            //PositionXY[0] PositionXY[1] PositionXY[3]
+            PointsAllocated += HolesCreated();
+            PointsAllocated += PointsAllocatedForHeight(OffsetX,OffsetY);
+            int[] PositionXY = {OffsetX,OffsetY,PointsAllocated,AmountOfTimesTurned};
+            //PositionXY[0] PositionXY[1] PositionXY[2] PositionXY[3]
             return PositionXY;
         }
         private void FindAllPossiblePositions()
         {
-            //for (int NumberOfspins = 0; NumberOfspins <=4; NumberOfspins++)
+            int amountOfTurns = 0;
+            for (int NumberOfspins = 0; NumberOfspins <=4; NumberOfspins++)
             {
-                //AIPlayerControls.SpinShape();
-                for (int i = 0; i < WIDTH - 1; i++)
+                for (int i = 0; i < WIDTH; i++)
                 {
                     CurrentShapeManaged.HorizontalMovement("L");
                 }
-                for (int PositionX = 0; PositionX < WIDTH - 1; PositionX++)
+                for (int PositionX = 0; PositionX < WIDTH; PositionX++)
                 {
-                    CurrentShapeManaged.HardDrop();                    
-                    AllEndPositions.Add(AllocatePointsToPosition(PositionX, CurrentShapeManaged.PosOffsetY));
+                    CurrentShapeManaged.HardDrop(true);
+                    AllEndPositions.Add(AllocatePointsToPosition(PositionX, CurrentShapeManaged.PosOffsetY,amountOfTurns));
                     //AllEndPositions(int[0,1,2])
                     CurrentShapeManaged.HorizontalMovement("R");
                     CurrentShapeManaged.InitialiseGridsShapeToZero(0);
-                    CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONY;                    
-                }                
+                    CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONY;
+                    CurrentShapeManaged.MapShapeToArray();
+                }
+                amountOfTurns++;
+                AIPlayerControls.SpinShape();
             }
             CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONX;
             CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONY;
         }
-
     }
 }
