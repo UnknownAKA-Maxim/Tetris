@@ -163,7 +163,7 @@ namespace Tetris
             }
             int[,] shape = new int[4, 4];
             currentShapeNumber = CurrentBag.Pop();
-            switch (currentShapeNumber)
+            switch (1)
             {
                 case 1:
                     //I PIECE
@@ -344,7 +344,7 @@ namespace Tetris
             }
             return grid;
         }
-        private bool ValidHorizontalMovement(string directionParameter)
+        public bool ValidHorizontalMovement(string directionParameter)
         {
             if (directionParameter == "R")
             {
@@ -355,7 +355,7 @@ namespace Tetris
                     {
                         if (grid.InsideArray(j + posOffsetX - 1, i + posOffsetY) && grid.InsideArray(j + posOffsetX, i + posOffsetY))
                         {
-                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == colour)))//Drop is valid if each block is above a zero or itself
+                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == colour)))//Sideways Movement is valid if each block is above a zero or itself
                             {
                                 count++;
                             }
@@ -373,7 +373,7 @@ namespace Tetris
                     {
                         if (grid.InsideArray(j + posOffsetX + 1, i + posOffsetY) && grid.InsideArray(j + posOffsetX, i + posOffsetY))
                         {
-                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == colour)))//Drop is valid if each block is above a zero or itself
+                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == colour)))//Sideways Movement is valid if each block is above a zero or itself
                             {
                                 count++;
                             }
