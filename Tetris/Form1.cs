@@ -21,53 +21,68 @@ namespace Tetris
         static Controller PlayerOne = new Controller();
         static Controller PlayerTwo = new Controller();
         static TetrisAIProcess AIPlayer = new TetrisAIProcess(PlayerTwo);
+        static TetrisAIProcess OtherAIPlayer = new TetrisAIProcess(PlayerOne);
         private int GarbageSent1 = 0, GarbageSent2 = 0;
         private bool ButtonHeld = false;
+        bool OnePieceIsPlace = false;
         private void Timer1_Tick(object sender, EventArgs e)
         {
             GarbageSent2 = PlayerOne.NumberOfGarbageSent();
             GarbageSent1 = PlayerTwo.NumberOfGarbageSent();
             PlayerOne.AddGarbageToBoard(GarbageSent1);
+            GarbageSent1 = 0;
             PlayerTwo.AddGarbageToBoard(GarbageSent2);
-            PlayerOne.SoftDrop();
-            PlayerTwo.SoftDrop();
+            GarbageSent2 = 0;
+            if (GarbageSent1 == 0)
+            {
+                PlayerOne.SoftDrop();
+            }
+            if (GarbageSent1 == 0)
+            {
+                PlayerTwo.SoftDrop();
+            }
             AIPlayer.UpdateControllerClass(PlayerTwo);
-            ProcessBoard(sender, e);
+            ProcessBoard(false);
         }
-        private void ProcessBoard(object sender, EventArgs e)
+        private void ProcessBoard(bool KeyPressProcess)
         {
             //PlayerOne.DisplayPieceShadow();
+            AIPlayer.UpdateControllerClass(PlayerTwo);
             Board1 = PlayerOne.GridDrawer();
             HeldValue1 = PlayerOne.DrawHeldShape();
             Board2 = PlayerTwo.GridDrawer();
             HeldValue2 = PlayerTwo.DrawHeldShape();
-            String aIDecision = AIPlayer.PathToDecision();
-            for (int i = 0; i < aIDecision.Length; i++)
+            string aIDecision = AIPlayer.PathToDecision();
+            
+            if (!KeyPressProcess && !OnePieceIsPlace)
             {
-                if (aIDecision[i] == 'H')
+                for (int i = 0; i < aIDecision.Length; i++)
                 {
-                    PlayerTwo.HardDrop();
-                }
-                if (aIDecision[i] == 'W')
-                {
-                    PlayerTwo.SpinShape();
-                }
-                if (aIDecision[i] == 'L')
-                {
-                    PlayerTwo.IncrementLeft();
-                }
-                if (aIDecision[i] == 'R')
-                {
-                    PlayerTwo.IncrementRight();
+                    if (aIDecision[i] == 'H')
+                    {
+                        PlayerTwo.HardDrop();
+                    }
+                    if (aIDecision[i] == 'W')
+                    {
+                        PlayerTwo.SpinShape();
+                    }
+                    if (aIDecision[i] == 'L')
+                    {
+                        PlayerTwo.IncrementLeft();
+                    }
+                    if (aIDecision[i] == 'R')
+                    {
+                        PlayerTwo.IncrementRight();
+                    }
                 }
             }
+            OnePieceIsPlace = true;
             this.Invalidate();
             this.Update();
         }
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
-        { 
-            AIPlayer.UpdateControllerClass(PlayerTwo);
+        {
             if (e.KeyCode == Keys.Up)
             {
                 PlayerOne.SpinShape();
@@ -99,7 +114,7 @@ namespace Tetris
             {
                 PlayerOne.Hold();
             }
-            ProcessBoard(sender, e);
+            ProcessBoard(true);
         }
 
         private void KeyUpEvent(object sender, KeyEventArgs e)
