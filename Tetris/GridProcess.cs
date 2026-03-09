@@ -96,6 +96,7 @@ namespace Tetris
                         Grid[j, i] = Grid[j, i - 1];
                     }
                 }
+                SetLineToNull(i-1);
             }
         }
         public void FillInGaps()//When Line completed pulls down lines above
@@ -129,6 +130,7 @@ namespace Tetris
                         AddALineToTheBoard(i);
                         Grid[rngHoleInGarbage.Next(0, 10), i] = EMPTYSPACE;
                     }
+                    numberOfGarbageSent = 0;
                 }
                 catch { }
             }

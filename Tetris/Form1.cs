@@ -30,17 +30,17 @@ namespace Tetris
             GarbageSent2 = PlayerOne.NumberOfGarbageSent();
             GarbageSent1 = PlayerTwo.NumberOfGarbageSent();
             PlayerOne.AddGarbageToBoard(GarbageSent1);
-            GarbageSent1 = 0;
-            PlayerTwo.AddGarbageToBoard(GarbageSent2);
-            GarbageSent2 = 0;
             if (GarbageSent1 == 0)
             {
                 PlayerOne.SoftDrop();
             }
-            if (GarbageSent1 == 0)
+            GarbageSent1 = 0;
+            PlayerTwo.AddGarbageToBoard(GarbageSent2);
+            if (GarbageSent2 == 0)
             {
                 PlayerTwo.SoftDrop();
             }
+            GarbageSent2 = 0;
             AIPlayer.UpdateControllerClass(PlayerTwo);
             ProcessBoard(false);
         }
