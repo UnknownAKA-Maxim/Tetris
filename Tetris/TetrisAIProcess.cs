@@ -35,7 +35,7 @@ namespace Tetris
         {
             int[] placeHolderValue = AllEndPositions[0];
             int[] bestPositionDecidedCoords = { placeHolderValue[0], placeHolderValue[1]};
-            int count = 0,pointsForBestValue = placeHolderValue[2];
+            int count = 0,pointsForBestValue = placeHolderValue[2],AmountOfTurns = 0;
             do
             {
                 placeHolderValue = AllEndPositions[0];
@@ -46,13 +46,14 @@ namespace Tetris
                     bestPositionDecidedCoords[0] = placeHolderValue[0];
                     bestPositionDecidedCoords[1] = placeHolderValue[1];
                     pointsForBestValue = placeHolderValue[2];
-                    for (int i = 0; i < placeHolderValue[3]; i++)
-                    {
-                        patternToReachBestPosition += "W";
-                    }
+                    AmountOfTurns = placeHolderValue[3];
                 }
                 AllEndPositions.Remove(placeHolderValue);
             } while (AllEndPositions.Count > 0);
+            for (int i = 0; i < AmountOfTurns; i++)
+            {
+                patternToReachBestPosition += "W";
+            }
             return bestPositionDecidedCoords;
         }
         public string PathToDecision()
@@ -64,12 +65,12 @@ namespace Tetris
                 if (coords[0] > STARTINGPOSITIONX)
                 {
                     coords[0]--;
-                    patternToReachBestPosition += "R";
+                    patternToReachBestPosition += "L";
                 }
                 else if (coords[0] != STARTINGPOSITIONX)
                 {
                     coords[0]++;
-                    patternToReachBestPosition += "L";
+                    patternToReachBestPosition += "R";
                 }
             }
             patternToReachBestPosition += "H";
