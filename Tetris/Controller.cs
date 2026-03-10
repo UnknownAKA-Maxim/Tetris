@@ -83,7 +83,9 @@ namespace Tetris
             if (shape.GarbageCanBeSent)
             {
                 shape.GarbageCanBeSent = false;
-                return garbageBuffered;
+                garbageBuffered = placeHolderVal;
+                garbageBuffered = 0;
+                return placeHolderVal;
             }            
             return 0;
         }
