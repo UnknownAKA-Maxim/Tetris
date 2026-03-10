@@ -18,8 +18,14 @@ namespace Tetris
         private int posOffsetX,posOffsetY;
         private const int HEIGHT = 23, WIDTH = 10, EMPTYSPACE = 0;
         private int garbageBuffered = 0;
+        private bool garbageCanBeReceived;
         public Controller()
         {
+        }
+        public bool GarbageCanBeReceived
+        {
+            get { return garbageCanBeReceived; } 
+            set { garbageCanBeReceived = value; }
         }
         public ShapeProcess Shape 
         { 
@@ -71,7 +77,7 @@ namespace Tetris
         {
             grid.AddGarbage(numberOfLinesSent);
         }
-        public int NumberOfGarbageSent()
+        public int NumberOfGarbageSent(bool GarbageCanBeSent)
         {
             int placeHolderVal = 0;
             if (grid.NumberOfBlocksSent == 1) placeHolderVal = 0;
