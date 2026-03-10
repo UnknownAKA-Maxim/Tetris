@@ -22,6 +22,7 @@ namespace Tetris
         private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
+        private bool garbageCanbeSent = false;
 
         public ShapeProcess(GridProcess Grid)
         {
@@ -29,7 +30,11 @@ namespace Tetris
             grid = Grid;
             MapShapeToArray();
         }
-
+        public bool GarbageCanBeSent
+        {
+            get { return garbageCanbeSent; }
+            set { garbageCanbeSent = value; }
+        }
         public int Colour
         {
             get { return colour; }
@@ -303,6 +308,7 @@ namespace Tetris
             {
                 grid.FillInGaps();
             }
+            garbageCanbeSent = true;
             HoldIsPossible = true;
             CreateNewShape();
         }

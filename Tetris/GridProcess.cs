@@ -124,7 +124,10 @@ namespace Tetris
             {
                 try
                 {
-                    ShiftLineUp();
+                    for (int i = 0; i < numberOfGarbageSent; i++)
+                    {
+                        ShiftLineUp();
+                    }
                     for (int i = 0; i < numberOfGarbageSent; i++)
                     {
                         AddALineToTheBoard(i);

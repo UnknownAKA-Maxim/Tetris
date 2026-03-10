@@ -17,7 +17,7 @@ namespace Tetris
         private int[,] ShadowedShape = new int[4,4];
         private int posOffsetX,posOffsetY;
         private const int HEIGHT = 23, WIDTH = 10, EMPTYSPACE = 0;
-        
+        private int garbageBuffered = 0;
         public Controller()
         {
         }
@@ -73,16 +73,19 @@ namespace Tetris
         }
         public int NumberOfGarbageSent()
         {
-            int placeHolderVal = grid.NumberOfBlocksSent;
-            if (placeHolderVal > 0) 
-            { 
-                grid.NumberOfBlocksSent = 0;
-                if (placeHolderVal == 1) placeHolderVal = 0 ;
-                if (placeHolderVal == 2) placeHolderVal = 1;
-                if (placeHolderVal == 3) placeHolderVal = 2;
-                if (placeHolderVal == 4) placeHolderVal = 4;
-            }
-            return placeHolderVal;
+            int placeHolderVal = 0;
+            if (grid.NumberOfBlocksSent == 1) placeHolderVal = 0;
+            if (grid.NumberOfBlocksSent == 2) placeHolderVal = 1;
+            if (grid.NumberOfBlocksSent == 3) placeHolderVal = 2;
+            if (grid.NumberOfBlocksSent == 4) placeHolderVal = 4;
+            grid.NumberOfBlocksSent = 0;
+            garbageBuffered += placeHolderVal;
+            if (shape.GarbageCanBeSent)
+            {
+                shape.GarbageCanBeSent = false;
+                return garbageBuffered;
+            }            
+            return 0;
         }
         private bool ValidDropForShadow()//if the drop is valid or not
         {

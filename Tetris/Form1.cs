@@ -24,7 +24,6 @@ namespace Tetris
         static TetrisAIProcess OtherAIPlayer = new TetrisAIProcess(PlayerOne);
         private int GarbageSent1 = 0, GarbageSent2 = 0;
         private bool ButtonHeld = false;
-        bool OnePieceIsPlace = false;
         private void Timer1_Tick(object sender, EventArgs e)
         {
             GarbageSent2 = PlayerOne.NumberOfGarbageSent();
@@ -54,7 +53,7 @@ namespace Tetris
             HeldValue2 = PlayerTwo.DrawHeldShape();
             string aIDecision = AIPlayer.PathToDecision();
             
-            if (!KeyPressProcess && !OnePieceIsPlace)
+            if (!KeyPressProcess)
             {
                 for (int i = 0; i < aIDecision.Length; i++)
                 {
@@ -76,7 +75,6 @@ namespace Tetris
                     }
                 }
             }
-            OnePieceIsPlace = true;
             this.Invalidate();
             this.Update();
         }
