@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Tetris
 {
@@ -85,6 +86,14 @@ namespace Tetris
                 Grid[i, yIndex] = Grid[i, yIndex + 1];
             }
         }
+        private bool LineIncludesCurrentShape(int y)
+        {
+            for (int i = 0; i < WIDTH; i++)
+            {
+                if (Grid[i, y] <= 7) return true;
+            }
+            return false;
+        }
         private void ShiftLineUp()
         {
             for (int i = HEIGHT - 1; i > 0; i--)
@@ -96,7 +105,8 @@ namespace Tetris
                         Grid[j, i] = Grid[j, i - 1];
                     }
                 }
-                SetLineToNull(i-1);
+
+                if (!LineIncludesCurrentShape(i)) SetLineToNull(i-1);
             }
         }
         public void FillInGaps()//When Line completed pulls down lines above

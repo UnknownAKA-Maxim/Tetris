@@ -56,11 +56,13 @@ namespace Tetris
         public void SoftDrop()
         {
             shape.Drop(false);
+            GarbageCanBeReceived = shape.GarbageCanBeRecievedToLocalGrid;
         }
         public void HardDrop()
         {
             shape.HardDrop(false);
             shape.Drop(false);
+            GarbageCanBeReceived = shape.GarbageCanBeRecievedToLocalGrid;
         }
         public void Hold()
         {

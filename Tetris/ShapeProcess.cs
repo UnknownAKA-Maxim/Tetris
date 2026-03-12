@@ -22,7 +22,7 @@ namespace Tetris
         private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
-        private bool garbageCanbeRecievedToLocalGrid = false, BlockIsOnTheFloor = false;
+        private bool garbageCanbeRecievedToLocalGrid;
 
         public ShapeProcess(GridProcess Grid)
         {

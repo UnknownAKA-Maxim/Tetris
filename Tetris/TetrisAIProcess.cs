@@ -50,8 +50,7 @@ namespace Tetris
                 }
                 AllEndPositions.Remove(placeHolderValue);
             } while (AllEndPositions.Count > 0);
-            for (int i = 0; i < AmountOfTurns; i++)
-            {
+            for (int i = 0; i < AmountOfTurns; i++)            {
                 patternToReachBestPosition += "W";
             }
             return bestPositionDecidedCoords;

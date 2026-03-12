@@ -21,27 +21,32 @@ namespace Tetris
         static Controller PlayerOne = new Controller();
         static Controller PlayerTwo = new Controller();
         static TetrisAIProcess AIPlayer = new TetrisAIProcess(PlayerTwo);
-        static TetrisAIProcess OtherAIPlayer = new TetrisAIProcess(PlayerOne);
         private int GarbageSent1 = 0, GarbageSent2 = 0;
         private bool ButtonHeld = false;
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            bool placeHolderValForGarbOne = PlayerOne.GarbageCanBeReceived;
-            bool placeHolderValForGarbTwo = PlayerTwo.GarbageCanBeReceived;
-            GarbageSent2 = PlayerOne.NumberOfGarbageSent(placeHolderValForGarbOne);
-            GarbageSent1 = PlayerTwo.NumberOfGarbageSent(placeHolderValForGarbTwo);
+            GarbageSent2 = PlayerOne.NumberOfGarbageSent(PlayerTwo.GarbageCanBeReceived);
+            GarbageSent1 = PlayerTwo.NumberOfGarbageSent(PlayerOne.GarbageCanBeReceived);
             PlayerOne.AddGarbageToBoard(GarbageSent1);
             if (GarbageSent1 == 0)
             {
                 PlayerOne.SoftDrop();
             }
-            GarbageSent1 = 0;
+            else 
+            {
+                GarbageSent1 = 0;
+                PlayerOne.GarbageCanBeReceived = false;
+            }
             PlayerTwo.AddGarbageToBoard(GarbageSent2);
             if (GarbageSent2 == 0)
             {
                 PlayerTwo.SoftDrop();
             }
-            GarbageSent2 = 0;
+            else
+            {
+                GarbageSent2 = 0;
+                PlayerTwo.GarbageCanBeReceived = false;
+            }
             ProcessBoard(false);
         }
         private void ProcessBoard(bool KeyPressProcess)
