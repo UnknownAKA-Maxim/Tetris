@@ -164,6 +164,11 @@ namespace Tetris
             }
         }
 
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+
+        }
+
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             DoubleBuffered = true;
