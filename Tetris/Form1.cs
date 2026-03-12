@@ -26,8 +26,10 @@ namespace Tetris
         private bool ButtonHeld = false;
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            GarbageSent2 = PlayerOne.NumberOfGarbageSent();
-            GarbageSent1 = PlayerTwo.NumberOfGarbageSent();
+            bool placeHolderValForGarbOne = PlayerOne.GarbageCanBeReceived;
+            bool placeHolderValForGarbTwo = PlayerTwo.GarbageCanBeReceived;
+            GarbageSent2 = PlayerOne.NumberOfGarbageSent(placeHolderValForGarbOne);
+            GarbageSent1 = PlayerTwo.NumberOfGarbageSent(placeHolderValForGarbTwo);
             PlayerOne.AddGarbageToBoard(GarbageSent1);
             if (GarbageSent1 == 0)
             {
@@ -40,7 +42,6 @@ namespace Tetris
                 PlayerTwo.SoftDrop();
             }
             GarbageSent2 = 0;
-            AIPlayer.UpdateControllerClass(PlayerTwo);
             ProcessBoard(false);
         }
         private void ProcessBoard(bool KeyPressProcess)

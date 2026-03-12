@@ -25,7 +25,7 @@ namespace Tetris
         public bool GarbageCanBeReceived
         {
             get { return garbageCanBeReceived; } 
-            set { garbageCanBeReceived = value; }
+            set { garbageCanBeReceived = shape.GarbageCanBeRecievedToLocalGrid; }
         }
         public ShapeProcess Shape 
         { 
@@ -39,6 +39,7 @@ namespace Tetris
         {
             grid = new GridProcess();
             shape = new ShapeProcess(grid);
+            GarbageCanBeReceived = shape.GarbageCanBeRecievedToLocalGrid;
         }
         public void IncrementLeft()
         {
@@ -75,7 +76,11 @@ namespace Tetris
         }
         public void AddGarbageToBoard(int numberOfLinesSent)
         {
-            grid.AddGarbage(numberOfLinesSent);
+            if (numberOfLinesSent > 0)
+            {
+                grid.AddGarbage(numberOfLinesSent);
+                shape.GarbageCanBeRecievedToLocalGrid = false;
+            }
         }
         public int NumberOfGarbageSent(bool GarbageCanBeSent)
         {
@@ -86,9 +91,8 @@ namespace Tetris
             if (grid.NumberOfBlocksSent == 4) placeHolderVal = 4;
             grid.NumberOfBlocksSent = 0;
             garbageBuffered += placeHolderVal;
-            if (shape.GarbageCanBeSent)
+            if (GarbageCanBeSent)
             {
-                shape.GarbageCanBeSent = false;
                 garbageBuffered = placeHolderVal;
                 garbageBuffered = 0;
                 return placeHolderVal;
