@@ -23,102 +23,86 @@ namespace Tetris
         static TetrisAIProcess AIPlayer = new TetrisAIProcess(PlayerTwo);
         private int GarbageSent1 = 0, GarbageSent2 = 0;
         private bool ButtonHeld = false;
+        private string aIDecision = "";
+        private bool StartGame = false;
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            GarbageSent2 = PlayerOne.NumberOfGarbageSent(PlayerTwo.GarbageCanBeReceived);
-            GarbageSent1 = PlayerTwo.NumberOfGarbageSent(PlayerOne.GarbageCanBeReceived);
-            PlayerOne.AddGarbageToBoard(GarbageSent1);
-            if (GarbageSent1 == 0)
+            if (StartGame)
             {
-                PlayerOne.SoftDrop();
+                GarbageSent2 = PlayerOne.NumberOfGarbageSent(PlayerTwo.GarbageCanBeReceived);
+                GarbageSent1 = PlayerTwo.NumberOfGarbageSent(PlayerOne.GarbageCanBeReceived);
+                PlayerOne.AddGarbageToBoard(GarbageSent1);
+                if (GarbageSent1 == 0)
+                {
+                    PlayerOne.SoftDrop();
+                }
+                else
+                {
+                    GarbageSent1 = 0;
+                    PlayerOne.GarbageCanBeReceived = false;
+                }
+                PlayerTwo.AddGarbageToBoard(GarbageSent2);
+                if (GarbageSent2 == 0)
+                {
+                    PlayerTwo.SoftDrop();
+                }
+                else
+                {
+                    GarbageSent2 = 0;
+                    PlayerTwo.GarbageCanBeReceived = false;
+                }
+                ProcessBoard();
             }
-            else 
-            {
-                GarbageSent1 = 0;
-                PlayerOne.GarbageCanBeReceived = false;
-            }
-            PlayerTwo.AddGarbageToBoard(GarbageSent2);
-            if (GarbageSent2 == 0)
-            {
-                PlayerTwo.SoftDrop();
-            }
-            else
-            {
-                GarbageSent2 = 0;
-                PlayerTwo.GarbageCanBeReceived = false;
-            }
-            ProcessBoard(false);
         }
-        private void ProcessBoard(bool KeyPressProcess)
+        private void ProcessBoard()
         {
             //PlayerOne.DisplayPieceShadow();
-            AIPlayer.UpdateControllerClass(PlayerTwo);
             Board1 = PlayerOne.GridDrawer();
             HeldValue1 = PlayerOne.DrawHeldShape();
             Board2 = PlayerTwo.GridDrawer();
             HeldValue2 = PlayerTwo.DrawHeldShape();
-            string aIDecision = AIPlayer.PathToDecision();
-            
-            if (!KeyPressProcess)
-            {
-                for (int i = 0; i < aIDecision.Length; i++)
-                {
-                    if (aIDecision[i] == 'H')
-                    {
-                        PlayerTwo.HardDrop();
-                    }
-                    if (aIDecision[i] == 'W')
-                    {
-                        PlayerTwo.SpinShape();
-                    }
-                    if (aIDecision[i] == 'L')
-                    {
-                        PlayerTwo.IncrementLeft();
-                    }
-                    if (aIDecision[i] == 'R')
-                    {
-                        PlayerTwo.IncrementRight();
-                    }
-                }
-            }
             this.Invalidate();
             this.Update();
         }
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Up)
+            if (e.KeyCode == Keys.Enter) StartGame = true;
+            if (StartGame)
             {
-                PlayerOne.SpinShape();
-            }
-
-            if (e.KeyCode == Keys.Down)
-            {
-                PlayerOne.SoftDrop();
-            }
-
-            if (e.KeyCode == Keys.Left)
-            {
-                PlayerOne.IncrementLeft();
-            }
-
-            if (e.KeyCode == Keys.Right)
-            {
-                PlayerOne.IncrementRight();
-            }
-            if (e.KeyCode == Keys.Space)
-            {
-                if (!ButtonHeld)
+                if (e.KeyCode == Keys.Up)
                 {
-                    PlayerOne.HardDrop();
-                    ButtonHeld = true;
+                    PlayerOne.SpinShape();
                 }
+
+                if (e.KeyCode == Keys.Down)
+                {
+                    PlayerOne.SoftDrop();
+                }
+
+                if (e.KeyCode == Keys.Left)
+                {
+                    PlayerOne.IncrementLeft();
+                }
+
+                if (e.KeyCode == Keys.Right)
+                {
+                    PlayerOne.IncrementRight();
+                }
+                if (e.KeyCode == Keys.Space)
+                {
+                    if (!ButtonHeld)
+                    {
+                        PlayerOne.HardDrop();
+                        ButtonHeld = true;
+                    }
+                }
+                if (e.KeyCode == Keys.ShiftKey)
+                {
+                    PlayerOne.Hold();
+                }
+                ProcessBoard();
             }
-            if (e.KeyCode == Keys.ShiftKey)
-            {
-                PlayerOne.Hold();
-            }
-            ProcessBoard(true);
         }
 
         private void KeyUpEvent(object sender, KeyEventArgs e)
@@ -141,9 +125,44 @@ namespace Tetris
             this.BackColor = System.Drawing.Color.White;
             PlayerOne.Run();
             PlayerTwo.Run();//AI
-            
             InitializeComponent();
-        }//
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (StartGame)
+            {
+                if (aIDecision == "")
+                {
+                    AIPlayer.UpdateControllerClass(PlayerTwo);
+                    aIDecision = AIPlayer.PathToDecision();
+                }
+                if (aIDecision[0] == 'H')
+                {
+                    PlayerTwo.HardDrop();
+                    aIDecision = "";
+
+                }
+                else
+                {
+                    if (aIDecision[0] == 'W')
+                    {
+                        PlayerTwo.SpinShape();
+                        aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
+                    }
+                    if (aIDecision[0] == 'L')
+                    {
+                        PlayerTwo.IncrementLeft();
+                        aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
+                    }
+                    if (aIDecision[0] == 'R')
+                    {
+                        PlayerTwo.IncrementRight();
+                        aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
+                    }
+                }
+            }
+        }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {

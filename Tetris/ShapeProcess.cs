@@ -23,7 +23,7 @@ namespace Tetris
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
         private bool garbageCanbeRecievedToLocalGrid;
-
+        private bool GameEnds = false;
         public ShapeProcess(GridProcess Grid)
         {
             currentShape = CurrentShape;
@@ -344,6 +344,7 @@ namespace Tetris
                 {
                     if (CurrentShape[j, i] == colour)
                     {
+                        if(grid.Grid[PosOffsetX + j, PosOffsetY + i] != EMPTYSPACE) { GameEnds = true; }
                         grid.Grid[PosOffsetX + j, PosOffsetY + i] = CurrentShape[j, i];
                     }
                 }
