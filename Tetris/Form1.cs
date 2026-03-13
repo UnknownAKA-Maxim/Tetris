@@ -23,8 +23,11 @@ namespace Tetris
         static TetrisAIProcess AIPlayer = new TetrisAIProcess(PlayerTwo);
         private int GarbageSent1 = 0, GarbageSent2 = 0;
         private bool ButtonHeld = false;
+        private string LastButtonPressed = "";
         private string aIDecision = "";
         private bool StartGame = false;
+        private int DirectionAutoRepeatRate = 2/*20ms*/,DASTimeElapsed = 0;
+        private int SoftDropRepeatRate = 1/*10ms*/, SFDTimeElapsed = 0;
         private void Timer1_Tick(object sender, EventArgs e)
         {
             if (StartGame)
@@ -57,9 +60,9 @@ namespace Tetris
         private void ProcessBoard()
         {
             //PlayerOne.DisplayPieceShadow();
-            Board1 = PlayerOne.GridDrawer();
+            Board1 = PlayerOne.GridDrawer(ref StartGame);
             HeldValue1 = PlayerOne.DrawHeldShape();
-            Board2 = PlayerTwo.GridDrawer();
+            Board2 = PlayerTwo.GridDrawer(ref StartGame);
             HeldValue2 = PlayerTwo.DrawHeldShape();
             this.Invalidate();
             this.Update();
@@ -67,7 +70,12 @@ namespace Tetris
 
         private void KeyDownEvent(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) StartGame = true;
+            if (e.KeyCode == Keys.Enter)
+            {
+                StartGame = true;
+                PlayerOne.Run();
+                PlayerTwo.Run();
+            }
             if (StartGame)
             {
                 if (e.KeyCode == Keys.Up)
@@ -77,22 +85,26 @@ namespace Tetris
 
                 if (e.KeyCode == Keys.Down)
                 {
-                    PlayerOne.SoftDrop();
+                    LastButtonPressed = "down";
+                    ButtonHeld = true;
                 }
 
                 if (e.KeyCode == Keys.Left)
                 {
-                    PlayerOne.IncrementLeft();
+                    LastButtonPressed = "left";
+                    ButtonHeld = true;
                 }
 
                 if (e.KeyCode == Keys.Right)
                 {
-                    PlayerOne.IncrementRight();
+                    LastButtonPressed = "right";
+                    ButtonHeld = true;
                 }
                 if (e.KeyCode == Keys.Space)
                 {
                     if (!ButtonHeld)
                     {
+                        LastButtonPressed = "space";
                         PlayerOne.HardDrop();
                         ButtonHeld = true;
                     }
@@ -110,9 +122,16 @@ namespace Tetris
             switch (e.KeyCode)
             {
                 case Keys.Down:
+                    ButtonHeld = false;
+                    break;
                 case Keys.Up:
+                    ButtonHeld = false;
+                    break;
                 case Keys.Left:
+                    ButtonHeld = false;
+                    break;
                 case Keys.Right:
+                    ButtonHeld = false;
                     break;
                 case Keys.Space:
                     ButtonHeld = false;
@@ -166,7 +185,35 @@ namespace Tetris
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-
+            if (ButtonHeld)
+            {
+                if (DirectionAutoRepeatRate == DASTimeElapsed)
+                {
+                    switch (LastButtonPressed)
+                    {
+                        case "left":
+                            PlayerOne.IncrementLeft();
+                            ProcessBoard();
+                            break;
+                        case "right":
+                            PlayerOne.IncrementRight();
+                            ProcessBoard();
+                            break;
+                    }
+                    DASTimeElapsed = 0;
+                }
+                else DASTimeElapsed++;
+                if (SoftDropRepeatRate == SFDTimeElapsed)
+                {
+                    if (LastButtonPressed == "down")
+                    {
+                        PlayerOne.SoftDrop();
+                        ProcessBoard();
+                        SFDTimeElapsed = 0;
+                    }
+                }
+                else SFDTimeElapsed++; ;
+            }
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)

@@ -23,12 +23,16 @@ namespace Tetris
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
         private bool garbageCanbeRecievedToLocalGrid;
-        private bool GameEnds = false;
+        private bool gameEnds = false;
         public ShapeProcess(GridProcess Grid)
         {
             currentShape = CurrentShape;
             grid = Grid;
             MapShapeToArray();
+        }
+        public bool GameEnds
+        {
+            get { return gameEnds; } set { gameEnds = value; }
         }
         public bool GarbageCanBeRecievedToLocalGrid
         {
@@ -344,7 +348,8 @@ namespace Tetris
                 {
                     if (CurrentShape[j, i] == colour)
                     {
-                        if(grid.Grid[PosOffsetX + j, PosOffsetY + i] != EMPTYSPACE) { GameEnds = true; }
+                        if(grid.Grid[PosOffsetX + j, PosOffsetY + i] != EMPTYSPACE && grid.Grid[PosOffsetX + j, PosOffsetY + i] != Colour) 
+                        { gameEnds = true; }
                         grid.Grid[PosOffsetX + j, PosOffsetY + i] = CurrentShape[j, i];
                     }
                 }

@@ -68,8 +68,12 @@ namespace Tetris
         {
             shape.Hold();
         }
-        public int[,] GridDrawer()
+        public int[,] GridDrawer(ref bool GameStart)
         {
+            if (shape.GameEnds)
+            {
+                GameStart = false;
+            }
             return grid.Grid;
         }
         public int[,] DrawHeldShape()
