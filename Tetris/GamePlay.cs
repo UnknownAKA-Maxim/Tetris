@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Tetris
 {
-    public partial class Form1 : Form
+    public partial class GamePlay : Form
     {
         const int WIDTH = 10, HEIGHT = 23;
         private int[,] Board2 = new int[WIDTH, HEIGHT];
@@ -28,6 +28,7 @@ namespace Tetris
         private bool StartGame = false;
         private int DirectionAutoRepeatRate = 2/*20ms*/,DASTimeElapsed = 0;
         private int SoftDropRepeatRate = 1/*10ms*/, SFDTimeElapsed = 0;
+        private int AutoRepeatRate = 4, AutoRepeatRateElapsed = 0;
         private void Timer1_Tick(object sender, EventArgs e)
         {
             if (StartGame)
@@ -139,11 +140,13 @@ namespace Tetris
             }
         }
 
-        public Form1()
+        public GamePlay()
         {
             this.BackColor = System.Drawing.Color.White;
             PlayerOne.Run();
             PlayerTwo.Run();//AI
+            MenusScreen Menu = new MenusScreen();
+            Menu.Show();
             InitializeComponent();
         }
 
