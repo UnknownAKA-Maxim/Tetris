@@ -39,18 +39,18 @@
             // 
             this.timer1.Enabled = true;
             this.timer1.Interval = 200;
-            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            this.timer1.Tick += new System.EventHandler(this.GarbageBufferTick);
             // 
             // timer2
             // 
             this.timer2.Enabled = true;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            this.timer2.Tick += new System.EventHandler(this.AIPathFindingTickEvent);
             // 
             // timer3
             // 
             this.timer3.Enabled = true;
             this.timer3.Interval = 10;
-            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+            this.timer3.Tick += new System.EventHandler(this.PlayerSensitivityTick);
             // 
             // Form1
             // 

@@ -26,10 +26,12 @@ namespace Tetris
         private string LastButtonPressed = "";
         private string aIDecision = "";
         private bool StartGame = false;
-        private int DirectionAutoRepeatRate = 2/*20ms*/,DASTimeElapsed = 0;
+        private int DelayAutoShift = 4/*20ms*/,DASTimeElapsed = 0;
         private int SoftDropRepeatRate = 1/*10ms*/, SFDTimeElapsed = 0;
-        private int AutoRepeatRate = 4, AutoRepeatRateElapsed = 0;
-        private void Timer1_Tick(object sender, EventArgs e)
+        private int AutoRepeatRate = 2, AutoRepeatRateElapsed = 0;
+        MenusScreen Menu;
+        private int NumberOfMenus = 0;
+        private void GarbageBufferTick(object sender, EventArgs e)
         {
             if (StartGame)
             {
@@ -76,6 +78,11 @@ namespace Tetris
                 StartGame = true;
                 PlayerOne.Run();
                 PlayerTwo.Run();
+                AutoRepeatRate = Menu.ARR;
+                DelayAutoShift = Menu.DAS;
+                SoftDropRepeatRate = Menu.SFD;
+                Menu.Close();
+                NumberOfMenus--;
             }
             if (StartGame)
             {
@@ -92,12 +99,20 @@ namespace Tetris
 
                 if (e.KeyCode == Keys.Left)
                 {
+                    if (!ButtonHeld)
+                    {
+                        PlayerOne.IncrementLeft();
+                    }
                     LastButtonPressed = "left";
                     ButtonHeld = true;
                 }
 
                 if (e.KeyCode == Keys.Right)
                 {
+                    if (!ButtonHeld)
+                    {
+                        PlayerOne.IncrementRight();
+                    }
                     LastButtonPressed = "right";
                     ButtonHeld = true;
                 }
@@ -105,10 +120,10 @@ namespace Tetris
                 {
                     if (!ButtonHeld)
                     {
-                        LastButtonPressed = "space";
                         PlayerOne.HardDrop();
-                        ButtonHeld = true;
                     }
+                    LastButtonPressed = "space";
+                    ButtonHeld = true;
                 }
                 if (e.KeyCode == Keys.ShiftKey)
                 {
@@ -130,9 +145,11 @@ namespace Tetris
                     break;
                 case Keys.Left:
                     ButtonHeld = false;
+                    DASTimeElapsed = 0;
                     break;
                 case Keys.Right:
                     ButtonHeld = false;
+                    DASTimeElapsed = 0;
                     break;
                 case Keys.Space:
                     ButtonHeld = false;
@@ -145,12 +162,10 @@ namespace Tetris
             this.BackColor = System.Drawing.Color.White;
             PlayerOne.Run();
             PlayerTwo.Run();//AI
-            MenusScreen Menu = new MenusScreen();
-            Menu.Show();
             InitializeComponent();
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
+        private void AIPathFindingTickEvent(object sender, EventArgs e)
         {
             if (StartGame)
             {
@@ -163,7 +178,6 @@ namespace Tetris
                 {
                     PlayerTwo.HardDrop();
                     aIDecision = "";
-
                 }
                 else
                 {
@@ -186,24 +200,28 @@ namespace Tetris
             }
         }
 
-        private void timer3_Tick(object sender, EventArgs e)
+        private void PlayerSensitivityTick(object sender, EventArgs e)
         {
             if (ButtonHeld)
             {
-                if (DirectionAutoRepeatRate == DASTimeElapsed)
+                if (DelayAutoShift == DASTimeElapsed)
                 {
-                    switch (LastButtonPressed)
+                    if (AutoRepeatRate == AutoRepeatRateElapsed)
                     {
-                        case "left":
-                            PlayerOne.IncrementLeft();
-                            ProcessBoard();
-                            break;
-                        case "right":
-                            PlayerOne.IncrementRight();
-                            ProcessBoard();
-                            break;
+                        switch (LastButtonPressed)
+                        {
+                            case "left":
+                                PlayerOne.IncrementLeft();
+                                ProcessBoard();
+                                break;
+                            case "right":
+                                PlayerOne.IncrementRight();
+                                ProcessBoard();
+                                break;
+                        }
+                        AutoRepeatRateElapsed = 0;
                     }
-                    DASTimeElapsed = 0;
+                    else AutoRepeatRateElapsed++;
                 }
                 else DASTimeElapsed++;
                 if (SoftDropRepeatRate == SFDTimeElapsed)
@@ -215,7 +233,7 @@ namespace Tetris
                         SFDTimeElapsed = 0;
                     }
                 }
-                else SFDTimeElapsed++; ;
+                else SFDTimeElapsed++;
             }
         }
 
@@ -280,6 +298,12 @@ namespace Tetris
                 held1PositionX = HELD1OFFSETX;
                 held2PositionY += SPACEBETWEENSQUARES + SQUARESIZE;
                 held2PositionX = HELD2OFFSETX;
+            }
+            if (!StartGame && NumberOfMenus < 1)
+            {
+                Menu = new MenusScreen();
+                Menu.Show();
+                NumberOfMenus++;
             }
         }
 
