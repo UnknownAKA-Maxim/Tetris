@@ -12,7 +12,7 @@ namespace Tetris
 {
     public partial class MenusScreen : Form
     {
-        private int dAS,sFD,aRR;
+        private int dAS = 1,sFD = 1,aRR = 1;
         public MenusScreen()
         {
             InitializeComponent();
@@ -34,19 +34,37 @@ namespace Tetris
         }
         private void DASSensitivity(object sender, EventArgs e)
         {
-            aRR = AutoRepeatRateTrackBar.Value;
+            DAS = DelayAutoShiftTrackBar.Value;//DelayAutoShiftTrackBar
+            label5.Text = $"DAS:{dAS}0ms ARR:{aRR}0ms SFD:{sFD}0ms";
+            this.Invalidate();
+            this.Update();
         }
         private void StartButton(object sender, EventArgs e)
         { 
             this.Close();
         }
+
+        private void DefaultSettings(object sender, EventArgs e)
+        {
+            ARR = 3;
+            DAS = 5;
+            SFD = 2;
+            label5.Text = $"DAS:{dAS}0ms ARR:{aRR}0ms SFD:{sFD}0ms";
+        }
+
         private void ARRSensitivity(object sender, EventArgs e)
         {
-            dAS = DelayAutoShiftTrackBar.Value;
+            ARR = AutoRepeatRateTrackBar.Value;//AutoRepeatRateTrackBar
+            label5.Text = $"DAS:{dAS}0ms ARR:{aRR}0ms SFD:{sFD}0ms";
+            this.Invalidate();
+            this.Update();
         }
         private void SFDSensitivity(object sender, EventArgs e)
         {
-            sFD =SoftDropTrackBar.Value;
+            SFD =SoftDropTrackBar.Value;
+            label5.Text = $"DAS:{dAS}0ms ARR:{aRR}0ms SFD:{sFD}0ms";
+            this.Invalidate();
+            this.Update();
         }
     }
 }
