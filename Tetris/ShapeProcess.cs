@@ -19,6 +19,7 @@ namespace Tetris
         private int posOffsetX = 3, posOffsetY = 19;
         private int colour = 1, HeldColour = 1;//both set to one just to initialise
         private Stack<int> currentBag = new Stack<int>();
+        private Stack<int> SecondBag = new Stack<int>();
         private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
@@ -54,6 +55,11 @@ namespace Tetris
             get { return currentBag; }
             set { currentBag = value; }
         }
+        public int[,] DisplayCurrentBag()
+        {
+
+            return null;
+        }
         public int PosOffsetY
         {
             get { return posOffsetY; }
@@ -88,31 +94,36 @@ namespace Tetris
             get { if (!IsEmptyOrNull(currentShape)) return currentShape; return ShapeChoose(); }
             set { currentShape = value; }
         }
-        private void NewBag()
+        private Stack<int> NewBag(Stack<int> bag)
         {
             int[] placeHolderValueForBag = new int[7];
             int count = 0;
+            Stack<int> PlaceHolderBag = new Stack<int>();
             bool valueHasBeenUsed;
             int placeholderVal;
             Random rng = new Random();
-            while (count != 7)
+            for (int SecondBag = 0; SecondBag < 2; SecondBag++)
             {
-                valueHasBeenUsed = false;
-                placeholderVal = rng.Next(1, 8);
-                for (int i = 0; i < placeHolderValueForBag.Length - 1; i++)
+                while (count != 7)
                 {
-                    if (placeholderVal == placeHolderValueForBag[i])
+                    valueHasBeenUsed = false;
+                    placeholderVal = rng.Next(1, 8);
+                    for (int i = 0; i < placeHolderValueForBag.Length - 1; i++)
                     {
-                        valueHasBeenUsed = true;
+                        if (placeholderVal == placeHolderValueForBag[i])
+                        {
+                            valueHasBeenUsed = true;
+                        }
+                    }
+                    if (!valueHasBeenUsed)
+                    {
+                        placeHolderValueForBag[count] = placeholderVal;
+                        bag.Push(placeholderVal);
+                        count++;
                     }
                 }
-                if (!valueHasBeenUsed)
-                {
-                    placeHolderValueForBag[count] = placeholderVal;
-                    CurrentBag.Push(placeholderVal);
-                    count++;
-                }
             }
+            return bag;
         }
         private bool ValidTurn()
         {

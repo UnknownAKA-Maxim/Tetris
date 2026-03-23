@@ -30,7 +30,7 @@ namespace Tetris
         private int SoftDropRepeatRate = 1/*10ms*/, SFDTimeElapsed = 0;
         private int AutoRepeatRate = 2, AutoRepeatRateElapsed = 0;
         MenusScreen Menu;
-        private int NumberOfMenus = 0;
+        private bool MenuHasBeenDisplayed = false;
         private void GarbageBufferTick(object sender, EventArgs e)
         {
             if (StartGame)
@@ -82,7 +82,6 @@ namespace Tetris
                 DelayAutoShift = Menu.DAS;
                 SoftDropRepeatRate = Menu.SFD;
                 Menu.Close();
-                NumberOfMenus--;
             }
             if (StartGame)
             {
@@ -242,13 +241,15 @@ namespace Tetris
             DoubleBuffered = true;
             const int SPACEBETWEENSQUARES = 6;
             const int SQUARESIZE = 20;
-            const int BOARDOFFSET1X = 128, BOARDOFFSET1Y = 5, HELD1OFFSETX = -32, HELD1OFFSETY = 5;
+            const int BOARDOFFSET1X = 128, BOARDOFFSET1Y = 5, HELD1OFFSETX = -30, HELD1OFFSETY = 5, NEXTSHAPEDISPLAYX = 388,NEXTSHAPEDISPLAYY = 5;
             const int BOARDOFFSET2X = 720, BOARDOFFSET2Y = 5, HELD2OFFSETX = 560, HELD2OFFSETY = 5;
             //BoardOne Stuff
             int board1PositionX = BOARDOFFSET1X;
             int board1PositionY = BOARDOFFSET1Y;
             int held1PositionX = HELD1OFFSETX;
             int held1PositionY = HELD1OFFSETY;
+            int NextShapeDisplayX = NEXTSHAPEDISPLAYX;
+            int NextShapeDisplayY = NEXTSHAPEDISPLAYY;
             //BoardTwo Stuff
             int board2PositionX = BOARDOFFSET2X;
             int board2PositionY = BOARDOFFSET2Y;
@@ -299,11 +300,11 @@ namespace Tetris
                 held2PositionY += SPACEBETWEENSQUARES + SQUARESIZE;
                 held2PositionX = HELD2OFFSETX;
             }
-            if (!StartGame && NumberOfMenus < 1)
+            if (!StartGame && !MenuHasBeenDisplayed)
             {
                 Menu = new MenusScreen();
                 Menu.Show();
-                NumberOfMenus++;
+                MenuHasBeenDisplayed = true;
             }
         }
 

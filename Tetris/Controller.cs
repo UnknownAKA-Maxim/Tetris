@@ -35,6 +35,11 @@ namespace Tetris
         {
             get { return grid; }
         }
+        public int[] GetDisplay()
+        {
+            shape.DisplayCurrentBag();
+            return null;
+        }
         public void Run()
         {
             grid = new GridProcess();
