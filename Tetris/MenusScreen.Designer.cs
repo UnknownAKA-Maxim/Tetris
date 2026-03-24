@@ -154,7 +154,7 @@
             this.AccessibleName = "DelayAuto";
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1105, 774);
+            this.ClientSize = new System.Drawing.Size(1105, 749);
             this.Controls.Add(this.AutoRepeatRateTrackBar);
             this.Controls.Add(this.DelayAutoShiftTrackBar);
             this.Controls.Add(this.label5);
@@ -167,6 +167,7 @@
             this.Controls.Add(this.button1);
             this.Name = "MenusScreen";
             this.Text = "Form2";
+            this.Load += new System.EventHandler(this.MenusScreen_Load);
             ((System.ComponentModel.ISupportInitialize)(this.SoftDropTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DelayAutoShiftTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AutoRepeatRateTrackBar)).EndInit();

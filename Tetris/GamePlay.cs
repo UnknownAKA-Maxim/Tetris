@@ -155,12 +155,6 @@ namespace Tetris
                     break;
             }
         }
-
-        private void GamePlay_Load(object sender, EventArgs e)
-        {
-
-        }
-
         public GamePlay()
         {
             this.BackColor = System.Drawing.Color.White;

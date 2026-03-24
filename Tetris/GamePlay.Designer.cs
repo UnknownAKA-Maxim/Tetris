@@ -59,7 +59,6 @@
             this.ClientSize = new System.Drawing.Size(1240, 749);
             this.Name = "GamePlay";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.GamePlay_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownEvent);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyUpEvent);
