@@ -37,6 +37,7 @@ namespace Tetris
             {
                 GarbageSent2 = PlayerOne.NumberOfGarbageSent(PlayerTwo.GarbageCanBeReceived);
                 GarbageSent1 = PlayerTwo.NumberOfGarbageSent(PlayerOne.GarbageCanBeReceived);
+                PlayerOne.AddGarbageToBoard(GarbageSent1);
                 if (GarbageSent1 == 0)
                 {
                     PlayerOne.SoftDrop();
@@ -164,7 +165,7 @@ namespace Tetris
 
         private void AIPathFindingTickEvent(object sender, EventArgs e)
         {
-            if (StartGame)
+            if(StartGame)
             {
                 if (aIDecision == "")
                 {
