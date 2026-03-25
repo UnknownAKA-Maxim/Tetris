@@ -37,7 +37,6 @@ namespace Tetris
             {
                 GarbageSent2 = PlayerOne.NumberOfGarbageSent(PlayerTwo.GarbageCanBeReceived);
                 GarbageSent1 = PlayerTwo.NumberOfGarbageSent(PlayerOne.GarbageCanBeReceived);
-                PlayerOne.AddGarbageToBoard(GarbageSent1);
                 if (GarbageSent1 == 0)
                 {
                     PlayerOne.SoftDrop();

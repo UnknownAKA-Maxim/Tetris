@@ -18,7 +18,7 @@ namespace Tetris
         private int posOffsetX,posOffsetY;
         private const int HEIGHT = 23, WIDTH = 10, EMPTYSPACE = 0;
         private int garbageBuffered = 0;
-        private bool garbageCanBeReceived;
+        private bool garbageCanBeReceived = false;
         public Controller()
         {
         }
@@ -100,15 +100,8 @@ namespace Tetris
             if (grid.NumberOfBlocksSent == 2) placeHolderVal = 1;
             if (grid.NumberOfBlocksSent == 3) placeHolderVal = 2;
             if (grid.NumberOfBlocksSent == 4) placeHolderVal = 4;
-            grid.NumberOfBlocksSent = 0;
-            garbageBuffered += placeHolderVal;
-            if (GarbageCanBeSent)
-            {
-                garbageBuffered = placeHolderVal;
-                garbageBuffered = 0;
-                return placeHolderVal;
-            }            
-            return 0;
+            grid.NumberOfBlocksSent = 0;       
+            return placeHolderVal;
         }
         private bool ValidDropForShadow()//if the drop is valid or not
         {
