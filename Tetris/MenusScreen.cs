@@ -52,6 +52,11 @@ namespace Tetris
             label5.Text = $"DAS:{dAS}0ms ARR:{aRR}0ms SFD:{sFD}0ms";
         }
 
+        private void MenusScreen_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void ARRSensitivity(object sender, EventArgs e)
         {
             ARR = AutoRepeatRateTrackBar.Value;//AutoRepeatRateTrackBar

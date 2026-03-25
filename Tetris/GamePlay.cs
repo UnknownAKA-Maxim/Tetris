@@ -154,7 +154,6 @@ namespace Tetris
                     break;
             }
         }
-
         public GamePlay()
         {
             this.BackColor = System.Drawing.Color.White;

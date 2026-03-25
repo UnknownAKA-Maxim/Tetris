@@ -94,7 +94,7 @@ namespace Tetris
             get { if (!IsEmptyOrNull(currentShape)) return currentShape; return ShapeChoose(); }
             set { currentShape = value; }
         }
-        private Stack<int> NewBag(Stack<int> bag)
+        private void NewBag(Stack<int> bag)
         {
             int[] placeHolderValueForBag = new int[7];
             int count = 0;
@@ -123,7 +123,6 @@ namespace Tetris
                     }
                 }
             }
-            return bag;
         }
         private bool ValidTurn()
         {
@@ -179,7 +178,7 @@ namespace Tetris
         {
             if (IsEmptyOrNullStack(CurrentBag))
             {
-                NewBag();
+                NewBag(CurrentBag);
             }
             int[,] shape = new int[4, 4];
             currentShapeNumber = CurrentBag.Pop();
