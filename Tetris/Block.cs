@@ -36,70 +36,39 @@ namespace Tetris
                                                   };
         public int[] NinetyDegreeSpin(int PositionX, int PositionY, int CurrentRotation)
         {
-            int FutureBlockPosition;
+            int FutureBlockPosition = 0;
+            int[,] ShapeMapping = null;
             int[] XYPOS = { 0, 0 };
             switch (CurrentRotation % 3)
             {
                 case 0:
                     FutureBlockPosition = PositionY * 4 + PositionX;
-                    for (int i = 0; i <= WIDTH; i++)
-                    {
-                        for (int j = 0; j <= HEIGHT; j++)
-                        {
-                            if (ShapeMappingDictionary90[j, i] == FutureBlockPosition)
-                            {
-                                XYPOS[0] = i;//column X
-                                XYPOS[1] = j;//row    Y
-                                return XYPOS;
-                            }
-                        }
-                    }
+                    ShapeMapping = ShapeMappingDictionary90;
                     break;
                 case 1:
                     FutureBlockPosition = 12 + PositionY - (PositionX * 4);
-                    for (int i = 0; i <= WIDTH; i++)
-                    {
-                        for (int j = 0; j <= HEIGHT; j++)
-                        {
-                            if (ShapeMappingDictionary180[j, i] == FutureBlockPosition)
-                            {
-                                XYPOS[0] = i;//column
-                                XYPOS[1] = j;//row
-                                return XYPOS;
-                            }
-                        }
-                    }
+                    ShapeMapping = ShapeMappingDictionary180;
                     break;
                 case 2:
                     FutureBlockPosition = 15 - (PositionY * 4) - PositionX;
-                    for (int i = 0; i <= WIDTH; i++)
-                    {
-                        for (int j = 0; j <= HEIGHT; j++)
-                        {
-                            if (ShapeMappingDictionary270[j, i] == FutureBlockPosition)
-                            {
-                                XYPOS[0] = i;//column
-                                XYPOS[1] = j;//row
-                                return XYPOS;
-                            }
-                        }
-                    }
+                    ShapeMapping = ShapeMappingDictionary270;
                     break;
                 case 3:
                     FutureBlockPosition = 3 + PositionY + (PositionX * 4);
-                    for (int i = 0; i <= WIDTH; i++)
-                    {
-                        for (int j = 0; j <= HEIGHT; j++)
-                        {
-                            if (ShapeMappingDictionary0[j, i] == FutureBlockPosition)
-                            {
-                                XYPOS[0] = i;//column
-                                XYPOS[1] = j;//row
-                                return XYPOS;
-                            }
-                        }
-                    }
+                    ShapeMapping = ShapeMappingDictionary0;
                     break;
+            }
+            for (int i = 0; i <= WIDTH; i++)
+            {
+                for (int j = 0; j <= HEIGHT; j++)
+                {
+                    if (ShapeMapping[j, i] == FutureBlockPosition)
+                    {
+                        XYPOS[0] = i;//column X
+                        XYPOS[1] = j;//row    Y
+                        return XYPOS;
+                    }
+                }
             }
             return null;
         }

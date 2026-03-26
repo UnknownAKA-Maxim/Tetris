@@ -271,13 +271,13 @@ namespace Tetris
                 for (int j = WIDTH - 1; j >= 0; j--)
                 {
                     //BoardOne
-                    Brush b = new SolidBrush(GetCol(Board1[j, i]));
+                    Brush b = new SolidBrush(GetColour(Board1[j, i]));
                     board1PositionX += SPACEBETWEENSQUARES + SQUARESIZE;
                     square[j, i] = new Rectangle(board1PositionX, board1PositionY, SQUARESIZE, SQUARESIZE);
                     e.Graphics.FillRectangle(b, square[j, i]);
 
                     //BoardTwo
-                    Brush c = new SolidBrush(GetCol(Board2[j, i]));
+                    Brush c = new SolidBrush(GetColour(Board2[j, i]));
                     board2PositionX += SPACEBETWEENSQUARES + SQUARESIZE;
                     square[j, i] = new Rectangle(board2PositionX, board2PositionY, SQUARESIZE, SQUARESIZE);
                     e.Graphics.FillRectangle(c, square[j, i]);
@@ -294,12 +294,12 @@ namespace Tetris
                 for (int j = 0; j < 4; j++)
                 {
                     //
-                    Brush b = new SolidBrush(GetCol(HeldValue1[j, i]));
+                    Brush b = new SolidBrush(GetColour(HeldValue1[j, i]));
                     held1PositionX += SQUARESIZE + SPACEBETWEENSQUARES;
                     heldSquare[j, i] = new Rectangle(held1PositionX, held1PositionY, SQUARESIZE, SQUARESIZE);
                     e.Graphics.FillRectangle(b, heldSquare[j, i]);
                     //
-                    Brush c = new SolidBrush(GetCol(HeldValue2[j, i]));
+                    Brush c = new SolidBrush(GetColour(HeldValue2[j, i]));
                     held2PositionX += SQUARESIZE + SPACEBETWEENSQUARES;
                     heldSquare[j, i] = new Rectangle(held2PositionX, held2PositionY, SQUARESIZE, SQUARESIZE);
                     e.Graphics.FillRectangle(c, heldSquare[j, i]);
@@ -317,7 +317,7 @@ namespace Tetris
             }
         }
 
-        private static Color GetCol(int colNum)//Each colour is represented as different number
+        private static Color GetColour(int colNum)//Each colour is represented as different number
         {
             switch (colNum)
             {
