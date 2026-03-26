@@ -27,7 +27,6 @@ namespace Tetris
         }
         public bool LineIsComplete(int y)//If a Line is full
         {
-
             int numberOfBlocksFilled = 0;
             for (int i = 0; i < WIDTH; i++)
             {
@@ -45,20 +44,11 @@ namespace Tetris
         }
         public bool InsideArray(int x, int y)//Still inside the grid
         {
-            if (x >= 0 && x <= WIDTH - 1 && y >= 0 && y <= HEIGHT - 1)
-            {
-                return true;
-            }
-            else return false;
+            return x >= 0 && x <= WIDTH - 1 && y >= 0 && y <= HEIGHT - 1;
         }
         public bool BlockIsClear(int x, int y)
         {
-            if (InsideArray(x, y) && (grid[x, y] == EMPTYSPACE || grid[x, y] == SHADOWPIECE) )
-            {
-                return true;
-
-            }
-            return false;
+            return InsideArray(x, y) && (grid[x, y] == EMPTYSPACE || grid[x, y] == SHADOWPIECE);
         }
         public bool LineIsEmpty(int y)//If every block in a line is equal to 0
         {
@@ -155,10 +145,7 @@ namespace Tetris
             {
                 for (int j = WIDTH - 1; j >= 0; j--)
                 {
-                    if (Grid[j, i] == 1)
-                        output += Grid[j, i];
-                    else
-                        output += Grid[j, i];
+                    output += Grid[j, i];
                 }
                 output += "\n";
             }

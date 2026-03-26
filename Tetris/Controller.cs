@@ -110,10 +110,6 @@ namespace Tetris
             {
                 for (int j = 0; j <= 3; j++)
                 {
-                    if (posOffsetY+j < 0)
-                    {
-
-                    }
                     if (grid.InsideArray(j + posOffsetX, i + posOffsetY - 1))
                     {
                         if ((grid.Grid[j + posOffsetX, i + posOffsetY] == PIECESHADOW || grid.Grid[j + posOffsetX, i + posOffsetY] == shape.Colour) && (grid.Grid[j + posOffsetX, i + posOffsetY - 1] == EMPTYSPACE || grid.Grid[j + posOffsetX, i + posOffsetY - 1] == PIECESHADOW || grid.Grid[j + posOffsetX, i + posOffsetY - 1] == shape.Colour))//Drop is valid if each block is above a zero or itself
@@ -123,11 +119,7 @@ namespace Tetris
                     }
                 }
             }
-            if (numb > 3)
-            {
-                return true;
-            }
-            return false;
+            return numb > 3;
         }
         private void InitialiseShadowToZero(int HorizontalMovement)
         {
@@ -164,7 +156,7 @@ namespace Tetris
             {
                 InitialiseShadowToZero(0);
                 posOffsetY--;
-               MapShadowToArray();
+                MapShadowToArray();
             }
         }
         public void DisplayPieceShadow()

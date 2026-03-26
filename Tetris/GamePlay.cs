@@ -87,48 +87,42 @@ namespace Tetris
             }
             if (StartGame)
             {
-                if (e.KeyCode == Keys.Up)
+                switch (e.KeyCode)
                 {
-                    PlayerOne.SpinShape();
-                }
-
-                if (e.KeyCode == Keys.Down)
-                {
-                    LastButtonPressed = "down";
-                    ButtonHeld = true;
-                }
-
-                if (e.KeyCode == Keys.Left)
-                {
-                    if (!ButtonHeld)
-                    {
-                        PlayerOne.IncrementLeft();
-                    }
-                    LastButtonPressed = "left";
-                    ButtonHeld = true;
-                }
-
-                if (e.KeyCode == Keys.Right)
-                {
-                    if (!ButtonHeld)
-                    {
-                        PlayerOne.IncrementRight();
-                    }
-                    LastButtonPressed = "right";
-                    ButtonHeld = true;
-                }
-                if (e.KeyCode == Keys.Space)
-                {
-                    if (!ButtonHeld)
-                    {
-                        PlayerOne.HardDrop();
-                    }
-                    LastButtonPressed = "space";
-                    ButtonHeld = true;
-                }
-                if (e.KeyCode == Keys.ShiftKey)
-                {
-                    PlayerOne.Hold();
+                    case Keys.Up:
+                        PlayerOne.SpinShape();
+                        break;
+                    case Keys.Down:
+                        LastButtonPressed = "down";
+                        ButtonHeld = true;
+                        break;
+                    case Keys.Left:
+                        if (!ButtonHeld)
+                        {
+                            PlayerOne.IncrementLeft();
+                        }
+                        LastButtonPressed = "left";
+                        ButtonHeld = true;
+                        break;
+                    case Keys.Right:
+                        if (!ButtonHeld)
+                        {
+                            PlayerOne.IncrementRight();
+                        }
+                        LastButtonPressed = "right";
+                        ButtonHeld = true;
+                        break;
+                    case Keys.Space:
+                        if (!ButtonHeld)
+                        {
+                            PlayerOne.HardDrop();
+                        }
+                        LastButtonPressed = "space";
+                        ButtonHeld = true;
+                        break;
+                    case Keys.ShiftKey:
+                        PlayerOne.Hold();
+                        break;
                 }
                 ProcessBoard();
             }
@@ -139,21 +133,14 @@ namespace Tetris
             switch (e.KeyCode)
             {
                 case Keys.Down:
-                    ButtonHeld = false;
-                    break;
                 case Keys.Up:
+                case Keys.Space:
                     ButtonHeld = false;
                     break;
                 case Keys.Left:
-                    ButtonHeld = false;
-                    DASTimeElapsed = 0;
-                    break;
                 case Keys.Right:
                     ButtonHeld = false;
                     DASTimeElapsed = 0;
-                    break;
-                case Keys.Space:
-                    ButtonHeld = false;
                     break;
             }
         }
@@ -271,13 +258,13 @@ namespace Tetris
                 for (int j = WIDTH - 1; j >= 0; j--)
                 {
                     //BoardOne
-                    Brush b = new SolidBrush(GetCol(Board1[j, i]));
+                    Brush b = new SolidBrush(GetColour(Board1[j, i]));
                     board1PositionX += SPACEBETWEENSQUARES + SQUARESIZE;
                     square[j, i] = new Rectangle(board1PositionX, board1PositionY, SQUARESIZE, SQUARESIZE);
                     e.Graphics.FillRectangle(b, square[j, i]);
 
                     //BoardTwo
-                    Brush c = new SolidBrush(GetCol(Board2[j, i]));
+                    Brush c = new SolidBrush(GetColour(Board2[j, i]));
                     board2PositionX += SPACEBETWEENSQUARES + SQUARESIZE;
                     square[j, i] = new Rectangle(board2PositionX, board2PositionY, SQUARESIZE, SQUARESIZE);
                     e.Graphics.FillRectangle(c, square[j, i]);
@@ -294,12 +281,12 @@ namespace Tetris
                 for (int j = 0; j < 4; j++)
                 {
                     //
-                    Brush b = new SolidBrush(GetCol(HeldValue1[j, i]));
+                    Brush b = new SolidBrush(GetColour(HeldValue1[j, i]));
                     held1PositionX += SQUARESIZE + SPACEBETWEENSQUARES;
                     heldSquare[j, i] = new Rectangle(held1PositionX, held1PositionY, SQUARESIZE, SQUARESIZE);
                     e.Graphics.FillRectangle(b, heldSquare[j, i]);
                     //
-                    Brush c = new SolidBrush(GetCol(HeldValue2[j, i]));
+                    Brush c = new SolidBrush(GetColour(HeldValue2[j, i]));
                     held2PositionX += SQUARESIZE + SPACEBETWEENSQUARES;
                     heldSquare[j, i] = new Rectangle(held2PositionX, held2PositionY, SQUARESIZE, SQUARESIZE);
                     e.Graphics.FillRectangle(c, heldSquare[j, i]);
@@ -317,9 +304,9 @@ namespace Tetris
             }
         }
 
-        private static Color GetCol(int colNum)//Each colour is represented as different number
+        private static Color GetColour(int colour)//Each colour is represented as different number
         {
-            switch (colNum)
+            switch (colour)
             {
                 case 1: return Color.FromArgb(255, 145, 180);
                 case 2: return Color.FromArgb(255, 217, 118);

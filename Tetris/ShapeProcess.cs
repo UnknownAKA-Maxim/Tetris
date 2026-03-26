@@ -148,11 +148,7 @@ namespace Tetris
                     
                 }
             }
-            if (overLaps)
-            {
-                return false;
-            }
-            return true;
+            return !overLaps;
         }
         public void TurnShape() //spins the shape
         {
@@ -174,96 +170,57 @@ namespace Tetris
             }
             grid = MapShapeToArray();
         }
+        private int[,] GetShape(int colour)
+        {
+            int[,] shape = new int[4, 4];
+            switch (colour)
+            {
+                case 1:
+                    //I PIECE
+                    shape[2, 0] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
+                    return shape;
+                case 2:
+                    //O PIECE
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[2, 2] = colour;
+                    return shape;
+                case 3:
+                    //S PIECE
+                    shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour;
+                    return shape;
+                case 4:
+                    //Z PIECE
+                    shape[2, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
+                    return shape;
+                case 5:
+                    //L PIECE
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
+                    return shape;
+                case 6:
+                    //J PIECE
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[1, 3] = colour;
+                    return shape;
+                case 7:
+                    //T PIECE
+                    shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
+                    return shape;
+                default:
+                    return shape;
+            }
+        }
         public int[,] ShapeChoose()//Implemented using the bag system
         {
             if (IsEmptyOrNullStack(CurrentBag))
             {
                 NewBag(CurrentBag);
             }
-            int[,] shape = new int[4, 4];
             currentShapeNumber = CurrentBag.Pop();
-            switch (currentShapeNumber)
-            {
-                case 1:
-                    //I PIECE
-                    Colour = 1;
-                    shape[2, 0] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
-                    break;
-                case 2:
-                    //O PIECE
-                    Colour = 2;
-                    shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[2, 2] = colour;
-                    break;
-                case 3:
-                    //S PIECE
-                    Colour = 3;
-                    shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour;
-                    break;
-                case 4:
-                    //Z PIECE
-                    Colour = 4;
-                    shape[2, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
-                    break;
-                case 5:
-                    //L PIECE
-                    Colour = 5;
-                    shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
-                    break;
-                case 6:
-                    //J PIECE
-                    Colour = 6;
-                    shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[1, 3] = colour;
-                    break;
-                case 7:
-                    //T PIECE
-                    Colour = 7;
-                    shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
-                    break;
-            }
-            return shape;
+            Colour = currentShapeNumber;
+            return GetShape(currentShapeNumber);
         }
         public int[,] PrintHeldShape()
         {
-            int[,] HeldshapeMatch = new int[4, 4];
-            switch (HeldValue)
-            {
-                case 1:
-                    //I PIECE
-                    HeldColour = 1;
-                    HeldshapeMatch[2, 0] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[2, 2] = HeldColour; HeldshapeMatch[2, 3] = HeldColour;
-                    break;
-                case 2:
-                    //O PIECE
-                    HeldColour = 2;
-                    HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[1, 2] = HeldColour; HeldshapeMatch[2, 2] = HeldColour;
-                    break;
-                case 3:
-                    //S PIECE
-                    HeldColour = 3;
-                    HeldshapeMatch[1, 0] = HeldColour; HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[2, 2] = HeldColour;
-                    break;
-                case 4:
-                    //Z PIECE
-                    HeldColour = 4;
-                    HeldshapeMatch[2, 0] = HeldColour; HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[1, 2] = HeldColour;
-                    break;
-                case 5:
-                    //L PIECE
-                    HeldColour = 5;
-                    HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[2, 2] = HeldColour; HeldshapeMatch[2, 3] = HeldColour;
-                    break;
-                case 6:
-                    //J PIECE
-                    HeldColour = 6;
-                    HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[1, 2] = HeldColour; HeldshapeMatch[1, 3] = HeldColour;
-                    break;
-                case 7:
-                    //T PIECE
-                    HeldColour = 7;
-                    HeldshapeMatch[1, 0] = HeldColour; HeldshapeMatch[1, 1] = HeldColour; HeldshapeMatch[2, 1] = HeldColour; HeldshapeMatch[1, 2] = HeldColour;
-                    break;
-            }
-            return HeldshapeMatch;
+            HeldColour = HeldValue;
+            return GetShape(HeldColour);
         }
         private bool ValidDrop()//if the drop is valid or not
         {
@@ -281,11 +238,7 @@ namespace Tetris
                     }
                 }
             }
-            if (numb > 3)
-            {
-                return true;
-            }
-            return false;
+            return numb > 3;
         }
         public void Drop(bool PhantomMove)
         {
@@ -366,58 +319,32 @@ namespace Tetris
             }
             return grid;
         }
-        public bool ValidHorizontalMovement(string directionParameter)
+        public bool ValidHorizontalMovement(string direction)
         {
-            if (directionParameter == "R")
+            int dx = direction == "R" ? -1 : 1;
+            int count = 0;
+            for (int i = 0; i <= 3; i++)
             {
-                int count = 0;
-                for (int i = 0; i <= 3; i++)
+                for (int j = 0; j <= 3; j++)
                 {
-                    for (int j = 0; j <= 3; j++)
+                    if (grid.InsideArray(j + posOffsetX + dx, i + posOffsetY) && grid.InsideArray(j + posOffsetX, i + posOffsetY))
                     {
-                        if (grid.InsideArray(j + posOffsetX - 1, i + posOffsetY) && grid.InsideArray(j + posOffsetX, i + posOffsetY))
+                        if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX + dx, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX + dx, i + posOffsetY] == colour)))//Sideways Movement is valid if each block is above a zero or itself
                         {
-                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX - 1, i + posOffsetY] == colour)))//Sideways Movement is valid if each block is above a zero or itself
-                            {
-                                count++;
-                            }
+                            count++;
                         }
                     }
                 }
-                if (count == 4) return true;
             }
-            else
-            {
-                int count = 0;
-                for (int i = 0; i <= 3; i++)
-                {
-                    for (int j = 0; j <= 3; j++)
-                    {
-                        if (grid.InsideArray(j + posOffsetX + 1, i + posOffsetY) && grid.InsideArray(j + posOffsetX, i + posOffsetY))
-                        {
-                            if ((grid.Grid[j + posOffsetX, i + posOffsetY] == colour) && ((grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == 0) || (grid.Grid[j + PosOffsetX + 1, i + posOffsetY] == colour)))//Sideways Movement is valid if each block is above a zero or itself
-                            {
-                                count++;
-                            }
-                        }
-                    }
-                }
-                if (count == 4) return true;
-            }
-            return false;
+            return count == 4;
         }
         public void HorizontalMovement(string direction)
         {
-
-            if (direction == "L" && ValidHorizontalMovement(direction))
+            if (ValidHorizontalMovement(direction))
             {
-                PosOffsetX++;
-                InitialiseGridsShapeToZero(-1);
-            }
-            if (direction == "R" && ValidHorizontalMovement(direction))
-            {
-                PosOffsetX--;
-                InitialiseGridsShapeToZero(1);
+                int dx = direction == "R" ? -1 : 1;
+                PosOffsetX += dx;
+                InitialiseGridsShapeToZero(-dx);
             }
             MapShapeToArray();
         }
