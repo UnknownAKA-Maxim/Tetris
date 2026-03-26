@@ -31,6 +31,7 @@ namespace Tetris
         private int AutoRepeatRate = 2, AutoRepeatRateElapsed = 0;
         MenusScreen Menu;
         private bool MenuHasBeenDisplayed = false;
+        private int DifficultyMode = 0,DifficultyModeTickDelay;
         private void GarbageBufferTick(object sender, EventArgs e)
         {
             if (StartGame)
@@ -81,6 +82,7 @@ namespace Tetris
                 AutoRepeatRate = Menu.ARR;
                 DelayAutoShift = Menu.DAS;
                 SoftDropRepeatRate = Menu.SFD;
+                DifficultyMode = Menu.DifficultyMode*2;
                 Menu.Close();
             }
             if (StartGame)
@@ -167,33 +169,41 @@ namespace Tetris
         {
             if(StartGame)
             {
-                if (aIDecision == "")
+                if (DifficultyModeTickDelay == 0)
                 {
-                    AIPlayer.UpdateControllerClass(PlayerTwo);
-                    aIDecision = AIPlayer.PathToDecision();
-                }
-                if (aIDecision[0] == 'H')
-                {
-                    PlayerTwo.HardDrop();
-                    aIDecision = "";
+                    if (aIDecision == "")
+                    {
+                        AIPlayer.UpdateControllerClass(PlayerTwo);
+                        aIDecision = AIPlayer.PathToDecision();
+                    }
+                    if (aIDecision[0] == 'H')
+                    {
+                        PlayerTwo.HardDrop();
+                        aIDecision = "";
+                    }
+                    else
+                    {
+                        if (aIDecision[0] == 'W')
+                        {
+                            PlayerTwo.SpinShape();
+                            aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
+                        }
+                        if (aIDecision[0] == 'L')
+                        {
+                            PlayerTwo.IncrementLeft();
+                            aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
+                        }
+                        if (aIDecision[0] == 'R')
+                        {
+                            PlayerTwo.IncrementRight();
+                            aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
+                        }
+                    }
+                    DifficultyModeTickDelay = DifficultyMode;
                 }
                 else
                 {
-                    if (aIDecision[0] == 'W')
-                    {
-                        PlayerTwo.SpinShape();
-                        aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
-                    }
-                    if (aIDecision[0] == 'L')
-                    {
-                        PlayerTwo.IncrementLeft();
-                        aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
-                    }
-                    if (aIDecision[0] == 'R')
-                    {
-                        PlayerTwo.IncrementRight();
-                        aIDecision = aIDecision.Substring(1, aIDecision.Length - 1);
-                    }
+                    DifficultyModeTickDelay--;
                 }
             }
         }
