@@ -11,10 +11,10 @@ namespace Tetris
 {
     internal class GridProcess
     {
-        private readonly int[,] grid = new int[WIDTH, HEIGHT];
+        private readonly Tile[,] grid = new Tile[WIDTH, HEIGHT];
         private const int HEIGHT = 23, WIDTH = 10,EMPTYSPACE = 0,SHADOWPIECE = -1;
         private int numberOfBlocksSent = 0;
-        public int[,] Grid
+        public Tile[,] Grid
         {
             get { return grid; }
 
@@ -48,7 +48,7 @@ namespace Tetris
         }
         public bool BlockIsClear(int x, int y)
         {
-            return InsideArray(x, y) && (grid[x, y] == EMPTYSPACE || grid[x, y] == SHADOWPIECE);
+            return InsideArray(x, y) && (grid[x, y] == Tile.None || grid[x, y] == Tile.Shadow);
         }
         public bool LineIsEmpty(int y)//If every block in a line is equal to 0
         {
@@ -80,7 +80,7 @@ namespace Tetris
         {
             for (int i = 0; i < WIDTH; i++)
             {
-                if (Grid[i, y] <= 7) return true;
+                if (!Grid[i, y].HasFlag(Tile.Placed)) return true;
             }
             return false;
         }
@@ -90,7 +90,7 @@ namespace Tetris
             {
                 for (int j = 0; j < WIDTH; j++)
                 {
-                    if ((Grid[j, i] > 7 || BlockIsClear(j, i)) && (Grid[j, i - 1] > 7 || BlockIsClear(j, i - 1)))
+                    if ((Grid[j, i].HasFlag(Tile.Placed) || BlockIsClear(j, i)) && (Grid[j, i - 1].HasFlag(Tile.Placed) || BlockIsClear(j, i - 1)))
                     {
                         Grid[j, i] = Grid[j, i - 1];
                     }
@@ -114,7 +114,7 @@ namespace Tetris
         {
             for (int i = 0; i < WIDTH; i++)
             {
-                Grid[i, yIndex] = 9;
+                Grid[i, yIndex] = Tile.PlacedO;
             }
         }
         public void AddGarbage(int numberOfGarbageSent)

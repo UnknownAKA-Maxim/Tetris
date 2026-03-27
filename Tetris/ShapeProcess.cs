@@ -13,15 +13,15 @@ namespace Tetris
     internal class ShapeProcess : Block
     {
         private const int EMPTYSPACE = 0, PIECESHADOW = -1;
-        private int[,] currentShape = new int[4, 4];
+        private Tile[,] currentShape = new Tile[4, 4];
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
         private int posOffsetX = 3, posOffsetY = 19;
-        private int colour = 1, HeldColour = 1;//both set to one just to initialise
-        private Stack<int> currentBag = new Stack<int>();
-        private Stack<int> SecondBag = new Stack<int>();
-        private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
-        private int HeldValue = 0;//The Shapes number assigned to the held value
+        private Tile colour = (Tile)1, HeldColour = (Tile)1;//both set to one just to initialise
+        private Stack<Tile> currentBag = new Stack<Tile>();
+        private Stack<Tile> SecondBag = new Stack<Tile>();
+        private Tile currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
+        private Tile HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
         private bool garbageCanbeRecievedToLocalGrid;
         private bool gameEnds = false;
@@ -40,7 +40,7 @@ namespace Tetris
             get { return garbageCanbeRecievedToLocalGrid; }
             set { garbageCanbeRecievedToLocalGrid = value; }
         }
-        public int Colour
+        public Tile Colour
         {
             get { return colour; }
             set { colour = value; }
@@ -50,7 +50,7 @@ namespace Tetris
             get { return posOffsetX; }
             set { posOffsetX = value; }
         }
-        private Stack<int> CurrentBag
+        private Stack<Tile> CurrentBag
         {
             get { return currentBag; }
             set { currentBag = value; }
@@ -73,28 +73,28 @@ namespace Tetris
         }
         private bool IsEmptyOrNull(Array array)
         {
-            foreach (int x in array)
+            foreach (Tile x in array)
             {
                 if (x == colour)
                     return false;
             }
             return true;
         }
-        private bool IsEmptyOrNullStack(Stack<int> stack)
+        private bool IsEmptyOrNullStack(Stack<Tile> stack)
         {
-            foreach (int x in stack)
+            foreach (Tile x in stack)
             {
                 if (x != 0)
                     return false;
             }
             return true;
         }
-        public int[,] CurrentShape
+        public Tile[,] CurrentShape
         {
             get { if (!IsEmptyOrNull(currentShape)) return currentShape; return ShapeChoose(); }
             set { currentShape = value; }
         }
-        private void NewBag(Stack<int> bag)
+        private void NewBag(Stack<Tile> bag)
         {
             int[] placeHolderValueForBag = new int[7];
             int count = 0;
@@ -118,7 +118,7 @@ namespace Tetris
                     if (!valueHasBeenUsed)
                     {
                         placeHolderValueForBag[count] = placeholderVal;
-                        bag.Push(placeholderVal);
+                        bag.Push((Tile)placeholderVal);
                         count++;
                     }
                 }
@@ -154,7 +154,7 @@ namespace Tetris
         {
             if (ValidTurn())
             {
-                int[,] placeHolderVAL = new int[4, 4];
+                Tile[,] placeHolderVAL = new Tile[4, 4];
                 for (int pHeight = 0; pHeight <= 3; pHeight++)
                 {
                     for (int pWidth = 0; pWidth <= 3; pWidth++)
@@ -170,44 +170,37 @@ namespace Tetris
             }
             grid = MapShapeToArray();
         }
-        private int[,] GetShape(int colour)
+        private Tile[,] GetShape(Tile s)
         {
-            int[,] shape = new int[4, 4];
-            switch (colour)
+            Tile[,] shape = new Tile[4, 4];
+            switch (s)
             {
-                case 1:
-                    //I PIECE
+                case Tile.I:
                     shape[2, 0] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
                     return shape;
-                case 2:
-                    //O PIECE
+                case Tile.O:
                     shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[2, 2] = colour;
                     return shape;
-                case 3:
-                    //S PIECE
+                case Tile.S:
                     shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour;
                     return shape;
-                case 4:
-                    //Z PIECE
+                case Tile.Z:
                     shape[2, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
                     return shape;
-                case 5:
-                    //L PIECE
+                case Tile.L:
                     shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
                     return shape;
-                case 6:
-                    //J PIECE
+                case Tile.J:
                     shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[1, 3] = colour;
                     return shape;
-                case 7:
-                    //T PIECE
+                case Tile.T:
                     shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
                     return shape;
                 default:
                     return shape;
             }
         }
-        public int[,] ShapeChoose()//Implemented using the bag system
+        public Tile[,] ShapeChoose()//Implemented using the bag system
         {
             if (IsEmptyOrNullStack(CurrentBag))
             {
@@ -217,7 +210,7 @@ namespace Tetris
             Colour = currentShapeNumber;
             return GetShape(currentShapeNumber);
         }
-        public int[,] PrintHeldShape()
+        public Tile[,] PrintHeldShape()
         {
             HeldColour = HeldValue;
             return GetShape(HeldColour);
@@ -265,7 +258,7 @@ namespace Tetris
                     {
                         if (grid.Grid[PosOffsetX + j, PosOffsetY + i] == colour)
                         {
-                            grid.Grid[PosOffsetX + j, PosOffsetY + i] += 7;//This is for placed values just incase other parts of the program are affected
+                            grid.Grid[PosOffsetX + j, PosOffsetY + i] |= Tile.Placed;//This is for placed values just incase other parts of the program are affected
                         }
                     }
                 }

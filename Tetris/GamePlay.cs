@@ -14,10 +14,10 @@ namespace Tetris
     public partial class GamePlay : Form
     {
         const int WIDTH = 10, HEIGHT = 23;
-        private int[,] Board2 = new int[WIDTH, HEIGHT];
-        private int[,] Board1 = new int[WIDTH, HEIGHT];
-        private int[,] HeldValue1 = new int[4, 4];
-        private int[,] HeldValue2 = new int[4, 4];
+        private Tile[,] Board2 = new Tile[WIDTH, HEIGHT];
+        private Tile[,] Board1 = new Tile[WIDTH, HEIGHT];
+        private Tile[,] HeldValue1 = new Tile[4, 4];
+        private Tile[,] HeldValue2 = new Tile[4, 4];
         static Controller PlayerOne = new Controller();
         static Controller PlayerTwo = new Controller();
         static TetrisAIProcess AIPlayer = new TetrisAIProcess(PlayerTwo);
@@ -304,26 +304,26 @@ namespace Tetris
             }
         }
 
-        private static Color GetColour(int colour)//Each colour is represented as different number
+        private static Color GetColour(Tile shape)
         {
-            switch (colour)
+            switch (shape)
             {
-                case 1: return Color.FromArgb(255, 145, 180);
-                case 2: return Color.FromArgb(255, 217, 118);
-                case 3: return Color.FromArgb(150, 144, 255);
-                case 4: return Color.LightBlue;
-                case 5: return Color.FromArgb(150, 211, 236);
-                case 6: return Color.Chartreuse;
-                case 7: return Color.DarkOrchid;
+                case Tile.I: return Color.FromArgb(255, 145, 180);
+                case Tile.O: return Color.FromArgb(255, 217, 118);
+                case Tile.S: return Color.FromArgb(150, 144, 255);
+                case Tile.Z: return Color.LightBlue;
+                case Tile.L: return Color.FromArgb(150, 211, 236);
+                case Tile.J: return Color.Chartreuse;
+                case Tile.T: return Color.DarkOrchid;
                     //placed Value Colours
-                case 8: return Color.FromArgb(255, 145, 180);
-                case 9: return Color.FromArgb(255, 217, 118);
-                case 10: return Color.FromArgb(150, 144, 255);
-                case 11: return Color.LightBlue;
-                case 12: return Color.FromArgb(150, 211, 236);
-                case 13: return Color.Chartreuse;
-                case 14: return Color.DarkOrchid;
-                case -1: return Color.Gray;
+                case Tile.PlacedI: return Color.FromArgb(255, 145, 180);
+                case Tile.PlacedO: return Color.FromArgb(255, 217, 118);
+                case Tile.PlacedS: return Color.FromArgb(150, 144, 255);
+                case Tile.PlacedZ: return Color.LightBlue;
+                case Tile.PlacedL: return Color.FromArgb(150, 211, 236);
+                case Tile.PlacedJ: return Color.Chartreuse;
+                case Tile.PlacedT: return Color.DarkOrchid;
+                case Tile.Shadow: return Color.Gray;
                     //Emptyspace
                 default:
                     return Color.Black;

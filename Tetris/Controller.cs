@@ -14,7 +14,7 @@ namespace Tetris
         private GridProcess grid;
         private ShapeProcess shape;
         private const int PIECESHADOW = -1;
-        private int[,] ShadowedShape = new int[4,4];
+        private Tile[,] ShadowedShape = new Tile[4,4];
         private int posOffsetX,posOffsetY;
         private const int HEIGHT = 23, WIDTH = 10, EMPTYSPACE = 0;
         private int garbageBuffered = 0;
@@ -73,7 +73,7 @@ namespace Tetris
         {
             shape.Hold();
         }
-        public int[,] GridDrawer(ref bool GameStart)
+        public Tile[,] GridDrawer(ref bool GameStart)
         {
             if (shape.GameEnds)
             {
@@ -81,7 +81,7 @@ namespace Tetris
             }
             return grid.Grid;
         }
-        public int[,] DrawHeldShape()
+        public Tile[,] DrawHeldShape()
         {
             return shape.PrintHeldShape();
         }
@@ -112,7 +112,11 @@ namespace Tetris
                 {
                     if (grid.InsideArray(j + posOffsetX, i + posOffsetY - 1))
                     {
-                        if ((grid.Grid[j + posOffsetX, i + posOffsetY] == PIECESHADOW || grid.Grid[j + posOffsetX, i + posOffsetY] == shape.Colour) && (grid.Grid[j + posOffsetX, i + posOffsetY - 1] == EMPTYSPACE || grid.Grid[j + posOffsetX, i + posOffsetY - 1] == PIECESHADOW || grid.Grid[j + posOffsetX, i + posOffsetY - 1] == shape.Colour))//Drop is valid if each block is above a zero or itself
+                        if ((grid.Grid[j + posOffsetX, i + posOffsetY] == Tetris.Tile.Shadow
+                            || grid.Grid[j + posOffsetX, i + posOffsetY] == shape.Colour)
+                            && (grid.Grid[j + posOffsetX, i + posOffsetY - 1] == Tetris.Tile.None
+                            || grid.Grid[j + posOffsetX, i + posOffsetY - 1] == Tetris.Tile.Shadow
+                            || grid.Grid[j + posOffsetX, i + posOffsetY - 1] == shape.Colour))//Drop is valid if each block is above a zero or itself
                         {
                             numb++;
                         }
@@ -127,9 +131,9 @@ namespace Tetris
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    if (grid.Grid[j,i] == PIECESHADOW)
+                    if (grid.Grid[j,i] == Tetris.Tile.Shadow)
                     {
-                        grid.Grid[j,i] = EMPTYSPACE;
+                        grid.Grid[j,i] = Tetris.Tile.None;
                     }
                 }
             }
@@ -142,7 +146,7 @@ namespace Tetris
                 {
                     if (grid.BlockIsClear(posOffsetX + j, posOffsetY + i))
                     {
-                        if (ShadowedShape[j, i] == PIECESHADOW)
+                        if (ShadowedShape[j, i] == Tetris.Tile.Shadow)
                         {
                             grid.Grid[posOffsetX + j, posOffsetY + i] = ShadowedShape[j, i];
                         }
@@ -170,7 +174,7 @@ namespace Tetris
                 {
                     if(ShadowedShape[j, i] == shape.Colour)
                     {
-                        ShadowedShape[j, i] = PIECESHADOW;
+                        ShadowedShape[j, i] = Tetris.Tile.Shadow;
                     }
                 }
             }

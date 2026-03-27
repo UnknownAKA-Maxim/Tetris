@@ -63,6 +63,7 @@
     <Compile Include="GridProcess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shape.cs" />
     <Compile Include="ShapeProcess.cs" />
     <Compile Include="TetrisAIProcess.cs" />
     <EmbeddedResource Include="GamePlay.resx">
