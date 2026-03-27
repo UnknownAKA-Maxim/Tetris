@@ -12,7 +12,7 @@ namespace Tetris
     internal class GridProcess
     {
         private readonly Tile[,] grid = new Tile[WIDTH, HEIGHT];
-        private const int HEIGHT = 23, WIDTH = 10,EMPTYSPACE = 0,SHADOWPIECE = -1;
+        private const int HEIGHT = 23, WIDTH = 10;
         private int numberOfBlocksSent = 0;
         public Tile[,] Grid
         {
@@ -48,7 +48,7 @@ namespace Tetris
         }
         public bool BlockIsClear(int x, int y)
         {
-            return InsideArray(x, y) && (grid[x, y] == Tile.None || grid[x, y] == Tile.Shadow);
+            return InsideArray(x, y) && (grid[x, y] == Tile.Empty || grid[x, y] == Tile.Shadow);
         }
         public bool LineIsEmpty(int y)//If every block in a line is equal to 0
         {
@@ -131,7 +131,7 @@ namespace Tetris
                     for (int i = 0; i < numberOfGarbageSent; i++)
                     {
                         AddALineToTheBoard(i);
-                        Grid[rngHoleInGarbage.Next(0, 10), i] = EMPTYSPACE;
+                        Grid[rngHoleInGarbage.Next(0, 10), i] = Tile.Empty;
                     }
                     numberOfGarbageSent = 0;
                 }

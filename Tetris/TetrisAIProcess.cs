@@ -15,7 +15,7 @@ namespace Tetris
         private ShapeProcess CurrentShapeManaged;
         private GridProcess CurrentGrid;
         private List<int[]> AllEndPositions = new List<int[]>();
-        private const int STARTINGPOSITIONX = 3,MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY = 19,EMPTYSPACE = 0;
+        private const int STARTINGPOSITIONX = 3, MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY = 19;
         private string patternToReachBestPosition;
         public TetrisAIProcess(Controller PlayerTwo) 
         {
@@ -82,7 +82,7 @@ namespace Tetris
             {
                 for (int j = 0; j < WIDTH; j++)
                 {
-                    if (CurrentGrid.Grid[j , i] == EMPTYSPACE && CurrentGrid.Grid[j,i+1] != 0)
+                    if (CurrentGrid.Grid[j , i] == Tile.Empty && CurrentGrid.Grid[j,i+1] != Tile.Empty)
                     {
                         numberOfHoles++;
                     }
