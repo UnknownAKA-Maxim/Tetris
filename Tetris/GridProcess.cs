@@ -14,11 +14,17 @@ namespace Tetris
         private readonly int[,] grid = new int[WIDTH, HEIGHT];
         private const int HEIGHT = 23, WIDTH = 10,EMPTYSPACE = 0,SHADOWPIECE = -1;
         private int numberOfBlocksSent = 0;
+        private bool currentShapeIsInGarbage = false;
         public int[,] Grid
         {
             get { return grid; }
 
             set { Grid = value; }
+        }
+        public bool CurrentShapeIsInGarbage
+        {
+            get { return currentShapeIsInGarbage; }
+            set { currentShapeIsInGarbage = value; }
         }
         public int NumberOfBlocksSent
         {
@@ -94,15 +100,29 @@ namespace Tetris
             }
             return false;
         }
+        private bool BlockIncludesAnyPlacedValues(int x, int y)
+        {
+            if (Grid[x, y] > 7) return true;
+            return false;
+        }
+        private bool BlockIncludesCurrentShape(int x,int y)
+        {
+            if (Grid[x, y] <= 7 && !BlockIsClear(x,y)) return true;
+            return false;
+        }
         private void ShiftLineUp()
         {
             for (int i = HEIGHT - 1; i > 0; i--)
             {
                 for (int j = 0; j < WIDTH; j++)
                 {
-                    if ((Grid[j, i] > 7 || BlockIsClear(j, i)) && (Grid[j, i - 1] > 7 || BlockIsClear(j, i - 1)))
+                    if ((Grid[j, i] > 7 ||BlockIsClear(j, i)) && (Grid[j, i - 1] > 7 || BlockIsClear(j, i - 1)))
                     {
                         Grid[j, i] = Grid[j, i - 1];
+                    }
+                    if (BlockIncludesCurrentShape(j,i) && BlockIncludesAnyPlacedValues(j,i-1))
+                    {
+                        CurrentShapeIsInGarbage = true;
                     }
                 }
 
@@ -127,9 +147,17 @@ namespace Tetris
                 Grid[i, yIndex] = 9;
             }
         }
-        public void AddGarbage(int numberOfGarbageSent)
+        public void AddLinesWithHoles(int numberOfGarbageSent)
         {
             Random rngHoleInGarbage = new Random();
+            for (int i = 0; i < numberOfGarbageSent; i++)
+            {
+                AddALineToTheBoard(i);
+                Grid[rngHoleInGarbage.Next(0, 10), i] = EMPTYSPACE;
+            }
+        }
+        public bool AddGarbage(int numberOfGarbageSent)
+        {
             if (numberOfGarbageSent > 0)
             {
                 try
@@ -138,15 +166,14 @@ namespace Tetris
                     {
                         ShiftLineUp();
                     }
-                    for (int i = 0; i < numberOfGarbageSent; i++)
+                    if (!CurrentShapeIsInGarbage)
                     {
-                        AddALineToTheBoard(i);
-                        Grid[rngHoleInGarbage.Next(0, 10), i] = EMPTYSPACE;
+                        AddLinesWithHoles(numberOfGarbageSent);
                     }
-                    numberOfGarbageSent = 0;
                 }
                 catch { }
             }
+            return CurrentShapeIsInGarbage;
         }
         public string DrawGrid()
         {

@@ -13,7 +13,7 @@ namespace Tetris
     public partial class MenusScreen : Form
     {
         private int dAS = 1,sFD = 1,aRR = 1;
-        private int difficultyMode = 1;
+        private int difficultyMode = 0;
         public MenusScreen()
         {
             InitializeComponent();
@@ -75,7 +75,7 @@ namespace Tetris
 
         private void HardMode(object sender, EventArgs e)
         {
-            DifficultyMode = 1;
+            DifficultyMode = 0;
         }
 
         private void ARRSensitivity(object sender, EventArgs e)

@@ -23,7 +23,6 @@ namespace Tetris
         private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;
-        private bool garbageCanbeRecievedToLocalGrid;
         private bool gameEnds = false;
         public ShapeProcess(GridProcess Grid)
         {
@@ -34,11 +33,6 @@ namespace Tetris
         public bool GameEnds
         {
             get { return gameEnds; } set { gameEnds = value; }
-        }
-        public bool GarbageCanBeRecievedToLocalGrid
-        {
-            get { return garbageCanbeRecievedToLocalGrid; }
-            set { garbageCanbeRecievedToLocalGrid = value; }
         }
         public int Colour
         {
@@ -322,7 +316,6 @@ namespace Tetris
             {
                 grid.FillInGaps();
             }
-            GarbageCanBeRecievedToLocalGrid = true;
             HoldIsPossible = true;
             CreateNewShape();
         }

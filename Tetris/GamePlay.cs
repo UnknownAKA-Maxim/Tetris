@@ -36,8 +36,8 @@ namespace Tetris
         {
             if (StartGame)
             {
-                GarbageSent2 = PlayerOne.NumberOfGarbageSent(PlayerTwo.GarbageCanBeReceived);
-                GarbageSent1 = PlayerTwo.NumberOfGarbageSent(PlayerOne.GarbageCanBeReceived);
+                GarbageSent2 = PlayerOne.NumberOfGarbageSent();
+                GarbageSent1 = PlayerTwo.NumberOfGarbageSent();
                 PlayerOne.AddGarbageToBoard(GarbageSent1);
                 if (GarbageSent1 == 0)
                 {
@@ -46,7 +46,6 @@ namespace Tetris
                 else
                 {
                     GarbageSent1 = 0;
-                    PlayerOne.GarbageCanBeReceived = false;
                 }
                 PlayerTwo.AddGarbageToBoard(GarbageSent2);
                 if (GarbageSent2 == 0)
@@ -56,7 +55,6 @@ namespace Tetris
                 else
                 {
                     GarbageSent2 = 0;
-                    PlayerTwo.GarbageCanBeReceived = false;
                 }
                 ProcessBoard();
             }
