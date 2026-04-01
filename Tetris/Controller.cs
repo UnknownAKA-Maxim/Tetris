@@ -89,18 +89,18 @@ namespace Tetris
         {
             if (numberOfLinesSent > 0)
             {
-                grid.AddGarbage(numberOfLinesSent);
+                shape.QueueGarbage(numberOfLinesSent);//Queues garbage
                 shape.GarbageCanBeRecievedToLocalGrid = false;
             }
         }
         public int NumberOfGarbageSent(bool GarbageCanBeSent)
         {
             int placeHolderVal = 0;
-            if (grid.NumberOfBlocksSent == 1) placeHolderVal = 0;
-            if (grid.NumberOfBlocksSent == 2) placeHolderVal = 1;
-            if (grid.NumberOfBlocksSent == 3) placeHolderVal = 2;
-            if (grid.NumberOfBlocksSent == 4) placeHolderVal = 4;
-            grid.NumberOfBlocksSent = 0;
+            if (grid.GetSetNumberOfBlocksSent == 1) placeHolderVal = 0;
+            if (grid.GetSetNumberOfBlocksSent == 2) placeHolderVal = 1;
+            if (grid.GetSetNumberOfBlocksSent == 3) placeHolderVal = 2;
+            if (grid.GetSetNumberOfBlocksSent == 4) placeHolderVal = 4;
+            grid.GetSetNumberOfBlocksSent = 0;
             return placeHolderVal;
         }
         private bool ValidDropForShadow()//if the drop is valid or not
@@ -168,7 +168,7 @@ namespace Tetris
             }
         }
         public void DisplayPieceShadow()
-        {
+        {   
             posOffsetX = shape.PosOffsetX; 
             posOffsetY = shape.PosOffsetY;
             ShadowedShape = shape.CurrentShape;

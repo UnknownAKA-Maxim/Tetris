@@ -12,7 +12,7 @@ namespace Tetris
 {
     internal class ShapeProcess : Block
     {
-        private const int EMPTYSPACE = 0, PIECESHADOW = -1;
+        private const int EMPTYSPACE = 0;
         private int[,] currentShape = new int[4, 4];
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
@@ -25,11 +25,16 @@ namespace Tetris
         private bool HoldIsPossible = true, ShapeIsHeld = false;
         private bool garbageCanbeRecievedToLocalGrid;
         private bool gameEnds = false;
+        private int pendingGarbage = 0;
         public ShapeProcess(GridProcess Grid)
         {
             currentShape = CurrentShape;
             grid = Grid;
             MapShapeToArray();
+        }
+        public void QueueGarbage(int lines)
+        {
+            pendingGarbage += lines;
         }
         public bool GameEnds
         {
@@ -318,10 +323,12 @@ namespace Tetris
                 }
             }
             //Initialise a new shape here
-            for (int i = 0; i <= 12; i++)
+            if (pendingGarbage > 0)
             {
-                grid.FillInGaps();
+                grid.AddGarbage(pendingGarbage);
+                pendingGarbage = 0;
             }
+
             GarbageCanBeRecievedToLocalGrid = true;
             HoldIsPossible = true;
             CreateNewShape();

@@ -20,7 +20,7 @@ namespace Tetris
 
             set { Grid = value; }
         }
-        public int NumberOfBlocksSent
+        public int GetSetNumberOfBlocksSent
         {
             get { return numberOfBlocksSent; }
             set { if (value >= 0 && value <= 4) numberOfBlocksSent = value; else if (value > 4) numberOfBlocksSent = 4; else numberOfBlocksSent = 0; }//making sure value wont cant be less than 0 or greater that 4(error checking)
@@ -38,7 +38,7 @@ namespace Tetris
             }
             if (numberOfBlocksFilled == 10)
             {
-                NumberOfBlocksSent++;
+                GetSetNumberOfBlocksSent++;
                 return true;
             }
             else return false;
@@ -86,28 +86,17 @@ namespace Tetris
                 Grid[i, yIndex] = Grid[i, yIndex + 1];
             }
         }
-        private bool LineIncludesCurrentShape(int y)
-        {
-            for (int i = 0; i < WIDTH; i++)
-            {
-                if (Grid[i, y] <= 7) return true;
-            }
-            return false;
-        }
         private void ShiftLineUp()
         {
+            //Shifts every row up by one
             for (int i = HEIGHT - 1; i > 0; i--)
             {
                 for (int j = 0; j < WIDTH; j++)
                 {
-                    if ((Grid[j, i] > 7 || BlockIsClear(j, i)) && (Grid[j, i - 1] > 7 || BlockIsClear(j, i - 1)))
-                    {
-                        Grid[j, i] = Grid[j, i - 1];
-                    }
+                    Grid[j, i] = Grid[j, i - 1];
                 }
-
-                if (!LineIncludesCurrentShape(i)) SetLineToNull(i-1);
             }
+            SetLineToNull(0);//Clears row at the bottom of the board so garbage can be put there
         }
         public void FillInGaps()//When Line completed pulls down lines above
         {
