@@ -70,12 +70,12 @@ namespace Tetris
 
         private void MediumMode(object sender, EventArgs e)
         {
-            DifficultyMode = 2;
+            DifficultyMode = 1;
         }
 
         private void HardMode(object sender, EventArgs e)
         {
-            DifficultyMode = 1;
+            DifficultyMode = 0;
         }
 
         private void ARRSensitivity(object sender, EventArgs e)

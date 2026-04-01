@@ -89,7 +89,7 @@ namespace Tetris
         {
             if (numberOfLinesSent > 0)
             {
-                grid.AddGarbage(numberOfLinesSent);
+                shape.QueueGarbage(numberOfLinesSent);
                 shape.GarbageCanBeRecievedToLocalGrid = false;
             }
         }

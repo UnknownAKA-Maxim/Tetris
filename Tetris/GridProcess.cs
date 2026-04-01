@@ -76,28 +76,18 @@ namespace Tetris
                 Grid[i, yIndex] = Grid[i, yIndex + 1];
             }
         }
-        private bool LineIncludesCurrentShape(int y)
-        {
-            for (int i = 0; i < WIDTH; i++)
-            {
-                if (Grid[i, y] <= 7) return true;
-            }
-            return false;
-        }
         private void ShiftLineUp()
         {
+            // Shift every line up by one, dropping the top line down
             for (int i = HEIGHT - 1; i > 0; i--)
             {
                 for (int j = 0; j < WIDTH; j++)
                 {
-                    if ((Grid[j, i] > 7 || BlockIsClear(j, i)) && (Grid[j, i - 1] > 7 || BlockIsClear(j, i - 1)))
-                    {
-                        Grid[j, i] = Grid[j, i - 1];
-                    }
+                    Grid[j, i] = Grid[j, i - 1];
                 }
-
-                if (!LineIncludesCurrentShape(i)) SetLineToNull(i-1);
             }
+            // Clear Bottom row so garbage can be added to it   
+            SetLineToNull(0);
         }
         public void FillInGaps()//When Line completed pulls down lines above
         {

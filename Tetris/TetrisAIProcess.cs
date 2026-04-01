@@ -137,7 +137,7 @@ namespace Tetris
                     //AllEndPositions(int[0,1,2])
                     CurrentShapeManaged.InitialiseGridsShapeToZero(0);
                     CurrentShapeManaged.PosOffsetY = STARTINGPOSITIONY;
-                    CurrentShapeManaged.MapShapeToArray();
+                    CurrentShapeManaged.MapShapeToArray();  
                     CurrentShapeManaged.HorizontalMovement("R");
                 }
                 offsetPositionX = CurrentShapeManaged.PosOffsetX;

@@ -25,6 +25,12 @@ namespace Tetris
         private bool HoldIsPossible = true, ShapeIsHeld = false;
         private bool garbageCanbeRecievedToLocalGrid;
         private bool gameEnds = false;
+        private int pendingGarbage = 0;
+
+        public void QueueGarbage(int lines)
+        {
+            pendingGarbage += lines;
+        }
         public ShapeProcess(GridProcess Grid)
         {
             currentShape = CurrentShape;
@@ -275,6 +281,12 @@ namespace Tetris
             {
                 grid.FillInGaps();
             }
+            if (pendingGarbage > 0)//adds garbage to the queue
+            {
+                grid.AddGarbage(pendingGarbage);
+                pendingGarbage = 0;
+            }
+
             GarbageCanBeRecievedToLocalGrid = true;
             HoldIsPossible = true;
             CreateNewShape();
