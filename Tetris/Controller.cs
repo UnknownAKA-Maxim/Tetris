@@ -17,15 +17,8 @@ namespace Tetris
         private int[,] ShadowedShape = new int[4,4];
         private int posOffsetX,posOffsetY;
         private const int HEIGHT = 23, WIDTH = 10, EMPTYSPACE = 0;
-        private int garbageBuffered = 0;
-        private bool garbageCanBeReceived;
         public Controller()
         {
-        }
-        public bool GarbageCanBeReceived
-        {
-            get { return garbageCanBeReceived; } 
-            set { garbageCanBeReceived = shape.GarbageCanBeRecievedToLocalGrid; }
         }
         public ShapeProcess Shape 
         { 
@@ -44,7 +37,6 @@ namespace Tetris
         {
             grid = new GridProcess();
             shape = new ShapeProcess(grid);
-            GarbageCanBeReceived = shape.GarbageCanBeRecievedToLocalGrid;
         }
         public void IncrementLeft()
         {
@@ -61,13 +53,11 @@ namespace Tetris
         public void SoftDrop()
         {
             shape.Drop(false);
-            GarbageCanBeReceived = shape.GarbageCanBeRecievedToLocalGrid;
         }
         public void HardDrop()
         {
             shape.HardDrop(false);
             shape.Drop(false);
-            GarbageCanBeReceived = shape.GarbageCanBeRecievedToLocalGrid;
         }
         public void Hold()
         {
@@ -89,11 +79,11 @@ namespace Tetris
         {
             if (numberOfLinesSent > 0)
             {
-                shape.QueueGarbage(numberOfLinesSent);//Queues garbage
+                grid.AddGarbage(numberOfLinesSent);
                 shape.GarbageCanBeRecievedToLocalGrid = false;
             }
         }
-        public int NumberOfGarbageSent(bool GarbageCanBeSent)
+        public int NumberOfGarbageSent()
         {
             int placeHolderVal = 0;
             if (grid.GetSetNumberOfBlocksSent == 1) placeHolderVal = 0;
