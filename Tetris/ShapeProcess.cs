@@ -12,6 +12,7 @@ namespace Tetris
 {
     internal class ShapeProcess : Block
     {
+        private const int EMPTYSPACE = 0, PIECESHADOW = -1;
         private Tile[,] currentShape = new Tile[4, 4];
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
@@ -175,25 +176,25 @@ namespace Tetris
             switch (s)
             {
                 case Tile.I:
-                    shape[2, 0] = s; shape[2, 1] = s; shape[2, 2] = s; shape[2, 3] = s;
+                    shape[2, 0] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
                     return shape;
                 case Tile.O:
-                    shape[1, 1] = s; shape[2, 1] = s; shape[1, 2] = s; shape[2, 2] = s;
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[2, 2] = colour;
                     return shape;
                 case Tile.S:
-                    shape[1, 0] = s; shape[1, 1] = s; shape[2, 1] = s; shape[2, 2] = s;
+                    shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour;
                     return shape;
                 case Tile.Z:
-                    shape[2, 0] = s; shape[1, 1] = s; shape[2, 1] = s; shape[1, 2] = s;
+                    shape[2, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
                     return shape;
                 case Tile.L:
-                    shape[1, 1] = s; shape[2, 1] = s; shape[2, 2] = s; shape[2, 3] = s;
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[2, 2] = colour; shape[2, 3] = colour;
                     return shape;
                 case Tile.J:
-                    shape[1, 1] = s; shape[2, 1] = s; shape[1, 2] = s; shape[1, 3] = s;
+                    shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour; shape[1, 3] = colour;
                     return shape;
                 case Tile.T:
-                    shape[1, 0] = s; shape[1, 1] = s; shape[2, 1] = s; shape[1, 2] = s;
+                    shape[1, 0] = colour; shape[1, 1] = colour; shape[2, 1] = colour; shape[1, 2] = colour;
                     return shape;
                 default:
                     return shape;
@@ -253,10 +254,8 @@ namespace Tetris
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    if (PosOffsetY + i >= 0 && PosOffsetX + j >= 0 && PosOffsetX + j <= 9)
+                    if ((PosOffsetY + i) >= 0 && (PosOffsetX + j) >= EMPTYSPACE && (PosOffsetX + j) <= 9)
                     {
-                        //bro why have you made i the y value and j the x value, you absolute idiot
-                        // - not my words. I typed "bro why" ane copilot finished the rest.
                         if (grid.Grid[PosOffsetX + j, PosOffsetY + i] == colour)
                         {
                             grid.Grid[PosOffsetX + j, PosOffsetY + i] |= Tile.Placed;//This is for placed values just incase other parts of the program are affected
@@ -305,7 +304,7 @@ namespace Tetris
                 {
                     if (CurrentShape[j, i] == colour)
                     {
-                        if(grid.Grid[PosOffsetX + j, PosOffsetY + i] != Tile.Empty && grid.Grid[PosOffsetX + j, PosOffsetY + i] != Colour) 
+                        if(grid.Grid[PosOffsetX + j, PosOffsetY + i] != EMPTYSPACE && grid.Grid[PosOffsetX + j, PosOffsetY + i] != Colour) 
                         { gameEnds = true; }
                         grid.Grid[PosOffsetX + j, PosOffsetY + i] = CurrentShape[j, i];
                     }

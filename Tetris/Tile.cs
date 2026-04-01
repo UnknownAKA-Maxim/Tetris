@@ -1,8 +1,14 @@
-﻿namespace Tetris
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Tetris
 {
     enum Tile
     {
-        Empty = 0,
+        None = 0,
         I = 1,
         O = 2,
         S = 3,
