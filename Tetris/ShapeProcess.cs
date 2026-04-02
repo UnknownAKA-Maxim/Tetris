@@ -12,14 +12,13 @@ namespace Tetris
 {
     internal class ShapeProcess : Block
     {
-        private const int EMPTYSPACE = 0, PIECESHADOW = -1;
+        private const int EMPTYSPACE = 0;
         private int[,] currentShape = new int[4, 4];
         private GridProcess grid = new GridProcess();
         private int currentRotation = 0;
         private int posOffsetX = 3, posOffsetY = 19;
         private int colour = 1, HeldColour = 1;//both set to one just to initialise
         private Stack<int> currentBag = new Stack<int>();
-        private Stack<int> SecondBag = new Stack<int>();
         private int currentShapeNumber = 0;//the Shapes assigned number in shapeChooser
         private int HeldValue = 0;//The Shapes number assigned to the held value
         private bool HoldIsPossible = true, ShapeIsHeld = false;

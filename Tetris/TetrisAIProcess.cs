@@ -15,7 +15,7 @@ namespace Tetris
         private ShapeProcess CurrentShapeManaged;
         private GridProcess CurrentGrid;
         private List<int[]> AllEndPositions = new List<int[]>();
-        private const int STARTINGPOSITIONX = 3,MAXIMUMAMOUNTOFMOVES = 40, STARTINGPOSITIONY = 19,EMPTYSPACE = 0;
+        private const int STARTINGPOSITIONX = 3, STARTINGPOSITIONY = 19,EMPTYSPACE = 0;
         private string patternToReachBestPosition;
         public TetrisAIProcess(Controller PlayerTwo) 
         {

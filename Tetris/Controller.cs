@@ -16,8 +16,7 @@ namespace Tetris
         private const int PIECESHADOW = -1;
         private int[,] ShadowedShape = new int[4,4];
         private int posOffsetX,posOffsetY;
-        private const int HEIGHT = 23, WIDTH = 10, EMPTYSPACE = 0;
-        private int garbageBuffered = 0;
+        private const int EMPTYSPACE = 0;
         private bool garbageCanBeReceived;
         public Controller()
         {
